@@ -40,7 +40,7 @@ const SvgPath = ({
     }
 
     const percentage =
-      (activeTouchX.value / (svgWidth - (extraConfig.endSpacing || 20))) * 100;
+      (activeTouchX.value / (svgWidth - (extraConfig.endSpacing))) * 100;
 
     const testInterpolation = interpolate(
       percentage,
@@ -120,7 +120,7 @@ const LineComponent = ({
   const path = createNewPath({
     data: line.data,
     allData,
-    endSpacing: extraConfig.endSpacing || 20,
+    endSpacing: extraConfig.endSpacing,
     svgHeight,
     svgWidth,
     isFilled: line.fillColor !== undefined,

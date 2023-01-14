@@ -22,7 +22,7 @@ const LineChart = ({
     fadeStart: false,
     rtl: false,
     simultaneousHandlers: undefined,
-    endSpacing: 20,
+    endSpacing: 0,
   },
   backgroundColor = undefined,
   onPointFocus = (point: DataPoint) => point !== undefined,

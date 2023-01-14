@@ -62,7 +62,7 @@ export const createNewPath = ({
       .y((d) => y(d.value));
   };
 
-  const line = getLine().curve(curve || d3.curveCardinal)(data);
+  const line = getLine().curve(curve || d3.curveLinear)(data);
 
   return {
     d: line,
