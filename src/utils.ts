@@ -79,10 +79,13 @@ export const closest = (arr: number[], target: number) => {
   for (let i = 1; i < arr.length; i++) {
     // As soon as a number bigger than target is found, return the previous or current
     // number depending on which has smaller difference to the target.
-    if (arr[i] > target) {
+    if (arr[i] as number > target) {
       const p = arr[i - 1];
       const c = arr[i];
-      return Math.abs(p - target) < Math.abs(c - target) ? p : c;
+      if (p && c) {
+        return Math.abs(p - target) < Math.abs(c - target) ? p : c;
+      }
+      return p || c;
     }
   }
   // No number in array is bigger so return the last.

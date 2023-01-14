@@ -184,7 +184,7 @@ const LineComponent = ({
       {line.endPoint && (
         <EndPoint
           x={path.x(line.data[line.data.length - 1]?.extraData?.date)}
-          y={path.y(line.data[line.data.length - 1]?.value)}
+          y={path.y(line.data[line.data.length - 1]?.value as number)}
           endPoint={line.endPoint}
         />
       )}

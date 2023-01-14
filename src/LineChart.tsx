@@ -28,7 +28,7 @@ const LineChart = ({
     endSpacing: 20,
   },
   backgroundColor = undefined,
-  onPointFocus = (point) => false,
+  onPointFocus = (point: DataPoint) => point !== undefined,
   onPointLoseFocus = () => false,
   activePointSharedValue,
   line1,
@@ -71,7 +71,7 @@ const LineChart = ({
     if (extraConfig.initialActivePoint) {
       activeTouch.value = true;
       if (onPointFocus) {
-        onPointFocus(line1.data[extraConfig.initialActivePoint]);
+        onPointFocus(line1.data[extraConfig.initialActivePoint] as DataPoint);
       }
     } else {
       onPointLoseFocusLocal();
