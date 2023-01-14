@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -11,8 +10,6 @@ import Animated, {
 import Svg from 'react-native-svg';
 import SvgPath from './SvgPath';
 import { DataPoint, ExtraConfig, Line } from './types';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
 
 const LineChart = ({
   height = 200,
@@ -125,7 +122,7 @@ const LineChart = ({
 
   return (
     <GestureDetector gesture={panGesture}>
-      <AnimatedView style={{ backgroundColor }}>
+      <Animated.View style={{ backgroundColor }}>
         <Svg width={svgWidth} height={svgHeight}>
           <SvgPath
             line1={line1}
@@ -139,7 +136,7 @@ const LineChart = ({
             extraConfig={extraConfig}
           />
         </Svg>
-      </AnimatedView>
+      </Animated.View>
     </GestureDetector>
   );
 };
