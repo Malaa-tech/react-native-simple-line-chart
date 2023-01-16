@@ -1,42 +1,64 @@
 import moment from 'moment';
 import * as React from 'react';
-import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, Button, Switch } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LineChart from 'react-native-simple-line-chart';
 
-const exampleData = [...Array(30).fill(undefined)].map((v, index) => {
-  const value = 3000 + Math.round(Math.random() * 500);
-  const date = moment()
-    .subtract(30 - index, 'hours')
-    .toDate()
-    .getTime();
-  return {
-    value,
-    extraData: {
-      date,
-      formattedValue: value,
-      formattedTime: moment(date).fromNow(),
-    },
-  };
-});
+const generateData = ({ numberOfPoints }: { numberOfPoints: number }) => {
+  return [...Array(numberOfPoints).fill(undefined)].map((v, index) => {
+    const value = 3000 + Math.round(Math.random() * 500);
+    const date = moment()
+      .subtract(numberOfPoints - index, 'hours')
+      .toDate()
+      .getTime();
+    return {
+      value,
+      extraData: {
+        date,
+        formattedValue: value,
+        formattedTime: moment(date).fromNow(),
+      },
+    };
+  })
+};
 
 export default function App() {
   const [activeDataPoint, setActiveDataPoint] = React.useState<
     undefined | number
   >(undefined);
+  const [data, setData] = React.useState(undefined);
+  const [numberOfPoints, setNumberOfPoints] = React.useState(30);
+  const [color, setColor] = React.useState('pink');
+  const [isLinearGradient, setIsLinearGradient] = React.useState(false);
+  const [isEndPoint, setIsEndPoint] = React.useState(true);
 
+  React.useEffect(() => {
+    setData(generateData({ numberOfPoints }) as any);
+  }, [numberOfPoints]);
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-
       <View style={styles.container}>
-        <Text style={{ opacity: activeDataPoint === undefined ? 0 : 1, color: 'pink', fontSize: 20, marginBottom: 20 }}>{activeDataPoint || ' '}</Text>
+        <Text
+          style={{
+            opacity: activeDataPoint === undefined ? 0 : 1,
+            color: color,
+            fontSize: 30,
+            marginBottom: 20,
+          }}
+        >
+          {activeDataPoint || ' '}
+        </Text>
 
         <LineChart
           line1={{
-            data: exampleData,
+            data,
             activePointConfig: {
-              color: 'pink',
+              color,
               borderColor: 'black',
               radius: 4,
               line: true,
@@ -47,13 +69,18 @@ export default function App() {
               hideAfterActivePoint: true,
             },
             lineWidth: 4,
-            lineColor: 'pink',
+            lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
             fillColor: undefined,
+            endPoint: isEndPoint ? {
+              color,
+              radius: 5,
+              animated: true
+            } : undefined,
             activePointComponent: (point) => {
               return (
                 <View
                   style={{
-                    backgroundColor: 'pink',
+                    backgroundColor: color,
                     padding: 10,
                     borderRadius: 10,
                   }}
@@ -66,7 +93,15 @@ export default function App() {
                   </Text>
                 </View>
               );
-            }
+            },
+          }}
+          extraConfig={{
+            endSpacing: isEndPoint ? 20 : 0,
+            alwaysShowActivePoint: false,
+            alwaysStartFromZero: false,
+            hideActivePointOnBlur: true,
+            fadeStart: false,
+            initialActivePoint: undefined,
           }}
           onPointFocus={(point) => {
             setActiveDataPoint(point?.value);
@@ -78,6 +113,77 @@ export default function App() {
           height={200}
           width={Dimensions.get('screen').width}
         />
+
+        <View style={{ flexDirection: 'row', marginTop: 40 }}>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='120 points' color={color} onPress={() => {
+              setNumberOfPoints(90);
+            }} />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='30 points' color={color} onPress={() => {
+              setNumberOfPoints(30);
+            }} />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='10 points' color={color} onPress={() => {
+              setNumberOfPoints(10);
+            }} />
+          </View>
+        </View>
+
+
+        {!isLinearGradient && (<View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='Coral' color={'coral'} onPress={() => {
+              setColor('coral');
+            }} />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='Cyan' color={'darkcyan'} onPress={() => {
+              setColor('darkcyan');
+            }} />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='Red' color={'indianred'} onPress={() => {
+              setColor('indianred');
+            }} />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button title='Pink' color={'pink'} onPress={() => {
+              setColor('pink');
+            }} />
+          </View>
+        </View>
+        )}
+
+        <View style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}>
+          <Text style={{ marginRight: 10, color }}>Linear Gradient</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isLinearGradient ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => {
+              setColor('#81b0ff')
+              setIsLinearGradient(!isLinearGradient);
+            }}
+            value={isLinearGradient}
+          />
+        </View>
+
+        <View style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}>
+          <Text style={{ marginRight: 10, color }}>End Point</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: 'lightgreen' }}
+            thumbColor={isEndPoint ? 'lightcyan' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => {
+              setIsEndPoint(!isEndPoint);
+            }}
+            value={isEndPoint}
+          />
+        </View>
+
       </View>
     </GestureHandlerRootView>
   );
