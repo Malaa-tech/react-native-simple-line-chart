@@ -1,0 +1,76 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-native"
+  ],
+  "ignorePatterns": [
+    "__tests__/*",
+    "docs/*",
+    "*.config.js"
+  ],
+  "rules": {
+    "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react-native/no-inline-styles": "off",
+    "no-alert": "off",
+    "no-catch-shadow": "off",
+    "no-console": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    // "@typescript-eslint/no-unused-vars": "off",
+    // "@typescript-eslint/no-var-requires": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "react/require-default-props": "off",
+    "import/extensions": "off",
+    "no-restricted-syntax": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "guard-for-in": "off",
+    "no-underscore-dangle": "off",
+    "camelcase": "off",
+    "no-shadow": "off",
+    "no-plusplus": "off",
+    "default-param-last": "off",
+    "react/no-unstable-nested-components": "off", // TODO: fix all components
+    "react/destructuring-assignment": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-param-reassign": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "react/jsx-filename-extension": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "import/no-unresolved": [
+      0,
+      {
+        "alias": {
+          "@malaa": "./src"
+        }
+      }
+    ]
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "tsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  }
+}
