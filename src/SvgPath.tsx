@@ -3,7 +3,6 @@ import React from 'react';
 import {
   interpolate,
   SharedValue,
-  useAnimatedReaction,
   useDerivedValue,
 } from 'react-native-reanimated';
 import { View } from 'react-native';
@@ -21,7 +20,6 @@ const SvgPath = ({
   activeTouchX,
   activeTouch,
   backgroundColor,
-  activeDataPoint,
   extraConfig,
   onPointChange,
 }: {
@@ -32,7 +30,6 @@ const SvgPath = ({
   activeTouchX: SharedValue<number>;
   activeTouch: SharedValue<boolean>;
   backgroundColor?: string;
-  activeDataPoint: SharedValue<DataPoint | undefined>;
   extraConfig: ExtraConfig;
   onPointChange: (point?: DataPoint) => void;
 }) => {
@@ -60,18 +57,6 @@ const SvgPath = ({
 
     return activeIndexLocal;
   }, [activeTouchX, line1.data]);
-
-  useAnimatedReaction(
-    () => {
-      return activeIndex.value;
-    },
-    () => {
-      if (activeIndex?.value && activeTouch.value === true) {
-        activeDataPoint.value = line1.data[activeIndex.value];
-      }
-    },
-    [activeIndex, line1.data, activeTouch]
-  );
 
   return (
     <>

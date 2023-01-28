@@ -44,7 +44,6 @@ function LineChart({
 }) {
   const svgHeight = height;
   const svgWidth = width;
-  const activeDataPoint = useSharedValue<DataPoint | undefined>(undefined);
   const activeTouchX = useSharedValue(0);
   const activeTouch = useSharedValue(false);
 
@@ -122,7 +121,6 @@ function LineChart({
             activeTouch={activeTouch}
             activeTouchX={activeTouchX}
             backgroundColor={backgroundColor}
-            activeDataPoint={activeDataPoint}
             extraConfig={extraConfig}
             onPointChange={onPointChange}
           />
