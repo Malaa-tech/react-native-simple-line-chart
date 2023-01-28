@@ -20,8 +20,7 @@ const generateData = ({
   numberOfPoints: number;
   range: number;
 }) => {
-  return [...Array(numberOfPoints).fill(undefined)].map((v, index) => {
-    console.log({ v });
+  return [...Array(numberOfPoints).fill(undefined)].map((_v, index) => {
     const value = range + Math.round(Math.random() * 500);
     const date = moment()
       .subtract(numberOfPoints - index, 'hours')
@@ -266,6 +265,7 @@ const Chart = ({
           lineWidth: 4,
           lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
           fillColor: isAreaChart ? color : undefined,
+          curve: 'cardinal',
           endPoint: isEndPoint
             ? {
                 color,
@@ -317,6 +317,7 @@ const Chart = ({
                       animated: true,
                     }
                   : undefined,
+                curve: 'cardinal',
                 activePointComponent: (point: DataPoint | any) => {
                   return (
                     <View
@@ -346,6 +347,12 @@ const Chart = ({
           hideActivePointOnBlur: true,
           fadeStart: false,
           initialActivePoint: undefined,
+          calculateChartYAxisMinMax: (min: number, max: number) => {
+            return {
+              min: min,
+              max: max,
+            };
+          },
         }}
         onPointFocus={(point) => {
           setActiveDataPoint(point?.value);

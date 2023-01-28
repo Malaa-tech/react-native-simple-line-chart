@@ -128,6 +128,8 @@ const LineComponent = ({
     isFilled: line.fillColor !== undefined,
     alwaysStartFromZero: extraConfig.alwaysStartFromZero || false,
     curve: line.curve,
+    calculateChartYAxisMinMax:
+      extraConfig.calculateChartYAxisMinMax || undefined,
   });
 
   const isLineColorGradient = Array.isArray(line.lineColor);

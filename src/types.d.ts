@@ -30,6 +30,8 @@ export type ActivePointComponent = (
   activePoint?: DataPoint | SharedValue<DataPoint | undefined>
 ) => React.ReactNode;
 
+export type LineCurve = 'linear' | 'cardinal' | 'step';
+
 export type Line = {
   data: DataPoint[];
   activePointConfig?: ActivePointConfig;
@@ -38,7 +40,7 @@ export type Line = {
   activePointComponent?: ActivePointComponent;
   lineWidth?: number;
   endPoint?: EndPointConfig;
-  curve?: d3.CurveFactory;
+  curve?: LineCurve;
   passSharedValueToActivePointComponent?: boolean;
 };
 
@@ -51,4 +53,8 @@ export type ExtraConfig = {
   rtl?: boolean;
   simultaneousHandlers?: any;
   endSpacing?: number;
+  calculateChartYAxisMinMax?: (
+    min: number,
+    max: number
+  ) => { min: number; max: number };
 };

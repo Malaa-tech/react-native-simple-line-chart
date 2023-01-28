@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { DataPoint } from './types';
+import { DataPoint, LineCurve } from './types';
 
 export type PathObject = {
   d: string | null;
@@ -16,6 +16,7 @@ export const createNewPath = ({
   isFilled = false,
   alwaysStartFromZero,
   curve,
+  calculateChartYAxisMinMax,
 }: {
   svgWidth: number;
   svgHeight: number;
@@ -24,18 +25,28 @@ export const createNewPath = ({
   allData: DataPoint[]; // all lines data
   isFilled?: boolean;
   alwaysStartFromZero: boolean;
-  curve?: d3.CurveFactory;
+  curve?: LineCurve;
+  calculateChartYAxisMinMax?: (
+    min: number,
+    max: number
+  ) => { min: number; max: number };
 }): PathObject => {
-  const getMinimumChartValue = (minValue: number | undefined) => {
+  const getChartMinMaxValues = (minValue: number, maxValue: number) => {
     if (alwaysStartFromZero) {
-      return 0;
-    }
-    if (minValue) {
-      // TODO: change this before open sourcing
-      return minValue * 0.95;
+      return {
+        min: 0,
+        max: maxValue || 0,
+      };
     }
 
-    return 0;
+    if (calculateChartYAxisMinMax) {
+      return calculateChartYAxisMinMax(minValue, maxValue);
+    }
+
+    return {
+      min: minValue,
+      max: maxValue,
+    };
   };
 
   // get the min and max values for the x axis
@@ -44,7 +55,10 @@ export const createNewPath = ({
   // create the y scale
   const y = d3
     .scaleLinear()
-    .domain([xDomain[1] || 0, getMinimumChartValue(xDomain[0])])
+    .domain([
+      getChartMinMaxValues(xDomain[1] || 0, xDomain[0] || 0).max as number,
+      getChartMinMaxValues(xDomain[1] || 0, xDomain[0] || 0).min as number,
+    ])
     .range([10, svgHeight - 10]);
 
   // create the x scale
@@ -74,7 +88,20 @@ export const createNewPath = ({
       .y((d) => y(d.value));
   };
 
-  const line = getLine().curve(curve || d3.curveCardinal)(data);
+  const getCurve = () => {
+    switch (curve) {
+      case 'cardinal':
+        return d3.curveCardinal;
+      case 'step':
+        return d3.curveStep;
+      case 'linear':
+        return d3.curveLinear;
+      default:
+        return d3.curveLinear;
+    }
+  };
+
+  const line = getLine().curve(getCurve())(data);
 
   return {
     d: line,
