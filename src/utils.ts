@@ -1,5 +1,5 @@
-import { DataPoint } from './types';
 import * as d3 from 'd3';
+import { DataPoint } from './types';
 
 export type PathObject = {
   d: string | null;
@@ -26,13 +26,25 @@ export const createNewPath = ({
   alwaysStartFromZero: boolean;
   curve?: d3.CurveFactory;
 }): PathObject => {
+  const getMinimumChartValue = (minValue: number | undefined) => {
+    if (alwaysStartFromZero) {
+      return 0;
+    }
+    if (minValue) {
+      // TODO: change this before open sourcing
+      return minValue * 0.95;
+    }
+
+    return 0;
+  };
+
   // get the min and max values for the x axis
   const xDomain = d3.extent([...allData.map((val) => val.value)]);
 
   // create the y scale
   const y = d3
     .scaleLinear()
-    .domain([xDomain[1] || 0, alwaysStartFromZero ? 0 : xDomain[0] || 0])
+    .domain([xDomain[1] || 0, getMinimumChartValue(xDomain[0])])
     .range([10, svgHeight - 10]);
 
   // create the x scale
@@ -62,7 +74,7 @@ export const createNewPath = ({
       .y((d) => y(d.value));
   };
 
-  const line = getLine().curve(curve || d3.curveLinear)(data);
+  const line = getLine().curve(curve || d3.curveCardinal)(data);
 
   return {
     d: line,
@@ -79,13 +91,12 @@ export const closest = (arr: number[], target: number) => {
   for (let i = 1; i < arr.length; i++) {
     // As soon as a number bigger than target is found, return the previous or current
     // number depending on which has smaller difference to the target.
-    if (arr[i] as number > target) {
+    if ((arr[i] as any) > target) {
       const p = arr[i - 1];
       const c = arr[i];
       if (p && c) {
         return Math.abs(p - target) < Math.abs(c - target) ? p : c;
       }
-      return p || c;
     }
   }
   // No number in array is bigger so return the last.

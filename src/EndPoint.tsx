@@ -8,9 +8,9 @@ import Animated, {
 import { Circle } from 'react-native-svg';
 import { EndPointConfig } from './types';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;
 
-const EndPoint = ({
+function EndPoint({
   x,
   y,
   endPoint,
@@ -18,7 +18,7 @@ const EndPoint = ({
   x: number;
   y: number;
   endPoint: EndPointConfig;
-}) => {
+}) {
   const radius = useSharedValue(endPoint.radius * 1.7);
   const animationDuration = 1000;
 
@@ -30,7 +30,7 @@ const EndPoint = ({
         true
       );
     }
-  }, [endPoint.animated, endPoint.radius]);
+  }, []);
 
   const pointProps = useAnimatedProps(() => {
     return {
@@ -50,6 +50,6 @@ const EndPoint = ({
       />
     </>
   );
-};
+}
 
 export default EndPoint;

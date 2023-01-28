@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -11,7 +11,9 @@ import Svg from 'react-native-svg';
 import SvgPath from './SvgPath';
 import { DataPoint, ExtraConfig, Line } from './types';
 
-const LineChart = ({
+const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
+
+function LineChart({
   height = 200,
   width = Dimensions.get('screen').width,
   extraConfig = {
@@ -22,10 +24,10 @@ const LineChart = ({
     fadeStart: false,
     rtl: false,
     simultaneousHandlers: undefined,
-    endSpacing: 0,
+    endSpacing: 20,
   },
   backgroundColor = undefined,
-  onPointFocus = (point: DataPoint) => point !== undefined,
+  onPointFocus = () => false,
   onPointLoseFocus = () => false,
   activePointSharedValue,
   line1,
@@ -40,7 +42,7 @@ const LineChart = ({
   activePointSharedValue?: SharedValue<DataPoint | undefined>; // used to update the active point from the animation thread
   line1: Line;
   line2?: Line;
-}) => {
+}) {
   const svgHeight = height;
   const svgWidth = width;
   const activeDataPoint = useSharedValue<DataPoint | undefined>(undefined);
@@ -68,7 +70,10 @@ const LineChart = ({
     if (extraConfig.initialActivePoint) {
       activeTouch.value = true;
       if (onPointFocus) {
-        onPointFocus(line1.data[extraConfig.initialActivePoint] as DataPoint);
+        const point = line1.data[extraConfig.initialActivePoint];
+        if (point) {
+          onPointFocus(point);
+        }
       }
     } else {
       onPointLoseFocusLocal();
@@ -114,16 +119,23 @@ const LineChart = ({
     runOnJS(onPointLoseFocusLocal)();
   };
 
-  const panGesture = Gesture.Pan()
-    .onBegin(onPanUpdate)
-    .onUpdate(onPanUpdate)
-    .onEnd(onPanEnd)
-    .onFinalize(onPanEnd);
+  const panGesture = extraConfig.simultaneousHandlers
+    ? Gesture.Pan()
+        .simultaneousWithExternalGesture(extraConfig.simultaneousHandlers)
+        .onBegin(onPanUpdate)
+        .onUpdate(onPanUpdate)
+        .onEnd(onPanEnd)
+        .onFinalize(onPanEnd)
+    : Gesture.Pan()
+        .onBegin(onPanUpdate)
+        .onUpdate(onPanUpdate)
+        .onEnd(onPanEnd)
+        .onFinalize(onPanEnd);
 
   return (
     <GestureDetector gesture={panGesture}>
-      <Animated.View style={{ backgroundColor }}>
-        <Svg width={svgWidth} height={svgHeight}>
+      <AnimatedView style={{ backgroundColor }}>
+        <Svg width={svgWidth} height={svgHeight} fill="transparent">
           <SvgPath
             line1={line1}
             line2={line2}
@@ -136,10 +148,10 @@ const LineChart = ({
             extraConfig={extraConfig}
           />
         </Svg>
-      </Animated.View>
+      </AnimatedView>
     </GestureDetector>
   );
-};
+}
 
 export const MemoizedLineChart = React.memo(
   LineChart,

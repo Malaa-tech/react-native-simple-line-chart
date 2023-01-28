@@ -12,8 +12,8 @@ import ActivePointComponentWrapper from './ActivePointComponentWrapper';
 import { ActivePointComponent, ActivePointConfig, DataPoint } from './types';
 import { PathObject } from './utils';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-const AnimatedPath = Animated.createAnimatedComponent(Path);
+const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;
+const AnimatedPath = Animated.createAnimatedComponent(Path) as any;
 
 const ActivePoint = ({
   data,

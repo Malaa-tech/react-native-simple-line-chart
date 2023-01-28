@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { ActivePointComponent, DataPoint } from './types';
 
-const AnimatedView = Animated.createAnimatedComponent(View);
+const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 
 const ActivePointComponentWrapper = ({
   activePointPosition,

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import {
   interpolate,
@@ -5,7 +6,8 @@ import {
   useAnimatedReaction,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { Defs, G, LinearGradient, Path, Stop } from 'react-native-svg';
+import { View } from 'react-native';
+import { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
 import { createNewPath } from './utils';
@@ -40,7 +42,7 @@ const SvgPath = ({
     }
 
     const percentage =
-      (activeTouchX.value / (svgWidth - (extraConfig.endSpacing))) * 100;
+      (activeTouchX.value / (svgWidth - (extraConfig.endSpacing || 20))) * 100;
 
     const testInterpolation = interpolate(
       percentage,
@@ -90,7 +92,7 @@ const SvgPath = ({
               />
             );
           }
-          return <G key={`${index}`} />;
+          return <View key={`${index}`} />;
         })}
     </>
   );
@@ -120,7 +122,7 @@ const LineComponent = ({
   const path = createNewPath({
     data: line.data,
     allData,
-    endSpacing: extraConfig.endSpacing,
+    endSpacing: extraConfig.endSpacing || 20,
     svgHeight,
     svgWidth,
     isFilled: line.fillColor !== undefined,
@@ -137,9 +139,7 @@ const LineComponent = ({
           <LinearGradient id={identifier}>
             <Stop
               offset={extraConfig.rtl || false ? '100%' : '0%'}
-              stopColor={
-                backgroundColor ? backgroundColor : (line.lineColor as string)
-              }
+              stopColor={backgroundColor || (line.lineColor as string)}
             />
 
             <Stop
@@ -159,12 +159,12 @@ const LineComponent = ({
             y2="0"
           >
             <Stop
-              offset={'1'}
+              offset="1"
               stopColor={(line.lineColor as string[])[0]}
               stopOpacity="1"
             />
             <Stop
-              offset={'0'}
+              offset="0"
               stopColor={(line.lineColor as string[])[1]}
               stopOpacity="1"
             />
@@ -173,7 +173,7 @@ const LineComponent = ({
       </Defs>
 
       <Path
-        strokeLinejoin={'round'}
+        strokeLinejoin="round"
         d={path.d || ''}
         stroke={`url(#${identifier})`}
         strokeWidth={line.lineWidth || 2}
@@ -184,7 +184,7 @@ const LineComponent = ({
       {line.endPoint && (
         <EndPoint
           x={path.x(line.data[line.data.length - 1]?.extraData?.date)}
-          y={path.y(line.data[line.data.length - 1]?.value as number)}
+          y={path.y(line.data[line.data.length - 1]?.value as any)}
           endPoint={line.endPoint}
         />
       )}
