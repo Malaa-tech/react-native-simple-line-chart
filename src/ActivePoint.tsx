@@ -87,17 +87,32 @@ const ActivePoint = ({
 
   useAnimatedReaction(
     () => {
+      return activeIndex.value;
+    },
+    (currentActiveIndex, previousActiveIndex) => {
+      if (previousActiveIndex !== null && activeTouch.value === true) {
+        try {
+          activePointSV.value = data[currentActiveIndex];
+        } catch (e) {
+          // console.log(error);
+        }
+      }
+    },
+    [activeIndex, data, activeTouch]
+  );
+
+  useAnimatedReaction(
+    () => {
       return { activeIndex: activeIndex.value, activeTouch: activeTouch.value };
     },
     (current) => {
       if (current.activeIndex !== null && current.activeTouch === true) {
         try {
-          activePointSV.value = data[current.activeIndex];
           if (onPointChange) {
             runOnJS(onPointChange)(data[current.activeIndex]);
           }
-        } catch (error) {
-          console.log(error);
+        } catch (e) {
+          // console.log(error);
         }
       }
     },
