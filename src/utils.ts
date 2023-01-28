@@ -96,6 +96,8 @@ export const createNewPath = ({
         return d3.curveStep;
       case 'linear':
         return d3.curveLinear;
+      case 'monotone':
+        return d3.curveMonotoneX;
       default:
         return d3.curveLinear;
     }

@@ -92,6 +92,7 @@ const SvgPath = ({
               />
             );
           }
+          // @ts-ignore
           return <View key={`${index}`} />;
         })}
     </>

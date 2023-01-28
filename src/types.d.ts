@@ -30,7 +30,7 @@ export type ActivePointComponent = (
   activePoint?: DataPoint | SharedValue<DataPoint | undefined>
 ) => React.ReactNode;
 
-export type LineCurve = 'linear' | 'cardinal' | 'step';
+export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
 export type Line = {
   data: DataPoint[];
