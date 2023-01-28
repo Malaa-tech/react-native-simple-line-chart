@@ -4,7 +4,6 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   SharedValue,
-  useAnimatedReaction,
   useSharedValue,
 } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
