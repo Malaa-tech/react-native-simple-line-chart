@@ -49,22 +49,36 @@ function LineChart({
   const activeTouchX = useSharedValue(0);
   const activeTouch = useSharedValue(false);
 
-  useAnimatedReaction(
-    () => {
-      return activeDataPoint.value;
-    },
-    (currentActiveDataPoint) => {
-      if (currentActiveDataPoint) {
-        if (onPointFocus) {
-          runOnJS(onPointFocus)(currentActiveDataPoint);
-        }
+  const onPointChange = (point?: DataPoint) => {
+    if (point) {
+      if (onPointFocus) {
+        runOnJS(onPointFocus)(point);
       }
       if (activePointSharedValue) {
-        activePointSharedValue.value = currentActiveDataPoint;
+        activePointSharedValue.value = point;
       }
-    },
-    [activeDataPoint, activeTouch]
-  );
+    }
+  };
+
+  // useAnimatedReaction(
+  //   () => {
+  //     return {
+  //       activeDataPoint: activeDataPoint.value,
+  //       activeTouch: activeTouch.value,
+  //     };
+  //   },
+  //   (current, previous) => {
+  //     if (current.activeDataPoint) {
+  //       if (onPointFocus) {
+  //         runOnJS(onPointFocus)(current.activeDataPoint);
+  //       }
+  //     }
+  //     if (activePointSharedValue) {
+  //       activePointSharedValue.value = current.activeDataPoint;
+  //     }
+  //   },
+  //   [activeDataPoint, activeTouch]
+  // );
 
   useEffect(() => {
     if (extraConfig.initialActivePoint) {
@@ -83,17 +97,17 @@ function LineChart({
   const onPanUpdate = (e: any) => {
     activeTouch.value = true;
     activeTouchX.value = e.x;
-    if (activeDataPoint.value !== undefined) {
-      if (onPointFocus) {
-        runOnJS(onPointFocus)(activeDataPoint.value);
-      }
-      if (
-        activePointSharedValue &&
-        activePointSharedValue.value !== activeDataPoint.value
-      ) {
-        activePointSharedValue.value = activeDataPoint.value;
-      }
-    }
+    // if (activeDataPoint.value !== undefined) {
+    //   if (onPointFocus) {
+    //     runOnJS(onPointFocus)(activeDataPoint.value);
+    //   }
+    //   if (
+    //     activePointSharedValue &&
+    //     activePointSharedValue.value !== activeDataPoint.value
+    //   ) {
+    //     activePointSharedValue.value = activeDataPoint.value;
+    //   }
+    // }
   };
 
   const onPointLoseFocusLocal = () => {
@@ -146,6 +160,7 @@ function LineChart({
             backgroundColor={backgroundColor}
             activeDataPoint={activeDataPoint}
             extraConfig={extraConfig}
+            onPointChange={onPointChange}
           />
         </Svg>
       </AnimatedView>

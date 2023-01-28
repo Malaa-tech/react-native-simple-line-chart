@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Animated, {
+  runOnJS,
   SharedValue,
   useAnimatedProps,
   useAnimatedReaction,
@@ -26,6 +27,7 @@ const ActivePoint = ({
   activeIndex,
   path,
   passSharedValueToActivePointComponent = false,
+  onPointChange,
 }: {
   data: DataPoint[];
   activeTouch: SharedValue<boolean>;
@@ -37,6 +39,7 @@ const ActivePoint = ({
   activeIndex: SharedValue<number>;
   path: PathObject;
   passSharedValueToActivePointComponent?: boolean;
+  onPointChange?: (point?: DataPoint) => void;
 }) => {
   const positions = useSharedValue<{ x: number; y: number }[]>([]);
   const activePointSV = useSharedValue<DataPoint | undefined>({
@@ -90,6 +93,9 @@ const ActivePoint = ({
       if (previousActiveIndex !== null && activeTouch.value === true) {
         try {
           activePointSV.value = data[currentActiveIndex];
+          if (onPointChange) {
+            runOnJS(onPointChange)(data[currentActiveIndex]);
+          }
         } catch (error) {
           console.log(error);
         }

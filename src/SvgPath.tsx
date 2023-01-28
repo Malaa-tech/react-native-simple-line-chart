@@ -23,6 +23,7 @@ const SvgPath = ({
   backgroundColor,
   activeDataPoint,
   extraConfig,
+  onPointChange,
 }: {
   line1: Line;
   line2?: Line;
@@ -33,6 +34,7 @@ const SvgPath = ({
   backgroundColor?: string;
   activeDataPoint: SharedValue<DataPoint | undefined>;
   extraConfig: ExtraConfig;
+  onPointChange: (point?: DataPoint) => void;
 }) => {
   const allData = line1.data.concat(line2?.data || []);
 
@@ -89,6 +91,7 @@ const SvgPath = ({
                 backgroundColor={backgroundColor}
                 identifier={`${index}`}
                 extraConfig={extraConfig}
+                onPointChange={index === 0 ? onPointChange : undefined}
               />
             );
           }
@@ -109,6 +112,7 @@ const LineComponent = ({
   backgroundColor,
   identifier,
   extraConfig,
+  onPointChange,
 }: {
   line: Line;
   allData: DataPoint[];
@@ -119,6 +123,7 @@ const LineComponent = ({
   backgroundColor?: string;
   identifier: string;
   extraConfig: ExtraConfig;
+  onPointChange?: (point?: DataPoint) => void;
 }) => {
   const path = createNewPath({
     data: line.data,
@@ -206,6 +211,7 @@ const LineComponent = ({
           }
           activeIndex={activeIndex}
           path={path}
+          onPointChange={onPointChange}
         />
       )}
     </>
