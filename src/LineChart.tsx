@@ -59,25 +59,14 @@ function LineChart({
     }
   };
 
-  // useAnimatedReaction(
-  //   () => {
-  //     return {
-  //       activeDataPoint: activeDataPoint.value,
-  //       activeTouch: activeTouch.value,
-  //     };
-  //   },
-  //   (current, previous) => {
-  //     if (current.activeDataPoint) {
-  //       if (onPointFocus) {
-  //         runOnJS(onPointFocus)(current.activeDataPoint);
-  //       }
-  //     }
-  //     if (activePointSharedValue) {
-  //       activePointSharedValue.value = current.activeDataPoint;
-  //     }
-  //   },
-  //   [activeDataPoint, activeTouch]
-  // );
+  const onPointLoseFocusLocal = () => {
+    if (onPointLoseFocus) {
+      onPointLoseFocus();
+    }
+    if (activePointSharedValue && !extraConfig.alwaysShowActivePoint) {
+      activePointSharedValue.value = undefined;
+    }
+  };
 
   useEffect(() => {
     if (extraConfig.initialActivePoint) {
@@ -96,30 +85,6 @@ function LineChart({
   const onPanUpdate = (e: any) => {
     activeTouch.value = true;
     activeTouchX.value = e.x;
-    // if (activeDataPoint.value !== undefined) {
-    //   if (onPointFocus) {
-    //     runOnJS(onPointFocus)(activeDataPoint.value);
-    //   }
-    //   if (
-    //     activePointSharedValue &&
-    //     activePointSharedValue.value !== activeDataPoint.value
-    //   ) {
-    //     activePointSharedValue.value = activeDataPoint.value;
-    //   }
-    // }
-  };
-
-  const onPointLoseFocusLocal = () => {
-    if (onPointLoseFocus) {
-      setTimeout(() => {
-        onPointLoseFocus();
-      }, 100);
-    }
-    if (activePointSharedValue && !extraConfig.alwaysShowActivePoint) {
-      setTimeout(() => {
-        activePointSharedValue.value = undefined;
-      }, 30);
-    }
   };
 
   const onPanEnd = () => {

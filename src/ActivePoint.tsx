@@ -87,14 +87,14 @@ const ActivePoint = ({
 
   useAnimatedReaction(
     () => {
-      return activeIndex.value;
+      return { activeIndex: activeIndex.value, activeTouch: activeTouch.value };
     },
-    (currentActiveIndex, previousActiveIndex) => {
-      if (previousActiveIndex !== null && activeTouch.value === true) {
+    (current) => {
+      if (current.activeIndex !== null && current.activeTouch === true) {
         try {
-          activePointSV.value = data[currentActiveIndex];
+          activePointSV.value = data[current.activeIndex];
           if (onPointChange) {
-            runOnJS(onPointChange)(data[currentActiveIndex]);
+            runOnJS(onPointChange)(data[current.activeIndex]);
           }
         } catch (error) {
           console.log(error);
