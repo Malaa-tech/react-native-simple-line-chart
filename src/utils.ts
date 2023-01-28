@@ -56,8 +56,8 @@ export const createNewPath = ({
   const y = d3
     .scaleLinear()
     .domain([
-      getChartMinMaxValues(xDomain[1] || 0, xDomain[0] || 0).max as number,
-      getChartMinMaxValues(xDomain[1] || 0, xDomain[0] || 0).min as number,
+      getChartMinMaxValues(xDomain[0] || 0, xDomain[1] || 0).max as number,
+      getChartMinMaxValues(xDomain[0] || 0, xDomain[1] || 0).min as number,
     ])
     .range([10, svgHeight - 10]);
 
