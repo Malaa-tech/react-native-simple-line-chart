@@ -143,13 +143,15 @@ export const getIndexOfTheNearestXPoint = (
 
   for (let i = 0; i < array.length; i++) {
     while (
-      Math.abs(array[i]?.extraData.date - value) <
-      Math.abs(closest?.extraData.date - value)
+      closest &&
+      array[i] &&
+      // @ts-ignore
+      Math.abs(array[i].extraData.date - value) <
+        Math.abs(closest.extraData.date - value)
     ) {
       closest = array[i];
       closestIndex = i;
     }
   }
-
   return closestIndex;
 };
