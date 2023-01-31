@@ -9,7 +9,7 @@ import { View } from 'react-native';
 import { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import { createNewPath } from './utils';
+import { createNewPath, getIndexOfTheNearestXPoint } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 
 const SvgPath = ({
@@ -43,13 +43,19 @@ const SvgPath = ({
     const percentage =
       (activeTouchX.value / (svgWidth - (extraConfig.endSpacing || 20))) * 100;
 
-    const testInterpolation = interpolate(
+    const percentageToTimestampValue = interpolate(
       percentage,
       [0, 100],
-      [0, line1.data.length - 1]
+      [
+        line1.data[0]?.extraData.date,
+        line1.data[line1.data.length - 1]?.extraData.date,
+      ]
     );
 
-    let activeIndexLocal = Math.round(testInterpolation);
+    let activeIndexLocal = getIndexOfTheNearestXPoint(
+      line1.data,
+      percentageToTimestampValue
+    );
 
     if (activeIndexLocal >= line1.data.length) {
       activeIndexLocal = line1.data.length - 1;

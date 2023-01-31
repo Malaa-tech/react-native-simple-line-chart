@@ -131,3 +131,25 @@ export const closest = (arr: number[], target: number) => {
   // No number in array is bigger so return the last.
   return arr[arr.length - 1];
 };
+
+export const getIndexOfTheNearestXPoint = (
+  array: DataPoint[],
+  value: number
+) => {
+  'worklet';
+
+  let closest = array[0];
+  let closestIndex = 0;
+
+  for (let i = 0; i < array.length; i++) {
+    while (
+      Math.abs(array[i]?.extraData.date - value) <
+      Math.abs(closest?.extraData.date - value)
+    ) {
+      closest = array[i];
+      closestIndex = i;
+    }
+  }
+
+  return closestIndex;
+};
