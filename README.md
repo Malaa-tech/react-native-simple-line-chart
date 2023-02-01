@@ -10,7 +10,7 @@ A simple/interactive/fast line chart component for React Native using d3, react-
 - ✅  Supports different curve types  
 - ✅  Full utilization of reanimated and shared values  
 - ✅  Supports area chart presentation   
-- ✅  Used in our production app in https://github.com/Malaa-tech  
+
  
 ### How we use it in Malaa App
 <p align="center">
