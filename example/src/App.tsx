@@ -46,6 +46,7 @@ export default function App() {
   const [isEndPoint, setIsEndPoint] = React.useState(true);
   const [isAreaChart, setIsAreaChart] = React.useState(false);
   const [isMultipleLines, setIsMultipleLines] = React.useState(false);
+  const [chartType, setChartType] = React.useState('monotone');
 
   React.useEffect(() => {
     setData(generateData({ numberOfPoints, range: 3000 }) as any);
@@ -67,6 +68,7 @@ export default function App() {
           isEndPoint={isEndPoint}
           isLinearGradient={isLinearGradient}
           isMultipleLines={isMultipleLines}
+          chartType={chartType}
         />
 
         <View style={{ flexDirection: 'row', marginTop: 40 }}>
@@ -94,6 +96,36 @@ export default function App() {
               color={color}
               onPress={() => {
                 setNumberOfPoints(10);
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button
+              title="monotone"
+              color={color}
+              onPress={() => {
+                setChartType('monotone');
+              }}
+            />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button
+              title="step"
+              color={color}
+              onPress={() => {
+                setChartType('step');
+              }}
+            />
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
+            <Button
+              title="linear"
+              color={color}
+              onPress={() => {
+                setChartType('linear');
               }}
             />
           </View>
@@ -231,6 +263,7 @@ const Chart = ({
   isAreaChart,
   isEndPoint,
   isMultipleLines,
+  chartType,
 }: any) => {
   const [activeDataPoint, setActiveDataPoint] = React.useState<
     number | undefined
@@ -265,7 +298,7 @@ const Chart = ({
           lineWidth: 4,
           lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
           fillColor: isAreaChart ? color : undefined,
-          curve: 'cardinal',
+          curve: chartType,
           endPoint: isEndPoint
             ? {
                 color,
@@ -317,7 +350,7 @@ const Chart = ({
                       animated: true,
                     }
                   : undefined,
-                curve: 'cardinal',
+                curve: chartType,
                 activePointComponent: (point: DataPoint | any) => {
                   return (
                     <View
