@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ColorValue } from 'react-native';
 import Animated, {
   runOnJS,
   SharedValue,
@@ -10,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Circle, Path } from 'react-native-svg';
 import ActivePointComponentWrapper from './ActivePointComponentWrapper';
-import { ActivePointComponent, ActivePointConfig, DataPoint } from './types';
+import { ActivePointComponent, DataPoint } from './types';
 import { PathObject } from './utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;
@@ -22,24 +23,38 @@ const ActivePoint = ({
   width,
   height,
   rtl,
-  activePoint,
   activePointComponent,
   activeIndex,
   path,
   passSharedValueToActivePointComponent = false,
   onPointChange,
+  color,
+  borderColor,
+  radius,
+  showVerticalLine,
+  lineColor,
+  lineOpacity,
+  lineWidth,
+  lineDashArray,
 }: {
   data: DataPoint[];
   activeTouch: SharedValue<boolean>;
   width: number;
   height: number;
   rtl: boolean;
-  activePoint: ActivePointConfig;
   activePointComponent?: ActivePointComponent;
   activeIndex: SharedValue<number>;
   path: PathObject;
   passSharedValueToActivePointComponent?: boolean;
   onPointChange?: (point?: DataPoint) => void;
+  color: ColorValue | ColorValue[];
+  borderColor: ColorValue;
+  radius: number;
+  showVerticalLine: boolean;
+  lineColor: ColorValue;
+  lineOpacity: number;
+  lineWidth: number;
+  lineDashArray: number[];
 }) => {
   const positions = useSharedValue<{ x: number; y: number }[]>([]);
   const activePointSV = useSharedValue<DataPoint | undefined>({
@@ -49,7 +64,7 @@ const ActivePoint = ({
     },
   });
   const pointOpacity = useSharedValue(0);
-  const lineOpacity = useSharedValue(0);
+  const lineOpacitySV = useSharedValue(0);
 
   useEffect(() => {
     const newPositions: { x: number; y: number }[] = [];
@@ -126,12 +141,12 @@ const ActivePoint = ({
     (result) => {
       if (result) {
         pointOpacity.value = withTiming(1, { duration: 200 });
-        lineOpacity.value = withTiming(activePoint.lineOpacity, {
+        lineOpacitySV.value = withTiming(lineOpacity, {
           duration: 200,
         });
       } else {
         pointOpacity.value = withTiming(0, { duration: 200 });
-        lineOpacity.value = withTiming(0, { duration: 200 });
+        lineOpacitySV.value = withTiming(0, { duration: 200 });
       }
     },
     [activeTouch]
@@ -148,19 +163,19 @@ const ActivePoint = ({
   const horizontalLineProps = useAnimatedProps(() => {
     return {
       d: `M ${activePointPosition.value.x} ${height} v ${-height}`,
-      opacity: lineOpacity.value,
+      opacity: lineOpacitySV.value,
     };
   });
 
   return (
     <>
-      {activePoint.line && (
+      {showVerticalLine && (
         <AnimatedPath
-          stroke={activePoint.lineColor}
-          strokeWidth={activePoint.lineWidth}
+          stroke={lineColor}
+          strokeWidth={lineWidth}
           animatedProps={horizontalLineProps}
           strokeLinejoin={'round'}
-          strokeDasharray={activePoint.lineDashArray}
+          strokeDasharray={lineDashArray}
         />
       )}
       {activePointComponent && (
@@ -177,14 +192,14 @@ const ActivePoint = ({
         />
       )}
       <AnimatedCircle
-        fill={activePoint.borderColor}
+        fill={borderColor}
         animatedProps={activePointProps}
-        r={activePoint.radius * 1.3}
+        r={radius * 1.3}
       />
       <AnimatedCircle
-        fill={activePoint.color}
+        fill={color}
         animatedProps={activePointProps}
-        r={activePoint.radius}
+        r={radius}
       />
     </>
   );

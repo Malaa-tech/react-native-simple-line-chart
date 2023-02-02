@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   interpolate,
   SharedValue,
@@ -11,6 +11,7 @@ import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
 import { createNewPath, getIndexOfTheNearestXPoint } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
+import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 
 const SvgPath = ({
   line1,
@@ -131,6 +132,16 @@ const LineComponent = ({
 
   const isLineColorGradient = Array.isArray(line.lineColor);
 
+  const getActivePointColor = useCallback(() => {
+    if (line.activePointConfig?.color) {
+      return line.activePointConfig.color;
+    }
+    if (!isLineColorGradient) {
+      return line.lineColor as string;
+    }
+    return ACTIVE_POINT_CONFIG.color;
+  }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
+
   return (
     <>
       <Defs>
@@ -180,21 +191,22 @@ const LineComponent = ({
         fillOpacity={0.5}
       />
 
-      {line.endPoint && (
+      {line.endPointConfig && (
         <EndPoint
           x={path.x(line.data[line.data.length - 1]?.extraData?.date)}
           y={path.y(line.data[line.data.length - 1]?.value as any)}
-          endPoint={line.endPoint}
+          color={line.endPointConfig?.color || END_POINT.color}
+          animated={line.endPointConfig?.animated || END_POINT.animated}
+          radius={line.endPointConfig?.radius || END_POINT.radius}
         />
       )}
 
-      {line.activePointConfig && (
+      {line !== undefined && (
         <ActivePoint
           data={line.data}
           activeTouch={activeTouch}
           width={svgWidth}
           height={svgHeight}
-          activePoint={line.activePointConfig}
           rtl={extraConfig.rtl || false}
           activePointComponent={line.activePointComponent}
           passSharedValueToActivePointComponent={
@@ -203,6 +215,30 @@ const LineComponent = ({
           activeIndex={activeIndex}
           path={path}
           onPointChange={onPointChange}
+          color={getActivePointColor()}
+          borderColor={
+            line?.activePointConfig?.borderColor ||
+            ACTIVE_POINT_CONFIG.borderColor
+          }
+          showVerticalLine={
+            line?.activePointConfig?.showVerticalLine ||
+            ACTIVE_POINT_CONFIG.showVerticalLine
+          }
+          lineColor={
+            line?.activePointConfig?.lineColor || ACTIVE_POINT_CONFIG.lineColor
+          }
+          lineWidth={
+            line?.activePointConfig?.lineWidth || ACTIVE_POINT_CONFIG.lineWidth
+          }
+          lineDashArray={
+            line?.activePointConfig?.lineDashArray ||
+            ACTIVE_POINT_CONFIG.lineDashArray
+          }
+          lineOpacity={
+            line?.activePointConfig?.lineOpacity ||
+            ACTIVE_POINT_CONFIG.lineOpacity
+          }
+          radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
       )}
     </>

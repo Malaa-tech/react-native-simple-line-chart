@@ -288,18 +288,17 @@ const Chart = ({
             color,
             borderColor: 'black',
             radius: 4,
-            line: true,
+            showVerticalLine: true,
             lineColor: 'gray',
             lineOpacity: 0.7,
             lineWidth: 1,
             lineDashArray: [10, 5],
-            hideAfterActivePoint: true,
           },
           lineWidth: 4,
           lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
           fillColor: isAreaChart ? color : undefined,
           curve: chartType,
-          endPoint: isEndPoint
+          endPointConfig: isEndPoint
             ? {
                 color,
                 radius: 5,
@@ -333,17 +332,16 @@ const Chart = ({
                   color,
                   borderColor: 'black',
                   radius: 4,
-                  line: true,
+                  showVerticalLine: true,
                   lineColor: 'gray',
                   lineOpacity: 0.7,
                   lineWidth: 1,
                   lineDashArray: [10, 5],
-                  hideAfterActivePoint: true,
                 },
                 lineWidth: 4,
                 lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
                 fillColor: isAreaChart ? color : undefined,
-                endPoint: isEndPoint
+                endPointConfig: isEndPoint
                   ? {
                       color,
                       radius: 5,
