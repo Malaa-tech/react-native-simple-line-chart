@@ -13,16 +13,17 @@ export type ActivePointConfig = {
   borderColor?: ColorValue;
   radius?: number;
   showVerticalLine?: boolean;
-  lineColor?: ColorValue;
-  lineOpacity?: number;
-  lineWidth?: number;
-  lineDashArray?: number[];
+  verticalLineColor?: ColorValue;
+  verticalLineOpacity?: number;
+  verticalLineWidth?: number;
+  verticalLineDashArray?: number[];
 };
 
 export type AnimationType = 'slide' | 'fade';
 
 export type DataPoint = {
-  value: number;
+  x: number;
+  y: number;
   extraData?: any;
 };
 

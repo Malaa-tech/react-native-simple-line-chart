@@ -32,10 +32,10 @@ const ActivePoint = ({
   borderColor,
   radius,
   showVerticalLine,
-  lineColor,
-  lineOpacity,
-  lineWidth,
-  lineDashArray,
+  verticalLineColor,
+  verticalLineOpacity,
+  verticalLineWidth,
+  verticalLineDashArray,
 }: {
   data: DataPoint[];
   activeTouch: SharedValue<boolean>;
@@ -51,14 +51,15 @@ const ActivePoint = ({
   borderColor: ColorValue;
   radius: number;
   showVerticalLine: boolean;
-  lineColor: ColorValue;
-  lineOpacity: number;
-  lineWidth: number;
-  lineDashArray: number[];
+  verticalLineColor: ColorValue;
+  verticalLineOpacity: number;
+  verticalLineWidth: number;
+  verticalLineDashArray: number[];
 }) => {
   const positions = useSharedValue<{ x: number; y: number }[]>([]);
   const activePointSV = useSharedValue<DataPoint | undefined>({
-    value: 0,
+    x: 0,
+    y: 0,
     extraData: {
       date: new Date(),
     },
@@ -69,8 +70,8 @@ const ActivePoint = ({
   useEffect(() => {
     const newPositions: { x: number; y: number }[] = [];
     data.forEach((item) => {
-      const y = path.y(item.value);
-      const x = path.x(item.extraData.date);
+      const y = path.y(item.y);
+      const x = path.x(item.x);
 
       if (x !== undefined && y !== undefined) {
         newPositions.push({
@@ -141,7 +142,7 @@ const ActivePoint = ({
     (result) => {
       if (result) {
         pointOpacity.value = withTiming(1, { duration: 200 });
-        lineOpacitySV.value = withTiming(lineOpacity, {
+        lineOpacitySV.value = withTiming(verticalLineOpacity, {
           duration: 200,
         });
       } else {
@@ -171,11 +172,11 @@ const ActivePoint = ({
     <>
       {showVerticalLine && (
         <AnimatedPath
-          stroke={lineColor}
-          strokeWidth={lineWidth}
+          stroke={verticalLineColor}
+          strokeWidth={verticalLineWidth}
           animatedProps={horizontalLineProps}
           strokeLinejoin={'round'}
-          strokeDasharray={lineDashArray}
+          strokeDasharray={verticalLineDashArray}
         />
       )}
       {activePointComponent && (

@@ -50,7 +50,7 @@ export const createNewPath = ({
   };
 
   // get the min and max values for the x axis
-  const xDomain = d3.extent([...allData.map((val) => val.value)]);
+  const xDomain = d3.extent([...allData.map((val) => val.y)]);
 
   // create the y scale
   const y = d3
@@ -65,8 +65,8 @@ export const createNewPath = ({
   const x = d3
     .scaleUtc()
     .domain([
-      new Date(data[0]?.extraData?.date),
-      new Date(data[data.length - 1]?.extraData?.date),
+      new Date(data[0]?.x as any),
+      new Date(data[data.length - 1]?.x as any),
     ])
     .range([0, svgWidth - endSpacing]);
 
@@ -76,16 +76,16 @@ export const createNewPath = ({
     if (isFilled) {
       return d3
         .area<DataPoint>()
-        .x((d) => x(new Date(d.extraData?.date)))
+        .x((d) => x(new Date(d?.x)))
         .y0(svgHeight + 10)
-        .y1((d) => y(d.value));
+        .y1((d) => y(d.y));
     }
 
     // if the line is not filled, we just return the line
     return d3
       .line<DataPoint>()
-      .x((d) => x(new Date(d.extraData?.date)))
-      .y((d) => y(d.value));
+      .x((d) => x(new Date(d?.x)))
+      .y((d) => y(d.y));
   };
 
   const getCurve = () => {
@@ -146,8 +146,7 @@ export const getIndexOfTheNearestXPoint = (
       closest &&
       array[i] &&
       // @ts-ignore
-      Math.abs(array[i].extraData.date - value) <
-        Math.abs(closest.extraData.date - value)
+      Math.abs(array[i].x - value) < Math.abs(closest.x - value)
     ) {
       closest = array[i];
       closestIndex = i;

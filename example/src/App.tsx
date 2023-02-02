@@ -21,17 +21,17 @@ const generateData = ({
   range: number;
 }) => {
   return [...Array(numberOfPoints).fill(undefined)].map((_v, index) => {
-    const value = range + Math.round(Math.random() * 500);
-    const date = moment()
+    const y = range + Math.round(Math.random() * 500);
+    const x: number = moment()
       .subtract(numberOfPoints - index, 'hours')
       .toDate()
       .getTime();
     return {
-      value,
+      y,
+      x,
       extraData: {
-        date,
-        formattedValue: value,
-        formattedTime: moment(date).fromNow(),
+        formattedValue: `${y}$`,
+        formattedTime: moment(x).fromNow(),
       },
     };
   });
@@ -289,10 +289,10 @@ const Chart = ({
             borderColor: 'black',
             radius: 4,
             showVerticalLine: true,
-            lineColor: 'gray',
-            lineOpacity: 0.7,
-            lineWidth: 1,
-            lineDashArray: [10, 5],
+            verticalLineColor: 'gray',
+            verticalLineOpacity: 0.7,
+            verticalLineWidth: 1,
+            verticalLineDashArray: [10, 5],
           },
           lineWidth: 4,
           lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
@@ -333,10 +333,10 @@ const Chart = ({
                   borderColor: 'black',
                   radius: 4,
                   showVerticalLine: true,
-                  lineColor: 'gray',
-                  lineOpacity: 0.7,
-                  lineWidth: 1,
-                  lineDashArray: [10, 5],
+                  verticalLineColor: 'gray',
+                  verticalLineOpacity: 0.7,
+                  verticalLineWidth: 1,
+                  verticalLineDashArray: [10, 5],
                 },
                 lineWidth: 4,
                 lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
@@ -386,7 +386,7 @@ const Chart = ({
           },
         }}
         onPointFocus={(point) => {
-          setActiveDataPoint(point?.value);
+          setActiveDataPoint(point?.extraData?.formattedValue);
         }}
         onPointLoseFocus={() => {
           setActiveDataPoint(undefined);

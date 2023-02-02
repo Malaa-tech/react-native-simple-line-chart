@@ -47,10 +47,7 @@ const SvgPath = ({
     const percentageToTimestampValue = interpolate(
       percentage,
       [0, 100],
-      [
-        line1.data[0]?.extraData.date,
-        line1.data[line1.data.length - 1]?.extraData.date,
-      ]
+      [line1.data[0]?.x || 0, line1.data[line1.data.length - 1]?.x || 100]
     );
 
     let activeIndexLocal = getIndexOfTheNearestXPoint(
@@ -193,8 +190,8 @@ const LineComponent = ({
 
       {line.endPointConfig && (
         <EndPoint
-          x={path.x(line.data[line.data.length - 1]?.extraData?.date)}
-          y={path.y(line.data[line.data.length - 1]?.value as any)}
+          x={path.x(line.data[line.data.length - 1]?.x as any)}
+          y={path.y(line.data[line.data.length - 1]?.y as any)}
           color={line.endPointConfig?.color || END_POINT.color}
           animated={line.endPointConfig?.animated || END_POINT.animated}
           radius={line.endPointConfig?.radius || END_POINT.radius}
@@ -224,19 +221,21 @@ const LineComponent = ({
             line?.activePointConfig?.showVerticalLine ||
             ACTIVE_POINT_CONFIG.showVerticalLine
           }
-          lineColor={
-            line?.activePointConfig?.lineColor || ACTIVE_POINT_CONFIG.lineColor
+          verticalLineColor={
+            line?.activePointConfig?.verticalLineColor ||
+            ACTIVE_POINT_CONFIG.verticalLineColor
           }
-          lineWidth={
-            line?.activePointConfig?.lineWidth || ACTIVE_POINT_CONFIG.lineWidth
+          verticalLineWidth={
+            line?.activePointConfig?.verticalLineWidth ||
+            ACTIVE_POINT_CONFIG.verticalLineWidth
           }
-          lineDashArray={
-            line?.activePointConfig?.lineDashArray ||
-            ACTIVE_POINT_CONFIG.lineDashArray
+          verticalLineDashArray={
+            line?.activePointConfig?.verticalLineDashArray ||
+            ACTIVE_POINT_CONFIG.verticalLineDashArray
           }
-          lineOpacity={
-            line?.activePointConfig?.lineOpacity ||
-            ACTIVE_POINT_CONFIG.lineOpacity
+          verticalLineOpacity={
+            line?.activePointConfig?.verticalLineOpacity ||
+            ACTIVE_POINT_CONFIG.verticalLineOpacity
           }
           radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
