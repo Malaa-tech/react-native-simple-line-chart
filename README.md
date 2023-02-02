@@ -35,6 +35,7 @@ yarn add react-native-simple-line-chart
 
 ## ⚒️ Usage
 ```tsx | pure
+import LineChart from 'react-native-simple-line-chart';
 <LineChart
     line1={{d
       data: [
