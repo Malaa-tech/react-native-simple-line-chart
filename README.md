@@ -94,7 +94,7 @@ import LineChart from 'react-native-simple-line-chart';
       return (
         <View
           style={{
-            backgroundColor: color,
+            backgroundColor: 'pink',
             padding: 10,
             borderRadius: 10,
           }}
