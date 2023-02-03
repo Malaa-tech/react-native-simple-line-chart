@@ -14,7 +14,7 @@ import {
   DataPoint,
   ExtraConfig,
   Line,
-} from './typings/react-native-simple-line-chart';
+} from '../typings/react-native-simple-line-chart';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 
 const SvgPath = ({

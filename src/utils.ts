@@ -1,5 +1,8 @@
 import * as d3 from 'd3';
-import { DataPoint, LineCurve } from './typings/react-native-simple-line-chart';
+import {
+  DataPoint,
+  LineCurve,
+} from '../typings/react-native-simple-line-chart';
 
 export type PathObject = {
   d: string | null;
