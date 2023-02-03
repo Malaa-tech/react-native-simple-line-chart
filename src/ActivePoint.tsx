@@ -14,7 +14,7 @@ import ActivePointComponentWrapper from './ActivePointComponentWrapper';
 import {
   ActivePointComponent,
   DataPoint,
-} from '../typings/react-native-simple-line-chart';
+} from './typings/react-native-simple-line-chart';
 import { PathObject } from './utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;

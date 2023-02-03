@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { View, Dimensions, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import LineChart from 'react-native-simple-line-chart';
-import { DataPoint } from 'typings/react-native-simple-line-chart';
+import LineChart, { DataPoint } from 'react-native-simple-line-chart';
 
 export default function App() {
   return (

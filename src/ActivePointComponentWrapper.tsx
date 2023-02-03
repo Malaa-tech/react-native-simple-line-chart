@@ -12,7 +12,7 @@ import Animated, {
 import {
   ActivePointComponent,
   DataPoint,
-} from 'typings/react-native-simple-line-chart';
+} from 'src/typings/react-native-simple-line-chart';
 
 const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 
