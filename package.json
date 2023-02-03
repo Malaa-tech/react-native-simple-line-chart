@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-line-chart",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
