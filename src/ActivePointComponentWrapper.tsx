@@ -12,7 +12,7 @@ import Animated, {
 import {
   ActivePointComponent,
   DataPoint,
-} from '../typings/react-native-simple-line-chart';
+} from 'typings/react-native-simple-line-chart';
 
 const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 
@@ -101,6 +101,7 @@ const ActivePointComponentWrapper = ({
         ...viewAnimatedStyle,
       }}
     >
+      {/* @ts-ignore */}
       <View
         onLayout={(event) => {
           const { width: componentWidth } = event.nativeEvent.layout;
