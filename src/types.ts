@@ -1,6 +1,5 @@
 import { ColorValue } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
-import ActivePointComponent from './ActivePointComponentWrapper';
 
 export interface EndPointConfig {
   color?: ColorValue;

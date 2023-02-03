@@ -4,7 +4,7 @@
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "typings/react-native-simple-line-chart.d.ts",
+  "types": "lib/typescript/index",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
