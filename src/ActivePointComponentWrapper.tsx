@@ -9,7 +9,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { ActivePointComponent, DataPoint } from './types';
+import {
+  ActivePointComponent,
+  DataPoint,
+} from '../typings/react-native-simple-line-chart';
 
 const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 

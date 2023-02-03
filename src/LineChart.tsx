@@ -8,7 +8,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
 import SvgPath from './SvgPath';
-import { DataPoint, ExtraConfig, Line } from './types';
+import {
+  DataPoint,
+  ExtraConfig,
+  Line,
+} from '../typings/react-native-simple-line-chart';
 
 const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 

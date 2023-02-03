@@ -1,14 +1,14 @@
 import { ColorValue } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
-import ActivePointComponent from './ActivePointComponentWrapper';
+import ActivePointComponent from '../src/ActivePointComponentWrapper';
 
-export type EndPointConfig = {
+export interface EndPointConfig {
   color?: ColorValue;
   radius?: number;
   animated?: boolean;
-};
+}
 
-export type ActivePointConfig = {
+export interface ActivePointConfig {
   color?: ColorValue;
   borderColor?: ColorValue;
   radius?: number;
@@ -17,15 +17,15 @@ export type ActivePointConfig = {
   verticalLineOpacity?: number;
   verticalLineWidth?: number;
   verticalLineDashArray?: number[];
-};
+}
 
 export type AnimationType = 'slide' | 'fade';
 
-export type DataPoint = {
+export interface DataPoint {
   x: number;
   y: number;
   extraData?: any;
-};
+}
 
 export type ActivePointComponent = (
   activePoint?: DataPoint | SharedValue<DataPoint | undefined>
@@ -33,7 +33,7 @@ export type ActivePointComponent = (
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
-export type Line = {
+export interface Line {
   data: DataPoint[];
   activePointConfig?: ActivePointConfig;
   lineColor?: ColorValue | ColorValue[]; // can be linear gradient
@@ -43,9 +43,9 @@ export type Line = {
   endPointConfig?: EndPointConfig;
   curve?: LineCurve;
   passSharedValueToActivePointComponent?: boolean;
-};
+}
 
-export type ExtraConfig = {
+export interface ExtraConfig {
   alwaysShowActivePoint?: boolean;
   initialActivePoint?: number;
   hideActivePointOnBlur?: boolean;
@@ -58,4 +58,4 @@ export type ExtraConfig = {
     min: number,
     max: number
   ) => { min: number; max: number };
-};
+}
