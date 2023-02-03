@@ -11,10 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Circle, Path } from 'react-native-svg';
 import ActivePointComponentWrapper from './ActivePointComponentWrapper';
-import {
-  ActivePointComponent,
-  DataPoint,
-} from '../typings/react-native-simple-line-chart';
+import { ActivePointComponent, DataPoint } from './types';
 import { PathObject } from './utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;

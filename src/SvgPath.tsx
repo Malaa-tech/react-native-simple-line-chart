@@ -10,11 +10,7 @@ import { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
 import { createNewPath, getIndexOfTheNearestXPoint } from './utils';
-import {
-  DataPoint,
-  ExtraConfig,
-  Line,
-} from '../typings/react-native-simple-line-chart';
+import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 
 const SvgPath = ({
