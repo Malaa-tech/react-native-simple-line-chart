@@ -119,3 +119,8 @@ import LineChart, { DataPoint } from 'react-native-simple-line-chart';
   width={Dimensions.get('screen').width}
 />
 ```
+
+## 📖 Docs & Type Defs
+[Click Here](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/main/docs/modules.md)
+
+
