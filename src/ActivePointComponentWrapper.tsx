@@ -49,19 +49,18 @@ const ActivePointComponentWrapper = ({
         );
       }
       return xPosition - width - SPACE_BETWEEN_COMPONENT_AND_LINE;
-    } else {
-      if (
-        width - xPosition <
-        activeComponentWidthSV.value + SPACE_BETWEEN_COMPONENT_AND_LINE
-      ) {
-        return (
-          xPosition -
-          activeComponentWidthSV.value -
-          SPACE_BETWEEN_COMPONENT_AND_LINE
-        );
-      }
-      return xPosition + SPACE_BETWEEN_COMPONENT_AND_LINE;
     }
+    if (
+      width - xPosition <
+      activeComponentWidthSV.value + SPACE_BETWEEN_COMPONENT_AND_LINE
+    ) {
+      return (
+        xPosition -
+        activeComponentWidthSV.value -
+        SPACE_BETWEEN_COMPONENT_AND_LINE
+      );
+    }
+    return xPosition + SPACE_BETWEEN_COMPONENT_AND_LINE;
   }, [activePointPosition, activeComponentWidthSV]);
 
   const viewAnimatedStyle = useAnimatedStyle(() => {

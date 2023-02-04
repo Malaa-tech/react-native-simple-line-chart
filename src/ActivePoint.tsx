@@ -173,7 +173,7 @@ const ActivePoint = ({
           stroke={verticalLineColor}
           strokeWidth={verticalLineWidth}
           animatedProps={horizontalLineProps}
-          strokeLinejoin={'round'}
+          strokeLinejoin="round"
           strokeDasharray={verticalLineDashArray}
         />
       )}

@@ -145,11 +145,11 @@ const LineComponent = ({
         {!isLineColorGradient && (
           <LinearGradient id={identifier}>
             <Stop
-              offset={'100%'}
+              offset="100%"
               stopColor={backgroundColor || (line.lineColor as string)}
             />
 
-            <Stop offset={'90%'} stopColor={line.lineColor as string} />
+            <Stop offset="90%" stopColor={line.lineColor as string} />
           </LinearGradient>
         )}
 

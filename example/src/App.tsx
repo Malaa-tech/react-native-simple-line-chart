@@ -136,7 +136,7 @@ export default function App() {
             <View style={{ marginHorizontal: 5 }}>
               <Button
                 title="Coral"
-                color={'coral'}
+                color="coral"
                 onPress={() => {
                   setColor('coral');
                 }}
@@ -145,7 +145,7 @@ export default function App() {
             <View style={{ marginHorizontal: 5 }}>
               <Button
                 title="Cyan"
-                color={'darkcyan'}
+                color="darkcyan"
                 onPress={() => {
                   setColor('darkcyan');
                 }}
@@ -154,7 +154,7 @@ export default function App() {
             <View style={{ marginHorizontal: 5 }}>
               <Button
                 title="Red"
-                color={'indianred'}
+                color="indianred"
                 onPress={() => {
                   setColor('indianred');
                 }}
@@ -163,7 +163,7 @@ export default function App() {
             <View style={{ marginHorizontal: 5 }}>
               <Button
                 title="Pink"
-                color={'pink'}
+                color="pink"
                 onPress={() => {
                   setColor('pink');
                 }}
@@ -201,7 +201,7 @@ export default function App() {
             thumbColor={isEndPoint ? 'lightcyan' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={() => {
-              if (isEndPoint == false) {
+              if (isEndPoint === false) {
                 setIsAreaChart(false);
               }
               setIsEndPoint(!isEndPoint);
@@ -223,7 +223,7 @@ export default function App() {
             thumbColor={isAreaChart ? 'lightcyan' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={() => {
-              if (isAreaChart == false) {
+              if (isAreaChart === false) {
                 setIsEndPoint(false);
               }
               setIsAreaChart(!isAreaChart);
@@ -274,7 +274,7 @@ const Chart = ({
       <Text
         style={{
           opacity: activeDataPoint === undefined ? 0 : 1,
-          color: color,
+          color,
           fontSize: 30,
           marginBottom: 20,
         }}
@@ -374,14 +374,13 @@ const Chart = ({
         extraConfig={{
           endSpacing: isEndPoint ? 20 : 0,
           alwaysShowActivePoint: false,
-          alwaysStartFromZero: false,
+          alwaysStartYAxisFromZero: false,
           hideActivePointOnBlur: true,
-          fadeStart: false,
           initialActivePoint: undefined,
           calculateChartYAxisMinMax: (min: number, max: number) => {
             return {
-              min: min,
-              max: max,
+              min,
+              max,
             };
           },
         }}
