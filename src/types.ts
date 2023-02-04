@@ -2,6 +2,109 @@ import { ColorValue } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
 
 /**
+ * The props for the LineChart component
+ */
+export type LineChart = {
+  /**
+   * The line configuration object
+   * @required
+   */
+  line1: Line;
+  /**
+   * Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points)
+   */
+  line2?: Line;
+  /**
+   * The height of the chart
+   * @default 200
+   */
+  height?: number;
+  /**
+   * The width of the chart (default value is the width of the screen)
+   */
+  width?: number;
+  /**
+   * The background color of the chart
+   * @default 'white'
+   */
+  backgroundColor?: string;
+  /**
+   * More configuration for the chart
+   */
+  extraConfig?: ExtraConfig;
+  /**
+   * This will run when the user taps on the a point on the chart
+   */
+  onPointFocus?: onPointFocus;
+  /**
+   * This will run when the user release the tap on the a point on the chart
+   */
+  onPointLoseFocus?: onPointLoseFocus;
+  /**
+   * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
+   */
+  activePointSharedValue?: DataPointSharedValue;
+};
+
+/**
+ * The line configuration object
+ */
+export interface Line {
+  /**
+   * The data points for the line containing an array of objects with x and y values and optionally extraData
+   */
+  data: DataPoint[];
+  /**
+   * The configuration for the active point (the point that is shown when the user taps on the chart)
+   */
+  activePointConfig?: ActivePointConfig;
+  /**
+   * The color of the line (supplying an array of colors will create a linear gradient)
+   */
+  lineColor?: ColorValue | ColorValue[];
+  /**
+   * The color of the fill under the line (creates an area chart)
+   */
+  fillColor?: ColorValue;
+  /**
+   * The component to render when the user taps on the chart
+   */
+  activePointComponent?: ActivePointComponent;
+  /**
+   * The same as (activePointComponent) but the component will receive the shared value of the active point (reanimated value) this can make the chart much more performant
+   */
+  activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
+  /**
+   * The width of the line
+   */
+  lineWidth?: number;
+  /**
+   * The end point configuration (the point appearing at the end of the line)
+   */
+  endPointConfig?: EndPointConfig;
+  /**
+   * The curve of the line
+   * @default 'linear'
+   */
+  curve?: LineCurve;
+}
+
+export interface DataPoint<T = any> {
+  /**
+   * The x value of the data point
+   */
+  x: number;
+  /**
+   * The y value of the data point (if your data is a time series then this should be a timestamp)
+   */
+  y: number;
+  /**
+   * Any extra data you want to pass to the data point (this will be passed to the active point component)
+   */
+  extraData?: T;
+}
+
+/**
  * The configuration for the last point in the line
  */
 export interface EndPointConfig {
@@ -65,64 +168,6 @@ export interface ActivePointConfig {
   verticalLineDashArray?: number[];
 }
 
-export interface DataPoint<T = any> {
-  /**
-   * The x value of the data point
-   */
-  x: number;
-  /**
-   * The y value of the data point (if your data is a time series then this should be a timestamp)
-   */
-  y: number;
-  /**
-   * Any extra data you want to pass to the data point (this will be passed to the active point component)
-   */
-  extraData?: T;
-}
-
-/**
- * The line configuration object
- */
-export interface Line {
-  /**
-   * The data points for the line containing an array of objects with x and y values and optionally extraData
-   */
-  data: DataPoint[];
-  /**
-   * The configuration for the active point (the point that is shown when the user taps on the chart)
-   */
-  activePointConfig?: ActivePointConfig;
-  /**
-   * The color of the line (supplying an array of colors will create a linear gradient)
-   */
-  lineColor?: ColorValue | ColorValue[];
-  /**
-   * The color of the fill under the line (creates an area chart)
-   */
-  fillColor?: ColorValue;
-  /**
-   * The component to render when the user taps on the chart
-   */
-  activePointComponent?: ActivePointComponent;
-  /**
-   * The same as (activePointComponent) but the component will receive the shared value of the active point (reanimated value) this can make the chart much more performant
-   */
-  activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
-  /**
-   * The width of the line
-   */
-  lineWidth?: number;
-  /**
-   * The end point configuration (the point appearing at the end of the line)
-   */
-  endPointConfig?: EndPointConfig;
-  /**
-   * The curve of the line
-   * @default 'linear'
-   */
-  curve?: LineCurve;
-}
-
 /**
  * More configuration for the chart
  */
@@ -157,51 +202,6 @@ export interface ExtraConfig {
    * supplying this function will allow you to customize the y axis min and max values
    */
   calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
-}
-
-/**
- * The props for the LineChart component
- */
-export interface LineChartProps {
-  /**
-   * More configuration for the chart
-   */
-  extraConfig?: ExtraConfig;
-  /**
-   * The height of the chart
-   * @default 200
-   */
-  height?: number;
-  /**
-   * The width of the chart (default value is the width of the screen)
-   */
-  width?: number;
-  /**
-   * The background color of the chart
-   * @default 'white'
-   */
-  backgroundColor?: string;
-  /**
-   * This will run when the user taps on the a point on the chart
-   */
-  onPointFocus?: onPointFocus;
-  /**
-   * This will run when the user release the tap on the a point on the chart
-   */
-  onPointLoseFocus?: onPointLoseFocus;
-  /**
-   * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
-   */
-  activePointSharedValue?: DataPointSharedValue;
-  /**
-   * The line configuration object
-   * @required
-   */
-  line1: Line;
-  /**
-   * Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points)
-   */
-  line2?: Line;
 }
 
 export type AnimationType = 'slide' | 'fade';

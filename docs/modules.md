@@ -10,4 +10,33 @@
 - [EndPointConfig](interfaces/EndPointConfig.md)
 - [ExtraConfig](interfaces/ExtraConfig.md)
 - [Line](interfaces/Line.md)
-- [LineChartProps](interfaces/LineChartProps.md)
+
+### Type Aliases
+
+- [LineChart](modules.md#linechart)
+
+## Type Aliases
+
+### LineChart
+
+Ƭ **LineChart**: `Object`
+
+The props for the LineChart component
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `activePointSharedValue?` | `DataPointSharedValue` | The shared value that will hold the active point (this is useful if you want to use the active point in other components) |
+| `backgroundColor?` | `string` | The background color of the chart **`Default`** 'white' |
+| `extraConfig?` | [`ExtraConfig`](interfaces/ExtraConfig.md) | More configuration for the chart |
+| `height?` | `number` | The height of the chart **`Default`** 200 |
+| `line1` | [`Line`](interfaces/Line.md) | The line configuration object **`Required`** |
+| `line2?` | [`Line`](interfaces/Line.md) | Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points) |
+| `onPointFocus?` | `onPointFocus` | This will run when the user taps on the a point on the chart |
+| `onPointLoseFocus?` | `onPointLoseFocus` | This will run when the user release the tap on the a point on the chart |
+| `width?` | `number` | The width of the chart (default value is the width of the screen) |
+
+#### Defined in
+
+[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L7)

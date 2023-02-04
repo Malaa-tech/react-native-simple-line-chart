@@ -9,7 +9,7 @@ import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
 import { EXTRA_CONFIG, LINE_CHART } from './defaults';
 import SvgPath from './SvgPath';
-import { DataPoint, ExtraConfig, LineChartProps } from './types';
+import { DataPoint, ExtraConfig, LineChart } from './types';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -51,7 +51,7 @@ function LineChart({
   activePointSharedValue,
   line1,
   line2 = LINE_CHART.line2,
-}: LineChartProps) {
+}: LineChart) {
   const svgHeight = height;
   const svgWidth = width;
   const activeTouchX = useSharedValue(0);
