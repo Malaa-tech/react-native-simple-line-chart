@@ -121,7 +121,7 @@ const LineComponent = ({
     svgHeight,
     svgWidth,
     isFilled: line.fillColor !== undefined,
-    alwaysStartFromZero: extraConfig.alwaysStartFromZero || false,
+    alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
     curve: line.curve,
     calculateChartYAxisMinMax:
       extraConfig.calculateChartYAxisMinMax || undefined,

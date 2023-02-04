@@ -160,7 +160,7 @@ export interface ExtraConfig {
   /**
    * Settings this to true will make the chart y axis start from zero even if the minimum value is greater than zero
    */
-  alwaysStartFromZero?: boolean;
+  alwaysStartYAxisFromZero?: boolean;
   /**
    * Supplying simultaneousHandlers will make the chart work with other gesture handlers
    */

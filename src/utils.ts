@@ -14,7 +14,7 @@ export const createNewPath = ({
   data,
   allData,
   isFilled = false,
-  alwaysStartFromZero,
+  alwaysStartYAxisFromZero,
   curve,
   calculateChartYAxisMinMax,
 }: {
@@ -24,12 +24,12 @@ export const createNewPath = ({
   data: DataPoint[]; // this line data
   allData: DataPoint[]; // all lines data
   isFilled?: boolean;
-  alwaysStartFromZero: boolean;
+  alwaysStartYAxisFromZero: boolean;
   curve?: LineCurve;
   calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
 }): PathObject => {
   const getChartMinMaxValues = (minValue: number, maxValue: number) => {
-    if (alwaysStartFromZero) {
+    if (alwaysStartYAxisFromZero) {
       return {
         min: 0,
         max: maxValue || 0,

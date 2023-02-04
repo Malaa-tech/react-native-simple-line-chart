@@ -20,7 +20,7 @@ export const END_POINT = {
 export const EXTRA_CONFIG = {
   alwaysShowActivePoint: false,
   hideActivePointOnBlur: true,
-  alwaysStartFromZero: false,
+  alwaysStartYAxisFromZero: false,
   initialActivePoint: 0,
   simultaneousHandlers: undefined,
   endSpacing: 0,

@@ -15,8 +15,9 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
       extraConfig.alwaysShowActivePoint || EXTRA_CONFIG.alwaysShowActivePoint,
     hideActivePointOnBlur:
       extraConfig.hideActivePointOnBlur || EXTRA_CONFIG.hideActivePointOnBlur,
-    alwaysStartFromZero:
-      extraConfig.alwaysStartFromZero || EXTRA_CONFIG.alwaysStartFromZero,
+    alwaysStartYAxisFromZero:
+      extraConfig.alwaysStartYAxisFromZero ||
+      EXTRA_CONFIG.alwaysStartYAxisFromZero,
     initialActivePoint:
       extraConfig.initialActivePoint || EXTRA_CONFIG.initialActivePoint,
     simultaneousHandlers:
