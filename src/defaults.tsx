@@ -6,7 +6,7 @@ export const ACTIVE_POINT_CONFIG = {
   verticalLineColor: 'gray',
   verticalLineOpacity: 1,
   verticalLineWidth: 1,
-  verticalLineDashArray: [10, 5],
+  verticalLineDashArray: [0],
 };
 
 export const END_POINT = {

@@ -22,7 +22,6 @@ const ActivePoint = ({
   activeTouch,
   width,
   height,
-  rtl,
   activePointComponent,
   activeIndex,
   path,
@@ -41,7 +40,6 @@ const ActivePoint = ({
   activeTouch: SharedValue<boolean>;
   width: number;
   height: number;
-  rtl: boolean;
   activePointComponent?: ActivePointComponent;
   activeIndex: SharedValue<number>;
   path: PathObject;
@@ -183,7 +181,6 @@ const ActivePoint = ({
         <ActivePointComponentWrapper
           activePointSharedValue={activePointSV}
           activePointPosition={activePointPosition}
-          rtl={rtl}
           pointOpacity={pointOpacity}
           width={width}
           activePointComponent={activePointComponent}

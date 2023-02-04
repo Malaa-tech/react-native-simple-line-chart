@@ -145,14 +145,11 @@ const LineComponent = ({
         {!isLineColorGradient && (
           <LinearGradient id={identifier}>
             <Stop
-              offset={extraConfig.rtl || false ? '100%' : '0%'}
+              offset={'100%'}
               stopColor={backgroundColor || (line.lineColor as string)}
             />
 
-            <Stop
-              offset={extraConfig.rtl || false ? '90%' : '10%'}
-              stopColor={line.lineColor as string}
-            />
+            <Stop offset={'90%'} stopColor={line.lineColor as string} />
           </LinearGradient>
         )}
 
@@ -204,7 +201,6 @@ const LineComponent = ({
           activeTouch={activeTouch}
           width={svgWidth}
           height={svgHeight}
-          rtl={extraConfig.rtl || false}
           activePointComponent={line.activePointComponent}
           passSharedValueToActivePointComponent={
             line.passSharedValueToActivePointComponent

@@ -20,8 +20,6 @@ function LineChart({
     hideActivePointOnBlur: true,
     alwaysStartFromZero: false,
     initialActivePoint: 0,
-    fadeStart: false,
-    rtl: false,
     simultaneousHandlers: undefined,
     endSpacing: 20,
   },

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { DataPoint, LineCurve } from './types';
+import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
 
 export type PathObject = {
   d: string | null;
@@ -26,10 +26,7 @@ export const createNewPath = ({
   isFilled?: boolean;
   alwaysStartFromZero: boolean;
   curve?: LineCurve;
-  calculateChartYAxisMinMax?: (
-    min: number,
-    max: number
-  ) => { min: number; max: number };
+  calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
 }): PathObject => {
   const getChartMinMaxValues = (minValue: number, maxValue: number) => {
     if (alwaysStartFromZero) {

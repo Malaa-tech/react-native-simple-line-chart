@@ -16,7 +16,6 @@ const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 const ActivePointComponentWrapper = ({
   activePointPosition,
   pointOpacity,
-  rtl,
   width,
   activePointSharedValue,
   activePointComponent,
@@ -24,7 +23,6 @@ const ActivePointComponentWrapper = ({
 }: {
   activePointPosition: SharedValue<{ x: number; y: number }>;
   pointOpacity: SharedValue<number>;
-  rtl: boolean;
   width: number;
   activePointSharedValue: SharedValue<DataPoint | undefined>;
   activePointComponent?: ActivePointComponent;
@@ -39,7 +37,7 @@ const ActivePointComponentWrapper = ({
   const componentPositionX = useDerivedValue(() => {
     const xPosition = activePointPosition.value.x;
 
-    if (rtl || I18nManager.isRTL) {
+    if (I18nManager.isRTL) {
       if (
         xPosition <
         activeComponentWidthSV.value + SPACE_BETWEEN_COMPONENT_AND_LINE
