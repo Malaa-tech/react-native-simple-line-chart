@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Dimensions, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import LineChart, { DataPoint } from 'react-native-simple-line-chart';
+import LineChart from 'react-native-simple-line-chart';
 
 export default function App() {
   return (
@@ -63,7 +63,7 @@ export default function App() {
               radius: 5,
               animated: true,
             },
-            activePointComponent: (point: DataPoint) => {
+            activePointComponent: (point) => {
               return (
                 <View
                   style={{

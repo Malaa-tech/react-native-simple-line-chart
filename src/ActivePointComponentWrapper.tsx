@@ -13,6 +13,7 @@ import {
   ActivePointComponent,
   ActivePointComponentSharedValue,
   DataPoint,
+  DataPointSharedValue,
 } from './types';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
@@ -28,7 +29,7 @@ const ActivePointComponentWrapper = ({
   activePointPosition: SharedValue<{ x: number; y: number }>;
   pointOpacity: SharedValue<number>;
   width: number;
-  activePointSharedValue: SharedValue<DataPoint | undefined>;
+  activePointSharedValue: DataPointSharedValue;
   activePointComponent?: ActivePointComponent;
   activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
 }) => {

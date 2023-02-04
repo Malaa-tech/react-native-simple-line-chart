@@ -65,7 +65,7 @@ export interface ActivePointConfig {
   verticalLineDashArray?: number[];
 }
 
-export interface DataPoint {
+export interface DataPoint<T = any> {
   /**
    * The x value of the data point
    */
@@ -77,7 +77,7 @@ export interface DataPoint {
   /**
    * Any extra data you want to pass to the data point (this will be passed to the active point component)
    */
-  extraData?: any;
+  extraData?: T;
 }
 
 /**
@@ -192,7 +192,7 @@ export type LineChartProps = {
   /**
    * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
    */
-  activePointSharedValue?: SharedValue<DataPoint | undefined>;
+  activePointSharedValue?: DataPointSharedValue;
   /**
    * The line configuration object
    * @required
@@ -210,7 +210,9 @@ export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
 export type ActivePointComponent = (activePoint?: DataPoint) => React.ReactNode;
 
-export type DataPointSharedValue = SharedValue<DataPoint | undefined>;
+export type DataPointSharedValue<T = any> = SharedValue<
+  DataPoint<T> | undefined
+>;
 export type ActivePointComponentSharedValue = (
   activePoint: DataPointSharedValue
 ) => React.ReactNode;
