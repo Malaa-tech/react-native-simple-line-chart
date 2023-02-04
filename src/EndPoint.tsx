@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Circle } from 'react-native-svg';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 function EndPoint({
   x,

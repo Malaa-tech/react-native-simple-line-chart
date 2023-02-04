@@ -14,8 +14,8 @@ import ActivePointComponentWrapper from './ActivePointComponentWrapper';
 import { ActivePointComponent, DataPoint } from './types';
 import { PathObject } from './utils';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle) as any;
-const AnimatedPath = Animated.createAnimatedComponent(Path) as any;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 const ActivePoint = ({
   data,
@@ -45,7 +45,7 @@ const ActivePoint = ({
   path: PathObject;
   passSharedValueToActivePointComponent?: boolean;
   onPointChange?: (point?: DataPoint) => void;
-  color: ColorValue | ColorValue[];
+  color: ColorValue;
   borderColor: ColorValue;
   radius: number;
   showVerticalLine: boolean;

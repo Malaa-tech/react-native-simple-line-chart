@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  PanGestureHandlerEventPayload,
+} from 'react-native-gesture-handler';
 import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
 import { EXTRA_CONFIG, LINE_CHART } from './defaults';
 import SvgPath from './SvgPath';
 import { DataPoint, ExtraConfig, LineChartProps } from './types';
 
-const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
+const AnimatedView = Animated.createAnimatedComponent(View);
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
   return {
@@ -88,7 +92,7 @@ function LineChart({
     }
   }, [line1.data]);
 
-  const onPanUpdate = (e: any) => {
+  const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
     activeTouch.value = true;
     activeTouchX.value = e.x;
   };

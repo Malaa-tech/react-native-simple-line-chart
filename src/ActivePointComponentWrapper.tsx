@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { ActivePointComponent, DataPoint } from './types';
 
-const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
+const AnimatedView = Animated.createAnimatedComponent(View);
 
 const ActivePointComponentWrapper = ({
   activePointPosition,
@@ -95,7 +95,6 @@ const ActivePointComponentWrapper = ({
         ...viewAnimatedStyle,
       }}
     >
-      {/* @ts-ignore */}
       <View
         onLayout={(event) => {
           const { width: componentWidth } = event.nativeEvent.layout;

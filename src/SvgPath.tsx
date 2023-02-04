@@ -187,8 +187,8 @@ const LineComponent = ({
 
       {line.endPointConfig && (
         <EndPoint
-          x={path.x(line.data[line.data.length - 1]?.x as any)}
-          y={path.y(line.data[line.data.length - 1]?.y as any)}
+          x={path.x(line.data[line.data.length - 1]?.x || 0)}
+          y={path.y(line.data[line.data.length - 1]?.y || 0)}
           color={line.endPointConfig?.color || END_POINT.color}
           animated={line.endPointConfig?.animated || END_POINT.animated}
           radius={line.endPointConfig?.radius || END_POINT.radius}

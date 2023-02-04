@@ -61,10 +61,7 @@ export const createNewPath = ({
   // create the x scale
   const x = d3
     .scaleUtc()
-    .domain([
-      new Date(data[0]?.x as any),
-      new Date(data[data.length - 1]?.x as any),
-    ])
+    .domain([data[0]?.x || 0, data[data.length - 1]?.x || 1])
     .range([0, svgWidth - endSpacing]);
 
   // create the line
@@ -117,7 +114,7 @@ export const closest = (arr: number[], target: number) => {
   for (let i = 1; i < arr.length; i++) {
     // As soon as a number bigger than target is found, return the previous or current
     // number depending on which has smaller difference to the target.
-    if ((arr[i] as any) > target) {
+    if ((arr[i] as number) > target) {
       const p = arr[i - 1];
       const c = arr[i];
       if (p && c) {
