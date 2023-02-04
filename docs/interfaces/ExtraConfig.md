@@ -30,7 +30,7 @@ false
 
 #### Defined in
 
-[src/types.ts:179](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L179)
+[src/types.ts:179](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L179)
 
 ___
 
@@ -42,7 +42,7 @@ Settings this to true will make the chart y axis start from zero even if the min
 
 #### Defined in
 
-[src/types.ts:191](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L191)
+[src/types.ts:191](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L191)
 
 ___
 
@@ -54,7 +54,7 @@ supplying this function will allow you to customize the y axis min and max value
 
 #### Defined in
 
-[src/types.ts:204](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L204)
+[src/types.ts:204](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L204)
 
 ___
 
@@ -70,7 +70,7 @@ Space between the end of the chart the the end of the view (like paddingEnd)
 
 #### Defined in
 
-[src/types.ts:200](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L200)
+[src/types.ts:200](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L200)
 
 ___
 
@@ -82,7 +82,7 @@ Settings this to true will make the active point always visible after the user t
 
 #### Defined in
 
-[src/types.ts:187](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L187)
+[src/types.ts:187](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L187)
 
 ___
 
@@ -94,7 +94,7 @@ This is the index of the initial active point (the point that will be active whe
 
 #### Defined in
 
-[src/types.ts:183](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L183)
+[src/types.ts:183](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L183)
 
 ___
 
@@ -106,4 +106,4 @@ Supplying simultaneousHandlers will make the chart work with other gesture handl
 
 #### Defined in
 
-[src/types.ts:195](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6f20241/src/types.ts#L195)
+[src/types.ts:195](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L195)
