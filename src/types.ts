@@ -162,7 +162,7 @@ export interface ExtraConfig {
 /**
  * The props for the LineChart component
  */
-export type LineChartProps = {
+export interface LineChartProps {
   /**
    * More configuration for the chart
    */
@@ -202,7 +202,7 @@ export type LineChartProps = {
    * Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points)
    */
   line2?: Line;
-};
+}
 
 export type AnimationType = 'slide' | 'fade';
 

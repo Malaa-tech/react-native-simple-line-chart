@@ -141,6 +141,7 @@ function LineChart({
   );
 }
 
+/** @ignore */
 export const MemoizedLineChart = React.memo(
   LineChart,
   (previousProps, nextProps) => {

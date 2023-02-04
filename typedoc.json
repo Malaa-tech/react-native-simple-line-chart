@@ -1,0 +1,18 @@
+{
+    // Comments are supported, like tsconfig.json
+    "entryPoints": [
+        "src/index.tsx"
+    ],
+    "out": "docs",
+    "excludeExternals": true,
+    "excludeInternal": true,
+    "excludeNotDocumented": true,
+    "darkHighlightTheme": "dark-plus",
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "exclude": [
+        "default"
+    ],
+    "name": "React Native Simple Line Chart",
+    "pretty": true
+}
