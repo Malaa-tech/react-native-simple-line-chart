@@ -30,7 +30,6 @@ const ActivePoint = ({
   activePointComponentWithSharedValue,
   activeIndex,
   path,
-  passSharedValueToActivePointComponent = false,
   onPointChange,
   color,
   borderColor,
@@ -49,7 +48,6 @@ const ActivePoint = ({
   activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
   activeIndex: SharedValue<number>;
   path: PathObject;
-  passSharedValueToActivePointComponent?: boolean;
   onPointChange?: (point?: DataPoint) => void;
   color: ColorValue;
   borderColor: ColorValue;
@@ -183,7 +181,7 @@ const ActivePoint = ({
           strokeDasharray={verticalLineDashArray}
         />
       )}
-      {activePointComponent && (
+      {(activePointComponent || activePointComponentWithSharedValue) && (
         <ActivePointComponentWrapper
           activePointSharedValue={activePointSV}
           activePointPosition={activePointPosition}
@@ -192,9 +190,6 @@ const ActivePoint = ({
           activePointComponent={activePointComponent}
           activePointComponentWithSharedValue={
             activePointComponentWithSharedValue
-          }
-          passSharedValueToActivePointComponent={
-            passSharedValueToActivePointComponent
           }
         />
       )}

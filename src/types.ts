@@ -121,11 +121,6 @@ export interface Line {
    * @default 'linear'
    */
   curve?: LineCurve;
-  /**
-   * Setting this to true will make the ActivePointComponent receive the shared value of the active point (reanimated value) this can make the chart much more performant
-   * @default false
-   */
-  passSharedValueToActivePointComponent?: boolean;
 }
 
 /**
@@ -215,8 +210,9 @@ export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
 export type ActivePointComponent = (activePoint?: DataPoint) => React.ReactNode;
 
+export type DataPointSharedValue = SharedValue<DataPoint | undefined>;
 export type ActivePointComponentSharedValue = (
-  activePoint?: SharedValue<DataPoint | undefined>
+  activePoint: DataPointSharedValue
 ) => React.ReactNode;
 
 export type calculateChartYAxisMinMax = (

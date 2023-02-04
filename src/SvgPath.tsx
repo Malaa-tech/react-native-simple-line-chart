@@ -205,9 +205,6 @@ const LineComponent = ({
           activePointComponentWithSharedValue={
             line.activePointComponentWithSharedValue
           }
-          passSharedValueToActivePointComponent={
-            line.passSharedValueToActivePointComponent
-          }
           activeIndex={activeIndex}
           path={path}
           onPointChange={onPointChange}

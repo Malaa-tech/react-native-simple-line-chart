@@ -24,7 +24,6 @@ const ActivePointComponentWrapper = ({
   activePointSharedValue,
   activePointComponentWithSharedValue,
   activePointComponent,
-  passSharedValueToActivePointComponent,
 }: {
   activePointPosition: SharedValue<{ x: number; y: number }>;
   pointOpacity: SharedValue<number>;
@@ -32,7 +31,6 @@ const ActivePointComponentWrapper = ({
   activePointSharedValue: SharedValue<DataPoint | undefined>;
   activePointComponent?: ActivePointComponent;
   activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
-  passSharedValueToActivePointComponent: boolean;
 }) => {
   const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
   const activeComponentWidthSV = useSharedValue<number>(100);
@@ -88,7 +86,7 @@ const ActivePointComponentWrapper = ({
       return activePointSharedValue.value;
     },
     () => {
-      if (!passSharedValueToActivePointComponent) {
+      if (activePointComponentWithSharedValue !== undefined) {
         runOnJS(setActiveDataPointLocal)(activePointSharedValue.value);
       }
     },
@@ -107,11 +105,11 @@ const ActivePointComponentWrapper = ({
           activeComponentWidthSV.value = componentWidth;
         }}
       >
-        {passSharedValueToActivePointComponent === true &&
+        {activePointComponentWithSharedValue !== undefined &&
           activePointComponentWithSharedValue !== undefined &&
           activePointComponentWithSharedValue(activePointSharedValue)}
 
-        {passSharedValueToActivePointComponent === false &&
+        {activePointComponentWithSharedValue === undefined &&
           activeDataPointLocal &&
           activePointComponent !== undefined &&
           activePointComponent(activeDataPointLocal)}
