@@ -10,6 +10,9 @@
     "darkHighlightTheme": "dark-plus",
     "excludePrivate": true,
     "excludeProtected": true,
+    "plugin": [
+        "typedoc-plugin-markdown"
+    ],
     "exclude": [
         "default"
     ],
