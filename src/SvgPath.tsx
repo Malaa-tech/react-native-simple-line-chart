@@ -202,6 +202,9 @@ const LineComponent = ({
           width={svgWidth}
           height={svgHeight}
           activePointComponent={line.activePointComponent}
+          activePointComponentWithSharedValue={
+            line.activePointComponentWithSharedValue
+          }
           passSharedValueToActivePointComponent={
             line.passSharedValueToActivePointComponent
           }

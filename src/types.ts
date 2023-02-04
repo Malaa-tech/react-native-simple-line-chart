@@ -65,8 +65,6 @@ export interface ActivePointConfig {
   verticalLineDashArray?: number[];
 }
 
-export type AnimationType = 'slide' | 'fade';
-
 export interface DataPoint {
   /**
    * The x value of the data point
@@ -81,20 +79,6 @@ export interface DataPoint {
    */
   extraData?: any;
 }
-
-export type ActivePointComponent = (
-  activePoint?: DataPoint | SharedValue<DataPoint | undefined> | any
-) => React.ReactNode;
-
-export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
-
-export type calculateChartYAxisMinMax = (
-  min: number,
-  max: number
-) => { min: number; max: number };
-
-export type onPointFocus = (activePoint: DataPoint) => void;
-export type onPointLoseFocus = () => void;
 
 /**
  * The line configuration object
@@ -120,6 +104,10 @@ export interface Line {
    * The component to render when the user taps on the chart
    */
   activePointComponent?: ActivePointComponent;
+  /**
+   * The same as (activePointComponent) but the component will receive the shared value of the active point (reanimated value) this can make the chart much more performant
+   */
+  activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
   /**
    * The width of the line
    */
@@ -220,3 +208,21 @@ export type LineChartProps = {
    */
   line2?: Line;
 };
+
+export type AnimationType = 'slide' | 'fade';
+
+export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
+
+export type ActivePointComponent = (activePoint?: DataPoint) => React.ReactNode;
+
+export type ActivePointComponentSharedValue = (
+  activePoint?: SharedValue<DataPoint | undefined>
+) => React.ReactNode;
+
+export type calculateChartYAxisMinMax = (
+  min: number,
+  max: number
+) => { min: number; max: number };
+
+export type onPointFocus = (activePoint: DataPoint) => void;
+export type onPointLoseFocus = () => void;

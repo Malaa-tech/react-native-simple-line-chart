@@ -9,7 +9,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { ActivePointComponent, DataPoint } from './types';
+import {
+  ActivePointComponent,
+  ActivePointComponentSharedValue,
+  DataPoint,
+} from './types';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -18,6 +22,7 @@ const ActivePointComponentWrapper = ({
   pointOpacity,
   width,
   activePointSharedValue,
+  activePointComponentWithSharedValue,
   activePointComponent,
   passSharedValueToActivePointComponent,
 }: {
@@ -26,6 +31,7 @@ const ActivePointComponentWrapper = ({
   width: number;
   activePointSharedValue: SharedValue<DataPoint | undefined>;
   activePointComponent?: ActivePointComponent;
+  activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
   passSharedValueToActivePointComponent: boolean;
 }) => {
   const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
@@ -102,8 +108,8 @@ const ActivePointComponentWrapper = ({
         }}
       >
         {passSharedValueToActivePointComponent === true &&
-          activePointComponent !== undefined &&
-          activePointComponent(activePointSharedValue)}
+          activePointComponentWithSharedValue !== undefined &&
+          activePointComponentWithSharedValue(activePointSharedValue)}
 
         {passSharedValueToActivePointComponent === false &&
           activeDataPointLocal &&

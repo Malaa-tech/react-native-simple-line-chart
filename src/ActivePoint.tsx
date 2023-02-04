@@ -11,7 +11,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Circle, Path } from 'react-native-svg';
 import ActivePointComponentWrapper from './ActivePointComponentWrapper';
-import { ActivePointComponent, DataPoint } from './types';
+import {
+  ActivePointComponent,
+  ActivePointComponentSharedValue,
+  DataPoint,
+} from './types';
 import { PathObject } from './utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -23,6 +27,7 @@ const ActivePoint = ({
   width,
   height,
   activePointComponent,
+  activePointComponentWithSharedValue,
   activeIndex,
   path,
   passSharedValueToActivePointComponent = false,
@@ -41,6 +46,7 @@ const ActivePoint = ({
   width: number;
   height: number;
   activePointComponent?: ActivePointComponent;
+  activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
   activeIndex: SharedValue<number>;
   path: PathObject;
   passSharedValueToActivePointComponent?: boolean;
@@ -184,6 +190,9 @@ const ActivePoint = ({
           pointOpacity={pointOpacity}
           width={width}
           activePointComponent={activePointComponent}
+          activePointComponentWithSharedValue={
+            activePointComponentWithSharedValue
+          }
           passSharedValueToActivePointComponent={
             passSharedValueToActivePointComponent
           }
