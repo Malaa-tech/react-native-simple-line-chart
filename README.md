@@ -14,11 +14,12 @@ A simple/interactive/fast line chart component for React Native using d3, react-
  
 ### How we use it in Malaa App
 <p align="center">
-
-![Feb-04-2023 15-57-02](https://user-images.githubusercontent.com/24798045/216769217-b993ec1a-fe57-438b-a32b-22ee2ac91a59.gif)
-![Feb-04-2023 16-03-25](https://user-images.githubusercontent.com/24798045/216769222-036ed3b7-a40c-4589-b129-7443737ade25.gif)
-![Feb-04-2023 16-07-04](https://user-images.githubusercontent.com/24798045/216769372-9d8dc695-71f9-488d-8bba-e804de9dc5ba.gif)
+<img src="https://user-images.githubusercontent.com/24798045/216769217-b993ec1a-fe57-438b-a32b-22ee2ac91a59.gif" width="270"/>
+<img src="https://user-images.githubusercontent.com/24798045/216769222-036ed3b7-a40c-4589-b129-7443737ade25.gif" width="270"/>
+<img src="https://user-images.githubusercontent.com/24798045/216769372-9d8dc695-71f9-488d-8bba-e804de9dc5ba.gif" width="270"/>
 </p>
+
+
 
 ### 🔮 Example App Demo
 - run it your self using ```yarn example [ios/andriod]``` or watch this [Video](https://user-images.githubusercontent.com/24798045/216169227-8044461f-9d2d-4990-b3aa-c15e2b3464e2.mp4)
