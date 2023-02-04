@@ -11,7 +11,7 @@ export default function App() {
           line1={{
             data: [
               {
-                y: 0,
+                y: 10,
                 x: new Date('2020-01-01').getTime(),
                 extraData: {
                   formattedValue: '0',
@@ -63,7 +63,7 @@ export default function App() {
               radius: 5,
               animated: true,
             },
-            activePointComponent: (point: DataPoint | any) => {
+            activePointComponent: (point: DataPoint) => {
               return (
                 <View
                   style={{

@@ -83,7 +83,7 @@ export interface DataPoint {
 }
 
 export type ActivePointComponent = (
-  activePoint?: DataPoint | SharedValue<DataPoint | undefined>
+  activePoint?: DataPoint | SharedValue<DataPoint | undefined> | any
 ) => React.ReactNode;
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
@@ -92,6 +92,9 @@ export type calculateChartYAxisMinMax = (
   min: number,
   max: number
 ) => { min: number; max: number };
+
+export type onPointFocus = (activePoint: DataPoint) => void;
+export type onPointLoseFocus = () => void;
 
 /**
  * The line configuration object
@@ -172,3 +175,48 @@ export interface ExtraConfig {
    */
   calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
 }
+
+/**
+ * The props for the LineChart component
+ */
+export type LineChartProps = {
+  /**
+   * More configuration for the chart
+   */
+  extraConfig?: ExtraConfig;
+  /**
+   * The height of the chart
+   * @default 200
+   */
+  height?: number;
+  /**
+   * The width of the chart (default value is the width of the screen)
+   */
+  width?: number;
+  /**
+   * The background color of the chart
+   * @default 'white'
+   */
+  backgroundColor?: string;
+  /**
+   * This will run when the user taps on the a point on the chart
+   */
+  onPointFocus?: onPointFocus;
+  /**
+   * This will run when the user release the tap on the a point on the chart
+   */
+  onPointLoseFocus?: onPointLoseFocus;
+  /**
+   * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
+   */
+  activePointSharedValue?: SharedValue<DataPoint | undefined>;
+  /**
+   * The line configuration object
+   * @required
+   */
+  line1: Line;
+  /**
+   * Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points)
+   */
+  line2?: Line;
+};
