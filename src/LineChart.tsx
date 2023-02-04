@@ -12,20 +12,31 @@ const AnimatedView = Animated.createAnimatedComponent(View as any) as any;
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
   return {
     alwaysShowActivePoint:
-      extraConfig.alwaysShowActivePoint || EXTRA_CONFIG.alwaysShowActivePoint,
+      extraConfig.alwaysShowActivePoint !== undefined
+        ? extraConfig.alwaysShowActivePoint
+        : EXTRA_CONFIG.alwaysShowActivePoint,
     hideActivePointOnBlur:
-      extraConfig.hideActivePointOnBlur || EXTRA_CONFIG.hideActivePointOnBlur,
+      extraConfig.hideActivePointOnBlur !== undefined
+        ? extraConfig.hideActivePointOnBlur
+        : EXTRA_CONFIG.hideActivePointOnBlur,
     alwaysStartYAxisFromZero:
-      extraConfig.alwaysStartYAxisFromZero ||
-      EXTRA_CONFIG.alwaysStartYAxisFromZero,
+      extraConfig.alwaysStartYAxisFromZero !== undefined
+        ? extraConfig.alwaysStartYAxisFromZero
+        : EXTRA_CONFIG.alwaysStartYAxisFromZero,
     initialActivePoint:
-      extraConfig.initialActivePoint || EXTRA_CONFIG.initialActivePoint,
+      extraConfig.initialActivePoint !== undefined
+        ? extraConfig.initialActivePoint
+        : EXTRA_CONFIG.initialActivePoint,
     simultaneousHandlers:
-      extraConfig.simultaneousHandlers || EXTRA_CONFIG.simultaneousHandlers,
-    endSpacing: extraConfig.endSpacing || EXTRA_CONFIG.endSpacing,
+      extraConfig.simultaneousHandlers !== undefined
+        ? extraConfig.simultaneousHandlers
+        : EXTRA_CONFIG.simultaneousHandlers,
+    endSpacing:
+      extraConfig.endSpacing !== undefined
+        ? extraConfig.endSpacing
+        : EXTRA_CONFIG.endSpacing,
   };
 };
-
 function LineChart({
   height = LINE_CHART.height,
   width = LINE_CHART.width,
