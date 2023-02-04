@@ -32,8 +32,17 @@ export type ActivePointComponent = (
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
+/**
+ * This is the Line
+ */
 export interface Line {
+  /**
+   * This is the data
+   */
   data: DataPoint[];
+  /**
+   * This is the active point config
+   */
   activePointConfig?: ActivePointConfig;
   lineColor?: ColorValue | ColorValue[]; // can be linear gradient
   fillColor?: ColorValue;
