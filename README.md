@@ -94,7 +94,7 @@ import LineChart, { DataPoint } from 'react-native-simple-line-chart';
       radius: 5,
       animated: true,
     },
-    activePointComponent: (point: DataPoint | any) => {
+    activePointComponent: (point: DataPoint) => {
       return (
         <View
           style={{
