@@ -1,7 +1,7 @@
 {
   "name": "react-native-simple-line-chart",
   "version": "0.21.0",
-  "description": "test",
+  "description": "A fast, interactive and simple line chart component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index",
