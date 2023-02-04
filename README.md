@@ -35,82 +35,85 @@ yarn add react-native-simple-line-chart
 
 ## ⚒️ Usage
 ```tsx | pure
-import LineChart from 'react-native-simple-line-chart';
+import LineChart, { DataPoint } from 'react-native-simple-line-chart';
+
 <LineChart
-    line1={{
-      data: [
-        {
-          value: 0,
-          extraData: {
-            date: new Date('2020-01-01').getTime(),
-            formattedValue: '0',
-            formattedTime: '2020-01-01',
-          },
+  line1={{
+    data: [
+      {
+        y: 0,
+        x: new Date('2020-01-01').getTime(),
+        extraData: {
+          formattedValue: '0',
+          formattedTime: '2020-01-01',
         },
-        {
-          value: 20,
-          extraData: {
-            date: new Date('2020-01-02').getTime(),
-            formattedValue: '20',
-            formattedTime: '2020-01-02',
-          },
-        },
-        {
-          value: 15,
-          extraData: {
-            date: new Date('2020-01-03').getTime(),
-            formattedValue: '15$',
-            formattedTime: '2020-01-03',
-          },
-        },
-        {
-          value: 35,
-          extraData: {
-            date: new Date('2020-01-04').getTime(),
-            formattedValue: '35$',
-            formattedTime: '2020-01-04',
-          },
-        },
-      ],
-      activePointConfig: {
-        color: 'black',
-        borderColor: 'black',
-        radius: 4,
-        line: true,
-        lineColor: 'gray',
-        lineOpacity: 0.7,
-        lineWidth: 1,
-        lineDashArray: [10, 5],
-        hideAfterActivePoint: true,
       },
-      lineColor: 'pink',
-      curve: 'linear',
-      endPoint: {
-        color: 'pink',
-        radius: 5,
-        animated: true,
+      {
+        y: 20,
+        x: new Date('2020-01-02').getTime(),
+        extraData: {
+          formattedValue: '20',
+          formattedTime: '2020-01-02',
+        },
       },
-      activePointComponent: (point: DataPoint | any) => {
-        return (
-          <View
-            style={{
-              backgroundColor: 'pink',
-              padding: 10,
-              borderRadius: 10,
-            }}
-          >
-            <Text style={{ color: 'white' }}>
-              {point?.extraData?.formattedValue}
-            </Text>
-            <Text style={{ color: 'white' }}>
-              {point?.extraData?.formattedTime}
-            </Text>
-          </View>
-        );
+      {
+        y: 15,
+        x: new Date('2020-01-03').getTime(),
+        extraData: {
+          date: new Date('2020-01-03').getTime(),
+          formattedValue: '15$',
+          formattedTime: '2020-01-03',
+        },
       },
-    }}
-    backgroundColor={undefined}
-    height={200}
-    width={Dimensions.get('screen').width}
-/>
+      {
+        y: 35,
+        x: new Date('2020-01-04').getTime(),
+        extraData: {
+          formattedValue: '35$',
+          formattedTime: '2020-01-04',
+        },
+      },
+      {
+        y: 5,
+        x: new Date('2020-01-06').getTime(),
+        extraData: {
+          formattedValue: '35$',
+          formattedTime: '2020-01-04',
+        },
+      },
+    ],
+    activePointConfig: {
+      color: 'black',
+      showVerticalLine: true,
+    },
+    lineColor: 'pink',
+    curve: 'linear',
+    endPointConfig: {
+      color: 'pink',
+      radius: 5,
+      animated: true,
+    },
+    activePointComponent: (point: DataPoint | any) => {
+      return (
+        <View
+          style={{
+            backgroundColor: 'pink',
+            padding: 10,
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ color: 'white' }}>
+            {point?.extraData?.formattedValue}
+          </Text>
+          <Text style={{ color: 'white' }}>
+            {point?.extraData?.formattedTime}
+          </Text>
+        </View>
+      );
+    },
+  }}
+  backgroundColor={undefined}
+  height={200}
+  width={Dimensions.get('screen').width}
+  />
 ```
