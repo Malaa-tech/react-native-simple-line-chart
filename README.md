@@ -115,5 +115,5 @@ import LineChart, { DataPoint } from 'react-native-simple-line-chart';
   backgroundColor={undefined}
   height={200}
   width={Dimensions.get('screen').width}
-  />
+/>
 ```
