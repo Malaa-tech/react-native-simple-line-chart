@@ -195,7 +195,7 @@ const LineComponent = ({
         />
       )}
 
-      {line !== undefined && (
+      {line !== undefined && line.activePointConfig !== undefined && (
         <ActivePoint
           data={line.data}
           activeTouch={activeTouch}
