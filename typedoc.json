@@ -13,9 +13,6 @@
     "plugin": [
         "typedoc-plugin-markdown"
     ],
-    "exclude": [
-        "default"
-    ],
     "name": "React Native Simple Line Chart",
     "pretty": true
 }

@@ -24,6 +24,7 @@ export const EXTRA_CONFIG = {
   initialActivePoint: 0,
   simultaneousHandlers: undefined,
   endSpacing: 0,
+  calculateChartYAxisMinMax: undefined,
 };
 
 export const LINE_CHART = {

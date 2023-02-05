@@ -39,6 +39,9 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
       extraConfig.endSpacing !== undefined
         ? extraConfig.endSpacing
         : EXTRA_CONFIG.endSpacing,
+    calculateChartYAxisMinMax:
+      extraConfig.calculateChartYAxisMinMax ||
+      EXTRA_CONFIG.calculateChartYAxisMinMax,
   };
 };
 function LineChart({
