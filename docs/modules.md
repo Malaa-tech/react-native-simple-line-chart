@@ -15,6 +15,10 @@
 
 - [LineChart](modules.md#linechart)
 
+### Functions
+
+- [default](modules.md#default)
+
 ## Type Aliases
 
 ### LineChart
@@ -39,4 +43,26 @@ The props for the LineChart component
 
 #### Defined in
 
-[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/5ca178f/src/types.ts#L7)
+[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L7)
+
+## Functions
+
+### default
+
+▸ **default**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+
+**NOTE**: Exotic components are not callable.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `props` | [`LineChart`](modules.md#linechart) |
+
+#### Returns
+
+``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+
+#### Defined in
+
+example/node_modules/@types/react/index.d.ts:351
