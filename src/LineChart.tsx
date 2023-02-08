@@ -42,6 +42,7 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     calculateChartYAxisMinMax:
       extraConfig.calculateChartYAxisMinMax ||
       EXTRA_CONFIG.calculateChartYAxisMinMax,
+    activeOffsetX: extraConfig.activeOffsetX || EXTRA_CONFIG.activeOffsetX,
   };
 };
 function LineChart({
@@ -59,6 +60,8 @@ function LineChart({
   const svgWidth = width;
   const activeTouchX = useSharedValue(0);
   const activeTouch = useSharedValue(false);
+  const [isSimultaneousHandlersEnabled, setIsSimultaneousHandlersEnabled] =
+    React.useState(true);
   extraConfig = getExtraConfig(extraConfig || {});
 
   const onPointChange = (point?: DataPoint) => {
@@ -96,11 +99,13 @@ function LineChart({
   }, [line1.data]);
 
   const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
+    setIsSimultaneousHandlersEnabled(false);
     activeTouch.value = true;
     activeTouchX.value = e.x;
   };
 
   const onPanEnd = () => {
+    setIsSimultaneousHandlersEnabled(true);
     if (
       extraConfig?.alwaysShowActivePoint === false ||
       extraConfig?.hideActivePointOnBlur === true
@@ -110,18 +115,25 @@ function LineChart({
     runOnJS(onPointLoseFocusLocal)();
   };
 
-  const panGesture = extraConfig.simultaneousHandlers
-    ? Gesture.Pan()
-        .simultaneousWithExternalGesture(extraConfig.simultaneousHandlers)
-        .onBegin(onPanUpdate)
-        .onUpdate(onPanUpdate)
-        .onEnd(onPanEnd)
-        .onFinalize(onPanEnd)
-    : Gesture.Pan()
-        .onBegin(onPanUpdate)
-        .onUpdate(onPanUpdate)
-        .onEnd(onPanEnd)
-        .onFinalize(onPanEnd);
+  const panGesture =
+    extraConfig.simultaneousHandlers && isSimultaneousHandlersEnabled
+      ? Gesture.Pan()
+          .simultaneousWithExternalGesture(extraConfig.simultaneousHandlers)
+          .activeOffsetX(
+            extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
+          )
+          .onBegin(onPanUpdate)
+          .onUpdate(onPanUpdate)
+          .onEnd(onPanEnd)
+          .onFinalize(onPanEnd)
+      : Gesture.Pan()
+          .activeOffsetX(
+            extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
+          )
+          .onBegin(onPanUpdate)
+          .onUpdate(onPanUpdate)
+          .onEnd(onPanEnd)
+          .onFinalize(onPanEnd);
 
   return (
     <GestureDetector gesture={panGesture}>
@@ -144,7 +156,6 @@ function LineChart({
   );
 }
 
-/** @ignore */
 export const MemoizedLineChart = React.memo(
   LineChart,
   (previousProps, nextProps) => {

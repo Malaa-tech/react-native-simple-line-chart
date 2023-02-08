@@ -194,6 +194,11 @@ export interface ExtraConfig {
    */
   simultaneousHandlers?: any;
   /**
+   * Supplying activeOffsetX for the gesture handler, if the offset is reached, the simultaneousHandlers will be disabled
+   * @default [0,0]
+   */
+  activeOffsetX?: number[];
+  /**
    * Space between the end of the chart the the end of the view (like paddingEnd)
    * @default 0
    */

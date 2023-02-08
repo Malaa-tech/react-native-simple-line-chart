@@ -25,6 +25,7 @@ export const EXTRA_CONFIG = {
   simultaneousHandlers: undefined,
   endSpacing: 0,
   calculateChartYAxisMinMax: undefined,
+  activeOffsetX: [0, 0],
 };
 
 export const LINE_CHART = {
