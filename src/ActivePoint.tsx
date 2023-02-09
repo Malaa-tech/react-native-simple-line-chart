@@ -16,7 +16,7 @@ import {
   ActivePointComponentSharedValue,
   DataPoint,
 } from './types';
-import { PathObject } from './utils';
+import { PathObject, useForceReRender } from './utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -68,6 +68,14 @@ const ActivePoint = ({
   });
   const pointOpacity = useSharedValue(0);
   const lineOpacitySV = useSharedValue(0);
+  const forceRerender = useForceReRender();
+
+  // forcing a re-render after x ms to fix sharedValues not causing a rerender.
+  useEffect(() => {
+    setTimeout(() => {
+      forceRerender();
+    }, 200);
+  }, []);
 
   useEffect(() => {
     const newPositions: { x: number; y: number }[] = [];

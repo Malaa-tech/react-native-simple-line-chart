@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import * as d3 from 'd3';
 import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
 
@@ -147,4 +148,11 @@ export const getIndexOfTheNearestXPoint = (
     }
   }
   return closestIndex;
+};
+
+export const useForceReRender = () => {
+  const [, updateState] = useState<any>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  return forceUpdate;
 };
