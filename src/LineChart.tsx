@@ -99,7 +99,9 @@ function LineChart({
   }, [line1.data]);
 
   const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
-    setIsSimultaneousHandlersEnabled(false);
+    if (isSimultaneousHandlersEnabled === true) {
+      setIsSimultaneousHandlersEnabled(false);
+    }
     activeTouch.value = true;
     activeTouchX.value = e.x;
   };
@@ -156,6 +158,7 @@ function LineChart({
   );
 }
 
+/** @ignore */
 export const MemoizedLineChart = React.memo(
   LineChart,
   (previousProps, nextProps) => {

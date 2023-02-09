@@ -82,17 +82,17 @@ const ActivePointComponentWrapper = ({
     };
   });
 
-  useAnimatedReaction(
-    () => {
-      return activePointSharedValue.value;
-    },
-    () => {
-      if (activePointComponentWithSharedValue !== undefined) {
+  if (activePointComponent) {
+    useAnimatedReaction(
+      () => {
+        return activePointSharedValue.value;
+      },
+      () => {
         runOnJS(setActiveDataPointLocal)(activePointSharedValue.value);
-      }
-    },
-    [activePointSharedValue]
-  );
+      },
+      [activePointSharedValue]
+    );
+  }
 
   return (
     <AnimatedView
