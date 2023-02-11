@@ -9,12 +9,7 @@ import { View } from 'react-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import {
-  createNewPath,
-  getIndexOfTheNearestXPoint,
-  PathObject,
-  useForceReRender,
-} from './utils';
+import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
