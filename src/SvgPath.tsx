@@ -9,7 +9,12 @@ import { View } from 'react-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
+import {
+  createNewPath,
+  getIndexOfTheNearestXPoint,
+  PathObject,
+  useForceReRender,
+} from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
@@ -157,18 +162,14 @@ const LineComponent = ({
     } else {
       setLocalPath(path);
     }
-  }, [line.data.map((item) => item.y).join(''), line.curve, line.key]);
+  }, [line.data.map((item) => item.y).join(''), line.curve, line.key, allData]);
 
   if (localPath === undefined) {
     return null;
   }
 
   return (
-    <AnimatedG
-      style={{
-        ...lineWrapperAnimatedStyle,
-      }}
-    >
+    <>
       <Defs>
         {!isLineColorGradient && (
           <LinearGradient id={identifier}>
@@ -204,24 +205,30 @@ const LineComponent = ({
         )}
       </Defs>
 
-      <AnimatedPath
-        strokeLinejoin="round"
-        d={localPath.d || ''}
-        stroke={`url(#${identifier})`}
-        strokeWidth={line.lineWidth || 2}
-        fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
-        fillOpacity={0.5}
-      />
-
-      {line.endPointConfig && (
-        <EndPoint
-          x={localPath.x(localPath.data[localPath.data.length - 1]?.x || 0)}
-          y={localPath.y(localPath.data[localPath.data.length - 1]?.y || 0)}
-          color={line.endPointConfig?.color || END_POINT.color}
-          animated={line.endPointConfig?.animated || END_POINT.animated}
-          radius={line.endPointConfig?.radius || END_POINT.radius}
+      <AnimatedG
+        style={{
+          ...lineWrapperAnimatedStyle,
+        }}
+      >
+        <AnimatedPath
+          strokeLinejoin="round"
+          d={localPath.d || ''}
+          stroke={`url(#${identifier})`}
+          strokeWidth={line.lineWidth || 2}
+          fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
+          fillOpacity={0.5}
         />
-      )}
+
+        {line.endPointConfig && (
+          <EndPoint
+            x={localPath.x(localPath.data[localPath.data.length - 1]?.x || 0)}
+            y={localPath.y(localPath.data[localPath.data.length - 1]?.y || 0)}
+            color={line.endPointConfig?.color || END_POINT.color}
+            animated={line.endPointConfig?.animated || END_POINT.animated}
+            radius={line.endPointConfig?.radius || END_POINT.radius}
+          />
+        )}
+      </AnimatedG>
 
       {line !== undefined && line.activePointConfig !== undefined && (
         <ActivePoint
@@ -264,7 +271,7 @@ const LineComponent = ({
           radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
       )}
-    </AnimatedG>
+    </>
   );
 };
 
@@ -274,9 +281,8 @@ const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
     prev.line.curve === next.line.curve &&
     prev.line.lineColor === next.line.lineColor &&
     prev.line.key === next.line.key &&
-    prev.line.data.every((point, index) => {
-      return point.x === next.line.data[index]?.x;
-    })
+    prev.allData.map((item) => item.y).join('') ===
+      next.allData.map((item) => item.y).join('')
   );
 });
 
