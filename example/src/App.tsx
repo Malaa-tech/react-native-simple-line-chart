@@ -384,7 +384,7 @@ const Chart = ({
             };
           },
           animationConfig: {
-            duration: 1000,
+            duration: 500,
           },
         }}
         onPointFocus={(point) => {

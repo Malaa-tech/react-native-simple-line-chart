@@ -128,10 +128,10 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const DURATION = 500;
+  const DURATION = extraConfig.animationConfig?.duration || 0;
   const { endPointAnimatedStyle, lineAnimatedStyle, show, hide } =
     useChartAnimation({
-      duration: extraConfig.animationConfig?.duration || 0,
+      duration: DURATION,
     });
 
   const [localPath, setLocalPath] = React.useState<PathObject>();
