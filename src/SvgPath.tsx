@@ -128,11 +128,14 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const { startAnimation, lineWrapperAnimatedStyle } = useChartAnimation(
-    extraConfig.animationConfig
-  );
-
   const [localPath, setLocalPath] = React.useState<PathObject>();
+
+  const { startAnimation, lineWrapperAnimatedStyle, lineAnimatedProps } =
+    useChartAnimation({
+      duration: extraConfig.animationConfig?.duration || 0,
+      animationType: extraConfig.animationConfig?.animationType || 'fade',
+      path: localPath,
+    });
 
   useEffect(() => {
     const path = createNewPath({
@@ -207,11 +210,11 @@ const LineComponent = ({
       >
         <AnimatedPath
           strokeLinejoin="round"
-          d={localPath.d || ''}
           stroke={`url(#${identifier})`}
           strokeWidth={line.lineWidth || 2}
           fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
           fillOpacity={0.5}
+          animatedProps={lineAnimatedProps}
         />
 
         {line.endPointConfig && (
@@ -221,6 +224,7 @@ const LineComponent = ({
             color={line.endPointConfig?.color || END_POINT.color}
             animated={line.endPointConfig?.animated || END_POINT.animated}
             radius={line.endPointConfig?.radius || END_POINT.radius}
+            lineAnimationConfig={extraConfig.animationConfig}
           />
         )}
       </AnimatedG>

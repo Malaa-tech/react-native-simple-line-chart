@@ -3,11 +3,13 @@ import { ColorValue } from 'react-native';
 import {
   useAnimatedProps,
   useSharedValue,
+  withDelay,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
 import { Circle } from 'react-native-svg';
-import { AnimatedCircle } from './AnimatedComponents';
+import { AnimatedCircle, AnimatedG } from './AnimatedComponents';
+import { AnimationConfig } from './types';
 
 function EndPoint({
   x,
@@ -15,14 +17,17 @@ function EndPoint({
   radius,
   color,
   animated,
+  lineAnimationConfig,
 }: {
   x: number;
   y: number;
   radius: number;
   color: ColorValue;
   animated: boolean;
+  lineAnimationConfig: AnimationConfig;
 }) {
   const radiusSV = useSharedValue(radius * 1.7);
+  const ySV = useSharedValue(y);
   const animationDuration = 1000;
 
   useEffect(() => {
@@ -35,25 +40,38 @@ function EndPoint({
     }
   }, []);
 
+  useEffect(() => {
+    if (lineAnimationConfig && lineAnimationConfig.duration) {
+      ySV.value = withTiming(y, { duration: lineAnimationConfig.duration / 2 });
+    } else {
+      ySV.value = y;
+    }
+  }, [y]);
+
   const pointProps = useAnimatedProps(() => {
     return {
       r: radiusSV.value,
     };
   });
 
+  const wrapperProps = useAnimatedProps(() => {
+    return {
+      y: ySV.value,
+    };
+  });
+
   return (
-    <>
-      <Circle cx={x} cy={y} r={radius} fill={color} />
+    <AnimatedG animatedProps={wrapperProps}>
+      <Circle cx={x} r={radius} fill={color} />
       {animated && (
         <AnimatedCircle
           cx={x}
-          cy={y}
           fill={color}
           opacity={0.5}
           animatedProps={pointProps}
         />
       )}
-    </>
+    </AnimatedG>
   );
 }
 
