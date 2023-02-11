@@ -383,6 +383,9 @@ const Chart = ({
               max,
             };
           },
+          animationConfig: {
+            duration: 1000,
+          },
         }}
         onPointFocus={(point) => {
           setActiveDataPoint(point?.extraData?.formattedValue);

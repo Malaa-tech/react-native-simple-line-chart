@@ -207,6 +207,23 @@ export interface ExtraConfig {
    * supplying this function will allow you to customize the y axis min and max values
    */
   calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
+  /**
+   * Animation configuration
+   */
+  animationConfig?: AnimationConfig;
+}
+
+export interface AnimationConfig {
+  /**
+   * Animation Duration
+   * @default 200
+   */
+  duration?: number;
+  /**
+   * Animation presets
+   * @default 'fade'
+   */
+  animationType?: 'fade' | 'fadeAndSlide';
 }
 
 export type AnimationType = 'slide' | 'fade';

@@ -1,12 +1,11 @@
 import {
   useSharedValue,
   withTiming,
-  useAnimatedProps,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
 const useChartAnimation = ({ duration = 500 }: { duration: number }) => {
-  const opacitySV = useSharedValue<number>(0);
+  const opacitySV = useSharedValue<number>(1);
 
   const show = () => {
     opacitySV.value = withTiming(1, { duration: duration / 2 });

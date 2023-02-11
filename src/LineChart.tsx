@@ -41,6 +41,8 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
       extraConfig.calculateChartYAxisMinMax ||
       EXTRA_CONFIG.calculateChartYAxisMinMax,
     activeOffsetX: extraConfig.activeOffsetX || EXTRA_CONFIG.activeOffsetX,
+    animationConfig:
+      extraConfig.animationConfig || EXTRA_CONFIG.animationConfig,
   };
 };
 function LineChart({

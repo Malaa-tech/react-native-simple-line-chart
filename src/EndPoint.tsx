@@ -6,7 +6,7 @@ import {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { Circle, G } from 'react-native-svg';
+import { Circle } from 'react-native-svg';
 import { AnimatedCircle, AnimatedG } from './AnimatedComponents';
 
 function EndPoint({

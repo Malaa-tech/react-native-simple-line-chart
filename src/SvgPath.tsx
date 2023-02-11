@@ -131,30 +131,34 @@ const LineComponent = ({
   const DURATION = 500;
   const { endPointAnimatedStyle, lineAnimatedStyle, show, hide } =
     useChartAnimation({
-      duration: DURATION,
+      duration: extraConfig.animationConfig?.duration || 0,
     });
 
   const [localPath, setLocalPath] = React.useState<PathObject>();
 
   useEffect(() => {
-    hide();
-    setTimeout(() => {
-      show();
-      const path = createNewPath({
-        data: line.data,
-        allData,
-        endSpacing: extraConfig.endSpacing || 20,
-        svgHeight,
-        svgWidth,
-        isFilled: line.fillColor !== undefined,
-        alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
-        curve: line.curve,
-        calculateChartYAxisMinMax:
-          extraConfig.calculateChartYAxisMinMax || undefined,
-      });
+    const path = createNewPath({
+      data: line.data,
+      allData,
+      endSpacing: extraConfig.endSpacing || 20,
+      svgHeight,
+      svgWidth,
+      isFilled: line.fillColor !== undefined,
+      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
+      curve: line.curve,
+      calculateChartYAxisMinMax:
+        extraConfig.calculateChartYAxisMinMax || undefined,
+    });
 
+    if (extraConfig.animationConfig) {
+      hide();
+      setTimeout(() => {
+        show();
+        setLocalPath(path);
+      }, DURATION / 2);
+    } else {
       setLocalPath(path);
-    }, DURATION / 2);
+    }
   }, [line.data.map((item) => item.y).join(''), line.curve]);
 
   if (localPath === undefined) {
