@@ -384,7 +384,8 @@ const Chart = ({
             };
           },
           animationConfig: {
-            duration: 500,
+            duration: 1000,
+            animationType: 'fadeAndSlide',
           },
         }}
         onPointFocus={(point) => {

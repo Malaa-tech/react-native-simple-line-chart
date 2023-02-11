@@ -128,11 +128,8 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const DURATION = extraConfig.animationConfig?.duration || 0;
-  const { endPointAnimatedStyle, lineAnimatedStyle, show, hide } =
-    useChartAnimation({
-      duration: DURATION,
-    });
+  const { endPointAnimatedStyle, lineAnimatedStyle, startAnimation } =
+    useChartAnimation(extraConfig.animationConfig);
 
   const [localPath, setLocalPath] = React.useState<PathObject>();
 
@@ -151,11 +148,11 @@ const LineComponent = ({
     });
 
     if (extraConfig.animationConfig) {
-      hide();
-      setTimeout(() => {
-        show();
-        setLocalPath(path);
-      }, DURATION / 2);
+      startAnimation({
+        action: () => {
+          setLocalPath(path);
+        },
+      });
     } else {
       setLocalPath(path);
     }
