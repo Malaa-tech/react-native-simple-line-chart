@@ -69,7 +69,7 @@ const SvgPath = ({
         .map((line, index) => {
           if (line?.data) {
             return (
-              <LineComponent
+              <MemoizedLineComponent
                 key={`${index}`}
                 line={line}
                 allData={allData}
@@ -114,7 +114,11 @@ const LineComponent = ({
   extraConfig: ExtraConfig;
   onPointChange?: (point?: DataPoint) => void;
 }) => {
-  const path = createNewPath({
+  const createPathCallback = useCallback(createNewPath, [
+    `${line?.data.map((point) => point.x)}`,
+  ]);
+
+  const path = createPathCallback({
     data: line.data,
     allData,
     endSpacing: extraConfig.endSpacing || 20,
@@ -239,5 +243,16 @@ const LineComponent = ({
     </>
   );
 };
+
+const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
+  return (
+    prev.line.data.length === next.line.data.length &&
+    prev.line.curve === next.line.curve &&
+    prev.line.lineColor === next.line.lineColor &&
+    prev.line.data.every((point, index) => {
+      return point.x === next.line.data[index]?.x;
+    })
+  );
+});
 
 export default SvgPath;
