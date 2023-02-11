@@ -51,6 +51,10 @@ export type LineChart = {
  */
 export interface Line {
   /**
+   * Optional key to indicate that the line has changed (helps with triggering animations)
+   */
+  key?: string;
+  /**
    * The data points for the line containing an array of objects with x and y values and optionally extraData
    */
   data: DataPoint[];

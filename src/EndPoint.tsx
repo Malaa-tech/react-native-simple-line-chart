@@ -7,7 +7,7 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 import { Circle } from 'react-native-svg';
-import { AnimatedCircle, AnimatedG } from './AnimatedComponents';
+import { AnimatedCircle } from './AnimatedComponents';
 
 function EndPoint({
   x,
@@ -15,14 +15,12 @@ function EndPoint({
   radius,
   color,
   animated,
-  endPointAnimatedStyle,
 }: {
   x: number;
   y: number;
   radius: number;
   color: ColorValue;
   animated: boolean;
-  endPointAnimatedStyle: any;
 }) {
   const radiusSV = useSharedValue(radius * 1.7);
   const animationDuration = 1000;
@@ -44,11 +42,7 @@ function EndPoint({
   });
 
   return (
-    <AnimatedG
-      style={{
-        ...endPointAnimatedStyle,
-      }}
-    >
+    <>
       <Circle cx={x} cy={y} r={radius} fill={color} />
       {animated && (
         <AnimatedCircle
@@ -59,7 +53,7 @@ function EndPoint({
           animatedProps={pointProps}
         />
       )}
-    </AnimatedG>
+    </>
   );
 }
 

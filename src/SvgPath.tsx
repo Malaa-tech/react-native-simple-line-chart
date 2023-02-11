@@ -12,7 +12,7 @@ import EndPoint from './EndPoint';
 import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
-import { AnimatedPath } from './AnimatedComponents';
+import { AnimatedG, AnimatedPath } from './AnimatedComponents';
 import useChartAnimation from './animations';
 
 const SvgPath = ({
@@ -128,8 +128,9 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const { endPointAnimatedStyle, lineAnimatedStyle, startAnimation } =
-    useChartAnimation(extraConfig.animationConfig);
+  const { startAnimation, lineWrapperAnimatedStyle } = useChartAnimation(
+    extraConfig.animationConfig
+  );
 
   const [localPath, setLocalPath] = React.useState<PathObject>();
 
@@ -156,14 +157,18 @@ const LineComponent = ({
     } else {
       setLocalPath(path);
     }
-  }, [line.data.map((item) => item.y).join(''), line.curve]);
+  }, [line.data.map((item) => item.y).join(''), line.curve, line.key]);
 
   if (localPath === undefined) {
     return null;
   }
 
   return (
-    <>
+    <AnimatedG
+      style={{
+        ...lineWrapperAnimatedStyle,
+      }}
+    >
       <Defs>
         {!isLineColorGradient && (
           <LinearGradient id={identifier}>
@@ -206,9 +211,6 @@ const LineComponent = ({
         strokeWidth={line.lineWidth || 2}
         fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
         fillOpacity={0.5}
-        style={{
-          ...lineAnimatedStyle,
-        }}
       />
 
       {line.endPointConfig && (
@@ -218,7 +220,6 @@ const LineComponent = ({
           color={line.endPointConfig?.color || END_POINT.color}
           animated={line.endPointConfig?.animated || END_POINT.animated}
           radius={line.endPointConfig?.radius || END_POINT.radius}
-          endPointAnimatedStyle={endPointAnimatedStyle}
         />
       )}
 
@@ -263,7 +264,7 @@ const LineComponent = ({
           radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
       )}
-    </>
+    </AnimatedG>
   );
 };
 
@@ -272,6 +273,7 @@ const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
     prev.line.data.length === next.line.data.length &&
     prev.line.curve === next.line.curve &&
     prev.line.lineColor === next.line.lineColor &&
+    prev.line.key === next.line.key &&
     prev.line.data.every((point, index) => {
       return point.x === next.line.data[index]?.x;
     })
