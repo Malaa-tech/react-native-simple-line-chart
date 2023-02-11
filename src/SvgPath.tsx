@@ -1,17 +1,19 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   interpolate,
   SharedValue,
   useDerivedValue,
 } from 'react-native-reanimated';
 import { View } from 'react-native';
-import { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
+import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import { createNewPath, getIndexOfTheNearestXPoint } from './utils';
+import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
+import { AnimatedPath } from './AnimatedComponents';
+import useChartAnimation from './animations';
 
 const SvgPath = ({
   line1,
@@ -114,23 +116,6 @@ const LineComponent = ({
   extraConfig: ExtraConfig;
   onPointChange?: (point?: DataPoint) => void;
 }) => {
-  const createPathCallback = useCallback(createNewPath, [
-    `${line?.data.map((point) => point.x)}`,
-  ]);
-
-  const path = createPathCallback({
-    data: line.data,
-    allData,
-    endSpacing: extraConfig.endSpacing || 20,
-    svgHeight,
-    svgWidth,
-    isFilled: line.fillColor !== undefined,
-    alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
-    curve: line.curve,
-    calculateChartYAxisMinMax:
-      extraConfig.calculateChartYAxisMinMax || undefined,
-  });
-
   const isLineColorGradient = Array.isArray(line.lineColor);
 
   const getActivePointColor = useCallback(() => {
@@ -142,6 +127,39 @@ const LineComponent = ({
     }
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
+
+  const DURATION = 500;
+  const { endPointAnimatedStyle, lineAnimatedStyle, show, hide } =
+    useChartAnimation({
+      duration: DURATION,
+    });
+
+  const [localPath, setLocalPath] = React.useState<PathObject>();
+
+  useEffect(() => {
+    hide();
+    setTimeout(() => {
+      show();
+      const path = createNewPath({
+        data: line.data,
+        allData,
+        endSpacing: extraConfig.endSpacing || 20,
+        svgHeight,
+        svgWidth,
+        isFilled: line.fillColor !== undefined,
+        alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
+        curve: line.curve,
+        calculateChartYAxisMinMax:
+          extraConfig.calculateChartYAxisMinMax || undefined,
+      });
+
+      setLocalPath(path);
+    }, DURATION / 2);
+  }, [line.data.map((item) => item.y).join(''), line.curve]);
+
+  if (localPath === undefined) {
+    return null;
+  }
 
   return (
     <>
@@ -180,28 +198,32 @@ const LineComponent = ({
         )}
       </Defs>
 
-      <Path
+      <AnimatedPath
         strokeLinejoin="round"
-        d={path.d || ''}
+        d={localPath.d || ''}
         stroke={`url(#${identifier})`}
         strokeWidth={line.lineWidth || 2}
         fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
         fillOpacity={0.5}
+        style={{
+          ...lineAnimatedStyle,
+        }}
       />
 
       {line.endPointConfig && (
         <EndPoint
-          x={path.x(line.data[line.data.length - 1]?.x || 0)}
-          y={path.y(line.data[line.data.length - 1]?.y || 0)}
+          x={localPath.x(localPath.data[localPath.data.length - 1]?.x || 0)}
+          y={localPath.y(localPath.data[localPath.data.length - 1]?.y || 0)}
           color={line.endPointConfig?.color || END_POINT.color}
           animated={line.endPointConfig?.animated || END_POINT.animated}
           radius={line.endPointConfig?.radius || END_POINT.radius}
+          endPointAnimatedStyle={endPointAnimatedStyle}
         />
       )}
 
       {line !== undefined && line.activePointConfig !== undefined && (
         <ActivePoint
-          data={line.data}
+          data={localPath.data}
           activeTouch={activeTouch}
           width={svgWidth}
           height={svgHeight}
@@ -210,7 +232,7 @@ const LineComponent = ({
             line.activePointComponentWithSharedValue
           }
           activeIndex={activeIndex}
-          path={path}
+          path={localPath}
           onPointChange={onPointChange}
           color={getActivePointColor()}
           borderColor={

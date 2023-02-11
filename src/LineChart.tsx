@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
 import {
   Gesture,
   GestureDetector,
   PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
+import { AnimatedView } from './AnimatedComponents';
 import { EXTRA_CONFIG, LINE_CHART } from './defaults';
 import SvgPath from './SvgPath';
 import { DataPoint, ExtraConfig, LineChart as LineChartProps } from './types';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
   return {
