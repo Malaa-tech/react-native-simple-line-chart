@@ -3,7 +3,6 @@ import { ColorValue } from 'react-native';
 import {
   useAnimatedProps,
   useSharedValue,
-  withDelay,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
@@ -24,7 +23,7 @@ function EndPoint({
   radius: number;
   color: ColorValue;
   animated: boolean;
-  lineAnimationConfig: AnimationConfig;
+  lineAnimationConfig?: AnimationConfig;
 }) {
   const radiusSV = useSharedValue(radius * 1.7);
   const ySV = useSharedValue(y);

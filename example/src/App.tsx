@@ -256,6 +256,7 @@ export default function App() {
             color={color}
             onPress={() => {
               setData(generateData({ numberOfPoints, range: 3000 }) as any);
+              setData2(generateData({ numberOfPoints, range: 1500 }) as any);
             }}
           />
         </View>

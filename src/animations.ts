@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import {
   useSharedValue,
   withTiming,
@@ -24,14 +25,65 @@ const useChartAnimation = ({
   const pathXSV = useSharedValue<number[]>([]);
 
   useEffect(() => {
-    pathXSV.value = getPathXArrayFromPath(path?.d || '');
-    if (pathXSV.value.length !== pathYSV.value.length) {
-      pathYSV.value = getPathYArrayFromPath(path?.d || '');
-    } else {
-      pathYSV.value = withTiming(getPathYArrayFromPath(path?.d || ''), {
-        duration: DURATION / 2,
-      });
+    // if (pathXSV.value.length !== path?.data.length) {
+    //   console.log('old');
+    //   console.log({
+    //     pathXSV: pathXSV.value,
+    //     pathYSV: pathYSV.value,
+    //     test: getPathXArrayFromPath(path?.d || ''),
+    //     testlen: getPathXArrayFromPath(path?.d || '').length,
+    //     length: pathYSV.value.length,
+    //   });
+    //   pathXSV.value = getPathXArrayFromPath(path?.d || '');
+    //   pathYSV.value = getPathYArrayFromPath(path?.d || '');
+    //   console.log('new');
+    //   console.log({
+    //     pathXSV: pathXSV.value,
+    //     pathYSV: pathYSV.value,
+    //     length: pathYSV.value.length,
+    //   });
+    // } else {
+
+    // console.log('old');
+    // console.log({
+    //   pathXSV: pathXSV.value,
+    //   pathYSV: pathYSV.value,
+    //   test: getPathXArrayFromPath(path?.d || '', path?.data.length),
+    //   testlen: getPathXArrayFromPath(path?.d || '', path?.data.length).length,
+    //   testY: getPathYArrayFromPath(path?.d || '', path?.data.length),
+    //   testYlen: getPathYArrayFromPath(path?.d || '', path?.data.length).length,
+    //   length: path?.data.length,
+    // });
+
+    if (path?.data.length && pathXSV.value.length < path?.data.length) {
+      pathXSV.value = new Array(path?.data.length - pathXSV.value.length)
+        .fill(0)
+        .concat(pathXSV.value);
+      pathYSV.value = new Array(path?.data.length - pathYSV.value.length)
+        .fill(0)
+        .concat(pathYSV.value);
+    } else if (path?.data.length && pathXSV.value.length > path?.data.length) {
+      pathXSV.value = pathXSV.value.slice(
+        pathXSV.value.length - path?.data.length
+      );
+      pathYSV.value = pathYSV.value.slice(
+        pathYSV.value.length - path?.data.length
+      );
     }
+
+    pathXSV.value = withTiming(
+      getPathXArrayFromPath(path?.d || '', path?.data.length as any),
+      {
+        duration: DURATION / 2,
+      }
+    );
+    pathYSV.value = withTiming(
+      getPathYArrayFromPath(path?.d || '', path?.data.length as any),
+      {
+        duration: DURATION / 2,
+      }
+    );
+    // }
   }, [path?.d]);
 
   const show = () => {
@@ -56,10 +108,16 @@ const useChartAnimation = ({
   });
 
   const derivedPath = useDerivedValue(() => {
-    return getPathFromPathArray({
+    console.log({
+      pathX: pathXSV.value.length,
+      pathY: pathYSV.value.length,
+    });
+    const path = getPathFromPathArray({
       pathX: pathXSV.value,
       pathY: pathYSV.value,
     });
+    // console.log('path', path);
+    return path;
   }, [path?.d]);
 
   const lineAnimatedProps = useAnimatedProps(() => {
@@ -77,26 +135,64 @@ const useChartAnimation = ({
   };
 };
 
-const getPathYArrayFromPath = (path: string) => {
+const getPathYArrayFromPath = (
+  path: string,
+  desiredNumberOfElements: number
+) => {
   'worklet';
 
-  return path
+  const resultPath = path
     .replace('M', '')
     .split('L')
     .map((point) => {
       return parseFloat(point.trim().split(',')[1] || '0');
     });
+
+  if (resultPath.length === desiredNumberOfElements) {
+    return resultPath;
+  }
+
+  if (resultPath.length < desiredNumberOfElements) {
+    return resultPath.concat(
+      new Array(desiredNumberOfElements - resultPath.length).fill(0)
+    );
+  }
+
+  if (resultPath.length > desiredNumberOfElements) {
+    return resultPath.slice(0, desiredNumberOfElements);
+  }
+
+  return resultPath;
 };
 
-const getPathXArrayFromPath = (path: string) => {
+const getPathXArrayFromPath = (
+  path: string,
+  desiredNumberOfElements: number
+) => {
   'worklet';
 
-  return path
+  const resultPath = path
     .replace('M', '')
     .split('L')
     .map((point) => {
       return parseFloat(point.trim().split(',')[0] || '0');
     });
+
+  if (resultPath.length === desiredNumberOfElements) {
+    return resultPath;
+  }
+
+  if (resultPath.length < desiredNumberOfElements) {
+    return resultPath.concat(
+      new Array(desiredNumberOfElements - resultPath.length).fill(0)
+    );
+  }
+
+  if (resultPath.length > desiredNumberOfElements) {
+    return resultPath.slice(0, desiredNumberOfElements);
+  }
+
+  return resultPath;
 };
 
 const getPathFromPathArray = ({
