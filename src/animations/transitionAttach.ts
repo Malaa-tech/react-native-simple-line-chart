@@ -3,26 +3,26 @@ import {
   useSharedValue,
   withTiming,
   useAnimatedStyle,
-  runOnJS,
   useAnimatedProps,
   useDerivedValue,
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
-import { PathObject } from 'src/utils';
-import { endPointAnimationFunction } from 'src/animations/animations';
+
+import {
+  animationHook,
+  endPointAnimationFunction,
+  startAnimationFunction,
+} from 'src/animations/animations';
 import {
   getPathFromPathArray,
   getPathXArrayFromPath,
   getPathYArrayFromPath,
 } from './utils';
 
-export default function useTransitionAttach({
-  path,
-  duration,
-}: {
-  path?: PathObject;
-  duration?: number;
-}) {
+const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
+  if (!enabled) {
+    return {};
+  }
   const DURATION = duration || 0;
   const pathYSV = useSharedValue<number[]>([]);
   const pathXSV = useSharedValue<number[]>([]);
@@ -82,8 +82,12 @@ export default function useTransitionAttach({
     // }
   }, [path?.d]);
 
-  const startAnimation = ({ action }: { action: () => void }) => {
-    runOnJS(action)();
+  const startAnimation: startAnimationFunction = ({
+    action,
+  }: {
+    action: () => void;
+  }) => {
+    action();
   };
 
   const lineWrapperAnimatedStyle = useAnimatedStyle(() => {
@@ -115,10 +119,14 @@ export default function useTransitionAttach({
     });
   };
 
-  return {
+  const result: any = {
     lineWrapperAnimatedStyle,
     lineAnimatedProps,
     startAnimation,
     endPointAnimation,
   };
-}
+
+  return result;
+};
+
+export default useTransitionAttach;

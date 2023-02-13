@@ -1,11 +1,8 @@
-import {
-  SharedValue,
-  useAnimatedProps,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import { SharedValue } from 'react-native-reanimated';
 import { PathObject } from '../utils';
 import useTransitionAttach from './transitionAttach';
 import { AnimationType } from '../types';
+import useNoAnimation from './noAnimation';
 
 export type endPointAnimationFunction = ({
   currentYPosition,
@@ -14,6 +11,23 @@ export type endPointAnimationFunction = ({
   currentYPosition: SharedValue<number>;
   newYPosition: number;
 }) => void;
+
+export type startAnimationFunction = ({
+  action,
+}: {
+  action: () => void;
+}) => void;
+
+export type animationHook = (props: {
+  path?: PathObject;
+  duration?: number;
+  enabled?: boolean;
+}) => {
+  lineAnimatedProps: any;
+  lineWrapperAnimatedStyle: any;
+  startAnimation: startAnimationFunction;
+  endPointAnimation: endPointAnimationFunction;
+};
 
 const useChartAnimation = ({
   duration,
@@ -24,16 +38,18 @@ const useChartAnimation = ({
   animationType?: AnimationType;
   path?: PathObject;
 }) => {
+  const {
+    lineAnimatedProps: transitionAttachLineAnimatedProps,
+    lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
+    startAnimation: transitionAttachStartAnimation,
+    endPointAnimation: transitionAttachEndPointAnimation,
+  } = useTransitionAttach({
+    path,
+    duration,
+    enabled: animationType === 'transitionAttach',
+  });
+
   if (animationType === 'transitionAttach') {
-    const {
-      lineAnimatedProps: transitionAttachLineAnimatedProps,
-      lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
-      startAnimation: transitionAttachStartAnimation,
-      endPointAnimation: transitionAttachEndPointAnimation,
-    } = useTransitionAttach({
-      path,
-      duration,
-    });
     return {
       lineAnimatedProps: transitionAttachLineAnimatedProps,
       lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
@@ -42,32 +58,20 @@ const useChartAnimation = ({
     };
   }
 
-  const defaultEndPointAnimation: endPointAnimationFunction = ({
-    currentYPosition,
-    newYPosition,
-  }) => {
-    currentYPosition.value = newYPosition;
-  };
-
-  const defaultLineWrapperAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: 1,
-    };
-  });
-
-  const defaultLineAnimatedProps = useAnimatedProps(() => {
-    return {
-      d: path?.d || '',
-    };
+  const {
+    lineAnimatedProps: defaultLineAnimatedProps,
+    lineWrapperAnimatedStyle: defaultLineWrapperAnimatedStyle,
+    startAnimation: defaultStartAnimation,
+    endPointAnimation: defaultEndPointAnimation,
+  } = useNoAnimation({
+    path,
   });
 
   return {
-    lineAnimatedProps: defaultLineAnimatedProps as Required<{ d: string }>,
+    lineAnimatedProps: defaultLineAnimatedProps,
     lineWrapperProps: defaultLineWrapperAnimatedStyle,
     endPointAnimation: defaultEndPointAnimation,
-    startAnimation: ({ action }: { action: () => void }) => {
-      action();
-    },
+    startAnimation: defaultStartAnimation,
   };
 };
 
