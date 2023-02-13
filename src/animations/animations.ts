@@ -3,6 +3,7 @@ import { PathObject } from '../utils';
 import useTransitionAttach from './transitionAttach';
 import { AnimationType } from '../types';
 import useNoAnimation from './noAnimation';
+import useTransitionUniform from './transitionUniform';
 
 export type endPointAnimationFunction = ({
   currentYPosition,
@@ -49,14 +50,16 @@ const useChartAnimation = ({
     enabled: animationType === 'transitionAttach',
   });
 
-  if (animationType === 'transitionAttach') {
-    return {
-      lineAnimatedProps: transitionAttachLineAnimatedProps,
-      lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
-      startAnimation: transitionAttachStartAnimation,
-      endPointAnimation: transitionAttachEndPointAnimation,
-    };
-  }
+  const {
+    lineAnimatedProps: transitionUniformLineAnimatedProps,
+    lineWrapperAnimatedStyle: transitionUniformLineWrapperAnimatedStyle,
+    startAnimation: transitionUniformStartAnimation,
+    endPointAnimation: transitionUniformEndPointAnimation,
+  } = useTransitionUniform({
+    path,
+    duration,
+    enabled: animationType === 'transitionUniform',
+  });
 
   const {
     lineAnimatedProps: defaultLineAnimatedProps,
@@ -66,6 +69,24 @@ const useChartAnimation = ({
   } = useNoAnimation({
     path,
   });
+
+  if (animationType === 'transitionUniform') {
+    return {
+      lineAnimatedProps: transitionUniformLineAnimatedProps,
+      lineWrapperAnimatedStyle: transitionUniformLineWrapperAnimatedStyle,
+      startAnimation: transitionUniformStartAnimation,
+      endPointAnimation: transitionUniformEndPointAnimation,
+    };
+  }
+
+  if (animationType === 'transitionAttach') {
+    return {
+      lineAnimatedProps: transitionAttachLineAnimatedProps,
+      lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
+      startAnimation: transitionAttachStartAnimation,
+      endPointAnimation: transitionAttachEndPointAnimation,
+    };
+  }
 
   return {
     lineAnimatedProps: defaultLineAnimatedProps,

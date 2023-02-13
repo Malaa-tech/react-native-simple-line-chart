@@ -395,7 +395,7 @@ const Chart = ({
           },
           animationConfig: {
             duration: 1500,
-            animationType: 'transitionAttach',
+            animationType: 'transitionUniform',
           },
         }}
         onPointFocus={(point) => {

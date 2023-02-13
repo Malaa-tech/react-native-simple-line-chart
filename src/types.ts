@@ -230,7 +230,7 @@ export interface AnimationConfig {
   animationType?: AnimationType;
 }
 
-export type AnimationType = 'fade' | 'transitionAttach';
+export type AnimationType = 'fade' | 'transitionAttach' | 'transitionUniform';
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 
