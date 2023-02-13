@@ -13,7 +13,7 @@ import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
-import useChartAnimation from './animations';
+import useChartAnimation from './animations/animations';
 
 const SvgPath = ({
   line1,
@@ -130,12 +130,16 @@ const LineComponent = ({
 
   const [localPath, setLocalPath] = React.useState<PathObject>();
 
-  const { startAnimation, lineWrapperAnimatedStyle, lineAnimatedProps } =
-    useChartAnimation({
-      duration: extraConfig.animationConfig?.duration || 0,
-      animationType: extraConfig.animationConfig?.animationType || 'fade',
-      path: localPath,
-    });
+  const {
+    startAnimation,
+    lineWrapperAnimatedStyle,
+    lineAnimatedProps,
+    endPointAnimation,
+  } = useChartAnimation({
+    duration: extraConfig.animationConfig?.duration || 0,
+    animationType: extraConfig.animationConfig?.animationType || 'fade',
+    path: localPath,
+  });
 
   useEffect(() => {
     const path = createNewPath({
@@ -224,7 +228,7 @@ const LineComponent = ({
             color={line.endPointConfig?.color || END_POINT.color}
             animated={line.endPointConfig?.animated || END_POINT.animated}
             radius={line.endPointConfig?.radius || END_POINT.radius}
-            lineAnimationConfig={extraConfig.animationConfig}
+            endPointAnimation={endPointAnimation}
           />
         )}
       </AnimatedG>

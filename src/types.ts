@@ -227,10 +227,10 @@ export interface AnimationConfig {
    * Animation presets
    * @default 'fade'
    */
-  animationType?: 'fade' | 'fadeAndSlide';
+  animationType?: AnimationType;
 }
 
-export type AnimationType = 'slide' | 'fade';
+export type AnimationType = 'fade' | 'transitionAttach';
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 

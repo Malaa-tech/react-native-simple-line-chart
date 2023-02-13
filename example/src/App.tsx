@@ -77,7 +77,7 @@ export default function App() {
               title="120 points"
               color={color}
               onPress={() => {
-                setNumberOfPoints(90);
+                setNumberOfPoints(200);
               }}
             />
           </View>
@@ -394,8 +394,8 @@ const Chart = ({
             };
           },
           animationConfig: {
-            duration: 500,
-            animationType: 'fadeAndSlide',
+            duration: 1500,
+            animationType: 'transitionAttach',
           },
         }}
         onPointFocus={(point) => {
