@@ -77,7 +77,7 @@ export default function App() {
               title="120 points"
               color={color}
               onPress={() => {
-                setNumberOfPoints(200);
+                setNumberOfPoints(60);
               }}
             />
           </View>

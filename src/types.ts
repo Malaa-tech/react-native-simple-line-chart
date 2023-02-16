@@ -217,6 +217,12 @@ export interface ExtraConfig {
   animationConfig?: AnimationConfig;
 }
 
+/**
+ * Setting this for enabling animations
+ * limitations: animations doesn't work with area chart presentation
+ * limitations: 'linear' curve type is the only supported type for animations
+ * limitations: switching animations will cause a carsh, and you will need to restart the app
+ */
 export interface AnimationConfig {
   /**
    * Animation Duration

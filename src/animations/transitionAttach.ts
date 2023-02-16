@@ -14,9 +14,9 @@ import {
   startAnimationFunction,
 } from 'src/animations/animations';
 import {
-  getPathFromPathArray,
   getPathXArrayFromPath,
   getPathYArrayFromPath,
+  svgBezierPath,
 } from './utils';
 
 const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
@@ -28,7 +28,14 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
   const pathXSV = useSharedValue<number[]>([]);
 
   useEffect(() => {
-    if (path?.data.length && pathXSV.value.length < path?.data.length) {
+    const newPathXArray = getPathXArrayFromPath(path?.d || '');
+    const newPathYArray = getPathYArrayFromPath(path?.d || '');
+
+    if (path?.data.length !== undefined && pathXSV.value.length === 0) {
+      // initial setup
+      pathXSV.value = newPathXArray;
+      pathYSV.value = newPathYArray;
+    } else if (path?.data.length && pathXSV.value.length < path?.data.length) {
       pathXSV.value = new Array(path?.data.length - pathXSV.value.length)
         .fill(0)
         .concat(pathXSV.value);
@@ -36,37 +43,37 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
         .fill(0)
         .concat(pathYSV.value);
 
-      pathXSV.value = withTiming(getPathXArrayFromPath(path?.d || ''), {
+      pathXSV.value = withTiming(newPathXArray, {
         duration: DURATION / 2,
       });
-      pathYSV.value = withTiming(getPathYArrayFromPath(path?.d || ''), {
+      pathYSV.value = withTiming(newPathYArray, {
         duration: DURATION / 2,
       });
     } else if (path?.data.length && pathXSV.value.length > path?.data.length) {
       const pathArrayXAfter = [
-        ...new Array(
-          pathXSV.value.length - getPathXArrayFromPath(path?.d || '').length
-        ).fill(getPathXArrayFromPath(path?.d || '')[0]),
-        ...getPathXArrayFromPath(path?.d || ''),
+        ...new Array(pathXSV.value.length - newPathXArray.length).fill(
+          newPathXArray[0]
+        ),
+        ...newPathXArray,
       ];
       pathXSV.value = withTiming(pathArrayXAfter, {
         duration: DURATION / 2,
       });
 
       const pathArrayYAfter = [
-        ...new Array(
-          pathXSV.value.length - getPathYArrayFromPath(path?.d || '').length
-        ).fill(getPathYArrayFromPath(path?.d || '')[0]),
-        ...getPathYArrayFromPath(path?.d || ''),
+        ...new Array(pathXSV.value.length - newPathYArray.length).fill(
+          newPathYArray[0]
+        ),
+        ...newPathYArray,
       ];
       pathYSV.value = withTiming(pathArrayYAfter, {
         duration: DURATION / 2,
       });
     } else {
-      pathXSV.value = withTiming(getPathXArrayFromPath(path?.d || ''), {
+      pathXSV.value = withTiming(newPathXArray, {
         duration: DURATION / 2,
       });
-      pathYSV.value = withTiming(getPathYArrayFromPath(path?.d || ''), {
+      pathYSV.value = withTiming(newPathYArray, {
         duration: DURATION / 2,
       });
     }
@@ -89,11 +96,16 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
   });
 
   const derivedPath = useDerivedValue(() => {
-    const path = getPathFromPathArray({
-      pathX: pathXSV.value,
-      pathY: pathYSV.value,
+    const points = new Array(pathXSV.value.length).fill(0).map((_value, i) => {
+      return {
+        x: pathXSV.value[i],
+        y: pathYSV.value[i],
+      };
     });
-    return path;
+
+    const complexPath = svgBezierPath(points, 0.03, 'complex');
+
+    return complexPath;
   }, [path?.d]);
 
   const lineAnimatedProps = useAnimatedProps(() => {

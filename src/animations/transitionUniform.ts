@@ -14,10 +14,10 @@ import {
   startAnimationFunction,
 } from 'src/animations/animations';
 import {
-  getPathFromPathArray,
   getPathXArrayFromPath,
   getPathYArrayFromPath,
   scaleArraySize,
+  svgBezierPath,
 } from './utils';
 
 const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
@@ -31,12 +31,6 @@ const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
   useEffect(() => {
     const newPathXArray = getPathXArrayFromPath(path?.d || '');
     const newPathYArray = getPathYArrayFromPath(path?.d || '');
-
-    console.log({
-      pathSize: path?.data.length,
-      pathXSVSize: pathXSV.value.length,
-      pathYSVSize: pathYSV.value.length,
-    });
 
     if (path?.data.length !== undefined && pathXSV.value.length === 0) {
       // initial setup
@@ -59,9 +53,18 @@ const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
         newPathXArray,
         pathXSV.value.length
       );
-      pathXSV.value = withTiming(pathArrayXAfter, {
-        duration: DURATION / 2,
-      });
+      pathXSV.value = withTiming(
+        pathArrayXAfter,
+        {
+          duration: DURATION / 2,
+        },
+        (finished) => {
+          if (finished) {
+            pathXSV.value = newPathXArray;
+            pathYSV.value = newPathYArray;
+          }
+        }
+      );
       const pathArrayYAfter = scaleArraySize(
         newPathYArray,
         pathYSV.value.length
@@ -96,23 +99,15 @@ const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
   });
 
   const derivedPath = useDerivedValue(() => {
-    const path = getPathFromPathArray({
-      pathX: pathXSV.value,
-      pathY: pathYSV.value,
+    const points = new Array(pathXSV.value.length).fill(0).map((_value, i) => {
+      return {
+        x: pathXSV.value[i],
+        y: pathYSV.value[i],
+      };
     });
+    const complexPath = svgBezierPath(points, 0.03, 'complex');
 
-    // const points = new Array(pathXSV.value.length).fill(0).map((value, i) => {
-    //   return {
-    //     x: pathXSV.value[i],
-    //     y: pathYSV.value[i],
-    //   };
-    // });
-    // console.log({ points, path: svgBezierPath(points, 2, 'complex') });
-    // const complexPath = svgBezierPath(points, 0.2, 'simple');
-    // const anotherPath = createRoundedPathString(points);
-    // console.log(anotherPath);
-
-    return path;
+    return complexPath;
   }, [path?.d]);
 
   const lineAnimatedProps = useAnimatedProps(() => {

@@ -11,6 +11,7 @@ More configuration for the chart
 - [activeOffsetX](ExtraConfig.md#activeoffsetx)
 - [alwaysShowActivePoint](ExtraConfig.md#alwaysshowactivepoint)
 - [alwaysStartYAxisFromZero](ExtraConfig.md#alwaysstartyaxisfromzero)
+- [animationConfig](ExtraConfig.md#animationconfig)
 - [calculateChartYAxisMinMax](ExtraConfig.md#calculatechartyaxisminmax)
 - [endSpacing](ExtraConfig.md#endspacing)
 - [hideActivePointOnBlur](ExtraConfig.md#hideactivepointonblur)
@@ -31,7 +32,7 @@ Supplying activeOffsetX for the gesture handler, if the offset is reached, the s
 
 #### Defined in
 
-[src/types.ts:200](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L200)
+[src/types.ts:204](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L204)
 
 ___
 
@@ -47,7 +48,7 @@ false
 
 #### Defined in
 
-[src/types.ts:179](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L179)
+[src/types.ts:183](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L183)
 
 ___
 
@@ -59,7 +60,19 @@ Settings this to true will make the chart y axis start from zero even if the min
 
 #### Defined in
 
-[src/types.ts:191](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L191)
+[src/types.ts:195](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L195)
+
+___
+
+### animationConfig
+
+• `Optional` **animationConfig**: [`AnimationConfig`](AnimationConfig.md)
+
+Animation configuration
+
+#### Defined in
+
+[src/types.ts:217](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L217)
 
 ___
 
@@ -71,7 +84,7 @@ supplying this function will allow you to customize the y axis min and max value
 
 #### Defined in
 
-[src/types.ts:209](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L209)
+[src/types.ts:213](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L213)
 
 ___
 
@@ -87,7 +100,7 @@ Space between the end of the chart the the end of the view (like paddingEnd)
 
 #### Defined in
 
-[src/types.ts:205](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L205)
+[src/types.ts:209](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L209)
 
 ___
 
@@ -99,7 +112,7 @@ Settings this to true will make the active point always visible after the user t
 
 #### Defined in
 
-[src/types.ts:187](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L187)
+[src/types.ts:191](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L191)
 
 ___
 
@@ -111,7 +124,7 @@ This is the index of the initial active point (the point that will be active whe
 
 #### Defined in
 
-[src/types.ts:183](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L183)
+[src/types.ts:187](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L187)
 
 ___
 
@@ -123,4 +136,4 @@ Supplying simultaneousHandlers will make the chart work with other gesture handl
 
 #### Defined in
 
-[src/types.ts:195](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L195)
+[src/types.ts:199](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L199)
