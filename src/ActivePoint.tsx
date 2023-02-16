@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ColorValue } from 'react-native';
-import Animated, {
+import {
   runOnJS,
   SharedValue,
   useAnimatedProps,
@@ -9,17 +9,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { Circle, Path } from 'react-native-svg';
 import ActivePointComponentWrapper from './ActivePointComponentWrapper';
+import { AnimatedCircle, AnimatedPath } from './AnimatedComponents';
 import {
   ActivePointComponent,
   ActivePointComponentSharedValue,
   DataPoint,
 } from './types';
 import { PathObject, useForceReRender } from './utils';
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 const ActivePoint = ({
   data,

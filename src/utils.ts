@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
 
@@ -6,6 +6,7 @@ export type PathObject = {
   d: string | null;
   x: d3.ScaleTime<number, number, never>;
   y: d3.ScaleLinear<number, number, never>;
+  data: DataPoint[];
 };
 
 export const createNewPath = ({
@@ -104,6 +105,7 @@ export const createNewPath = ({
     d: line,
     x,
     y,
+    data,
   };
 };
 
@@ -156,3 +158,11 @@ export const useForceReRender = () => {
 
   return forceUpdate;
 };
+
+export function usePrevious(value: any) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}

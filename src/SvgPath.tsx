@@ -1,17 +1,19 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   interpolate,
   SharedValue,
   useDerivedValue,
 } from 'react-native-reanimated';
 import { View } from 'react-native';
-import { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
+import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import { createNewPath, getIndexOfTheNearestXPoint } from './utils';
+import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
+import { AnimatedG, AnimatedPath } from './AnimatedComponents';
+import useChartAnimation from './animations/animations';
 
 const SvgPath = ({
   line1,
@@ -69,7 +71,7 @@ const SvgPath = ({
         .map((line, index) => {
           if (line?.data) {
             return (
-              <LineComponent
+              <MemoizedLineComponent
                 key={`${index}`}
                 line={line}
                 allData={allData}
@@ -114,19 +116,6 @@ const LineComponent = ({
   extraConfig: ExtraConfig;
   onPointChange?: (point?: DataPoint) => void;
 }) => {
-  const path = createNewPath({
-    data: line.data,
-    allData,
-    endSpacing: extraConfig.endSpacing || 20,
-    svgHeight,
-    svgWidth,
-    isFilled: line.fillColor !== undefined,
-    alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
-    curve: line.curve,
-    calculateChartYAxisMinMax:
-      extraConfig.calculateChartYAxisMinMax || undefined,
-  });
-
   const isLineColorGradient = Array.isArray(line.lineColor);
 
   const getActivePointColor = useCallback(() => {
@@ -138,6 +127,48 @@ const LineComponent = ({
     }
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
+
+  const [localPath, setLocalPath] = React.useState<PathObject>();
+
+  const {
+    startAnimation,
+    lineWrapperAnimatedStyle,
+    lineAnimatedProps,
+    endPointAnimation,
+  } = useChartAnimation({
+    duration: extraConfig.animationConfig?.duration || 0,
+    animationType: extraConfig.animationConfig?.animationType || 'fade',
+    path: localPath,
+  });
+
+  useEffect(() => {
+    const path = createNewPath({
+      data: line.data,
+      allData,
+      endSpacing: extraConfig.endSpacing || 20,
+      svgHeight,
+      svgWidth,
+      isFilled: line.fillColor !== undefined,
+      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
+      curve: line.curve,
+      calculateChartYAxisMinMax:
+        extraConfig.calculateChartYAxisMinMax || undefined,
+    });
+
+    if (extraConfig.animationConfig) {
+      startAnimation({
+        action: () => {
+          setLocalPath(path);
+        },
+      });
+    } else {
+      setLocalPath(path);
+    }
+  }, [line.data.map((item) => item.y).join(''), line.curve, line.key, allData]);
+
+  if (localPath === undefined) {
+    return null;
+  }
 
   return (
     <>
@@ -176,28 +207,35 @@ const LineComponent = ({
         )}
       </Defs>
 
-      <Path
-        strokeLinejoin="round"
-        d={path.d || ''}
-        stroke={`url(#${identifier})`}
-        strokeWidth={line.lineWidth || 2}
-        fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
-        fillOpacity={0.5}
-      />
-
-      {line.endPointConfig && (
-        <EndPoint
-          x={path.x(line.data[line.data.length - 1]?.x || 0)}
-          y={path.y(line.data[line.data.length - 1]?.y || 0)}
-          color={line.endPointConfig?.color || END_POINT.color}
-          animated={line.endPointConfig?.animated || END_POINT.animated}
-          radius={line.endPointConfig?.radius || END_POINT.radius}
+      <AnimatedG
+        style={{
+          ...lineWrapperAnimatedStyle,
+        }}
+      >
+        <AnimatedPath
+          strokeLinejoin="round"
+          stroke={`url(#${identifier})`}
+          strokeWidth={line.lineWidth || 2}
+          fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
+          fillOpacity={0.5}
+          animatedProps={lineAnimatedProps}
         />
-      )}
+
+        {line.endPointConfig && (
+          <EndPoint
+            x={localPath.x(localPath.data[localPath.data.length - 1]?.x || 0)}
+            y={localPath.y(localPath.data[localPath.data.length - 1]?.y || 0)}
+            color={line.endPointConfig?.color || END_POINT.color}
+            animated={line.endPointConfig?.animated || END_POINT.animated}
+            radius={line.endPointConfig?.radius || END_POINT.radius}
+            endPointAnimation={endPointAnimation}
+          />
+        )}
+      </AnimatedG>
 
       {line !== undefined && line.activePointConfig !== undefined && (
         <ActivePoint
-          data={line.data}
+          data={localPath.data}
           activeTouch={activeTouch}
           width={svgWidth}
           height={svgHeight}
@@ -206,7 +244,7 @@ const LineComponent = ({
             line.activePointComponentWithSharedValue
           }
           activeIndex={activeIndex}
-          path={path}
+          path={localPath}
           onPointChange={onPointChange}
           color={getActivePointColor()}
           borderColor={
@@ -239,5 +277,16 @@ const LineComponent = ({
     </>
   );
 };
+
+const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
+  return (
+    prev.line.data.length === next.line.data.length &&
+    prev.line.curve === next.line.curve &&
+    prev.line.lineColor === next.line.lineColor &&
+    prev.line.key === next.line.key &&
+    prev.allData.map((item) => item.y).join('') ===
+      next.allData.map((item) => item.y).join('')
+  );
+});
 
 export default SvgPath;

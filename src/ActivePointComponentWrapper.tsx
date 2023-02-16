@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { I18nManager, View } from 'react-native';
-import Animated, {
+import {
   runOnJS,
   SharedValue,
   useAnimatedReaction,
@@ -9,14 +9,13 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { AnimatedView } from './AnimatedComponents';
 import {
   ActivePointComponent,
   ActivePointComponentSharedValue,
   DataPoint,
   DataPointSharedValue,
 } from './types';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
 
 const ActivePointComponentWrapper = ({
   activePointPosition,

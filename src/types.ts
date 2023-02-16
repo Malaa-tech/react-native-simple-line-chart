@@ -51,6 +51,10 @@ export type LineChart = {
  */
 export interface Line {
   /**
+   * Optional key to indicate that the line has changed (helps with triggering animations)
+   */
+  key?: string;
+  /**
    * The data points for the line containing an array of objects with x and y values and optionally extraData
    */
   data: DataPoint[];
@@ -207,9 +211,32 @@ export interface ExtraConfig {
    * supplying this function will allow you to customize the y axis min and max values
    */
   calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
+  /**
+   * Animation configuration
+   */
+  animationConfig?: AnimationConfig;
 }
 
-export type AnimationType = 'slide' | 'fade';
+/**
+ * Setting this for enabling animations
+ * limitations: animations doesn't work with area chart presentation
+ * limitations: 'linear' curve type is the only supported type for animations
+ * limitations: switching animations will cause a carsh, and you will need to restart the app
+ */
+export interface AnimationConfig {
+  /**
+   * Animation Duration
+   * @default 200
+   */
+  duration?: number;
+  /**
+   * Animation presets
+   * @default 'fade'
+   */
+  animationType?: AnimationType;
+}
+
+export type AnimationType = 'fade' | 'transitionAttach' | 'transitionUniform';
 
 export type LineCurve = 'linear' | 'cardinal' | 'step' | 'monotone';
 

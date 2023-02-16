@@ -46,7 +46,7 @@ export default function App() {
   const [isEndPoint, setIsEndPoint] = React.useState(true);
   const [isAreaChart, setIsAreaChart] = React.useState(false);
   const [isMultipleLines, setIsMultipleLines] = React.useState(false);
-  const [chartType, setChartType] = React.useState('monotone');
+  const [chartType, setChartType] = React.useState('linear');
 
   React.useEffect(() => {
     setData(generateData({ numberOfPoints, range: 3000 }) as any);
@@ -77,7 +77,7 @@ export default function App() {
               title="120 points"
               color={color}
               onPress={() => {
-                setNumberOfPoints(90);
+                setNumberOfPoints(60);
               }}
             />
           </View>
@@ -250,6 +250,16 @@ export default function App() {
             value={isMultipleLines}
           />
         </View>
+        <View style={{ marginHorizontal: 5 }}>
+          <Button
+            title="Randomize"
+            color={color}
+            onPress={() => {
+              setData(generateData({ numberOfPoints, range: 3000 }) as any);
+              setData2(generateData({ numberOfPoints, range: 1500 }) as any);
+            }}
+          />
+        </View>
       </View>
     </GestureHandlerRootView>
   );
@@ -382,6 +392,10 @@ const Chart = ({
               min,
               max,
             };
+          },
+          animationConfig: {
+            duration: 1500,
+            animationType: 'transitionUniform',
           },
         }}
         onPointFocus={(point) => {

@@ -7,6 +7,7 @@
 ### Interfaces
 
 - [ActivePointConfig](interfaces/ActivePointConfig.md)
+- [AnimationConfig](interfaces/AnimationConfig.md)
 - [EndPointConfig](interfaces/EndPointConfig.md)
 - [ExtraConfig](interfaces/ExtraConfig.md)
 - [Line](interfaces/Line.md)
@@ -14,10 +15,6 @@
 ### Type Aliases
 
 - [LineChart](modules.md#linechart)
-
-### Functions
-
-- [default](modules.md#default)
 
 ## Type Aliases
 
@@ -43,26 +40,4 @@ The props for the LineChart component
 
 #### Defined in
 
-[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/ac4e4fd/src/types.ts#L7)
-
-## Functions
-
-### default
-
-▸ **default**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
-
-**NOTE**: Exotic components are not callable.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `props` | [`LineChart`](modules.md#linechart) |
-
-#### Returns
-
-``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
-
-#### Defined in
-
-example/node_modules/@types/react/index.d.ts:351
+[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L7)
