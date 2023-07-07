@@ -6,8 +6,7 @@ import {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { Circle } from 'react-native-svg';
-import { AnimatedCircle, AnimatedG } from './AnimatedComponents';
+import { AnimatedCircle } from './AnimatedComponents';
 import { endPointAnimationFunction } from './animations/animations';
 
 function EndPoint({
@@ -46,30 +45,35 @@ function EndPoint({
     });
   }, [y]);
 
-  const pointProps = useAnimatedProps(() => {
+  const outerCircleAnimatedProps = useAnimatedProps(() => {
     return {
       r: radiusSV.value,
+      cy: ySV.value,
     };
   });
-
-  const wrapperProps = useAnimatedProps(() => {
+  const innerCircleAnimatedProps = useAnimatedProps(() => {
     return {
-      y: ySV.value,
+      cy: ySV.value,
     };
   });
 
   return (
-    <AnimatedG animatedProps={wrapperProps}>
-      <Circle cx={x} r={radius} fill={color} />
+    <>
+      <AnimatedCircle
+        cx={x}
+        r={radius}
+        fill={color}
+        animatedProps={innerCircleAnimatedProps}
+      />
       {animated && (
         <AnimatedCircle
           cx={x}
           fill={color}
           opacity={0.5}
-          animatedProps={pointProps}
+          animatedProps={outerCircleAnimatedProps}
         />
       )}
-    </AnimatedG>
+    </>
   );
 }
 
