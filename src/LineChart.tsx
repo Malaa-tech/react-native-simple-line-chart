@@ -150,6 +150,8 @@ function LineChart({
             activeTouchX={activeTouchX}
             backgroundColor={backgroundColor}
             extraConfig={extraConfig}
+            initialActivePoint={extraConfig?.initialActivePoint}
+            endSpacing={extraConfig?.endSpacing}
             onPointChange={onPointChange}
           />
         </Svg>

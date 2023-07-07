@@ -30,6 +30,8 @@ const SvgPath = ({
   backgroundColor,
   extraConfig,
   onPointChange,
+  endSpacing,
+  initialActivePoint,
 }: {
   line1: Line;
   line2?: Line;
@@ -39,17 +41,19 @@ const SvgPath = ({
   activeTouch: SharedValue<boolean>;
   backgroundColor?: string;
   extraConfig: ExtraConfig;
+  endSpacing?: number;
+  initialActivePoint?: number;
   onPointChange: (point?: DataPoint) => void;
 }) => {
   const allData = line1.data.concat(line2?.data || []);
 
   const activeIndex = useDerivedValue(() => {
-    if (activeTouchX.value === 0 && extraConfig.initialActivePoint) {
-      return extraConfig.initialActivePoint;
+    if (activeTouchX.value === 0 && initialActivePoint) {
+      return initialActivePoint;
     }
 
     const percentage =
-      (activeTouchX.value / (svgWidth - (extraConfig.endSpacing || 20))) * 100;
+      (activeTouchX.value / (svgWidth - (endSpacing || 20))) * 100;
 
     const percentageToTimestampValue = interpolate(
       percentage,

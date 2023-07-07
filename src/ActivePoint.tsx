@@ -60,7 +60,7 @@ const ActivePoint = ({
     x: 0,
     y: 0,
     extraData: {
-      date: new Date(),
+      date: undefined,
     },
   });
   const pointOpacity = useSharedValue(0);
