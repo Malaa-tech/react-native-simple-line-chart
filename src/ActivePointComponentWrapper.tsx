@@ -50,7 +50,7 @@ const ActivePointComponentWrapper = ({
 }) => {
   const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
   const activeComponentWidthSV = useSharedValue<number>(100);
-  const isReady = useDelayedRendering(500);
+  const isReady = useDelayedRendering(1000);
   const [activeDataPointLocal, setActiveDataPointLocal] = useState<
     undefined | DataPoint
   >(undefined);
