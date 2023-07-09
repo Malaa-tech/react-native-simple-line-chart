@@ -32,12 +32,11 @@ The props for the LineChart component
 | `backgroundColor?` | `string` | The background color of the chart **`Default`** 'white' |
 | `extraConfig?` | [`ExtraConfig`](interfaces/ExtraConfig.md) | More configuration for the chart |
 | `height?` | `number` | The height of the chart **`Default`** 200 |
-| `line1` | [`Line`](interfaces/Line.md) | The line configuration object **`Required`** |
-| `line2?` | [`Line`](interfaces/Line.md) | Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points) |
+| `lines` | [`Line`](interfaces/Line.md)[] | The data for the chart **`Required`** at least one line is required |
 | `onPointFocus?` | `onPointFocus` | This will run when the user taps on the a point on the chart |
 | `onPointLoseFocus?` | `onPointLoseFocus` | This will run when the user release the tap on the a point on the chart |
 | `width?` | `number` | The width of the chart (default value is the width of the screen) |
 
 #### Defined in
 
-[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/128ca3b/src/types.ts#L7)
+[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L7)
