@@ -89,7 +89,9 @@ function LineChart({
     if (extraConfig?.initialActivePoint) {
       activeTouch.value = true;
       if (onPointFocus) {
-        const point = lines[0]?.data[extraConfig?.initialActivePoint as number];
+        const point = lines[0]?.data
+          ? lines[0]?.data[extraConfig?.initialActivePoint as number]
+          : undefined;
         if (point) {
           onPointFocus(point);
         }
@@ -172,8 +174,8 @@ export const MemoizedLineChart = React.memo(
     }
 
     if (
-      JSON.stringify(previousProps.lines[2]?.data) !==
-      JSON.stringify(nextProps.lines[2]?.data)
+      JSON.stringify(previousProps.lines[1]?.data) !==
+      JSON.stringify(nextProps.lines[1]?.data)
     ) {
       return false;
     }

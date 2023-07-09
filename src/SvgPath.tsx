@@ -164,7 +164,7 @@ const LineComponent = ({
 
   useEffect(() => {
     const path = createNewPath({
-      data: line.data,
+      data: line?.data || [],
       allData,
       endSpacing: extraConfig.endSpacing || 20,
       svgHeight,
@@ -186,7 +186,7 @@ const LineComponent = ({
       setLocalPath(path);
     }
   }, [
-    line.data.map((item) => item?.y).join(''),
+    line?.data.map((item) => item?.y).join(''),
     line.curve,
     line.key,
     allData,
