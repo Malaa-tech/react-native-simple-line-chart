@@ -5,7 +5,6 @@ import {
   SharedValue,
   useAnimatedProps,
   useAnimatedReaction,
-  useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -65,6 +64,7 @@ const ActivePoint = ({
   });
   const pointOpacity = useSharedValue(0);
   const lineOpacitySV = useSharedValue(0);
+  const activePointPosition = useSharedValue({ x: 0, y: 0 });
   const forceRerender = useForceReRender();
 
   // forcing a re-render after x ms to fix sharedValues not causing a rerender.
@@ -91,76 +91,60 @@ const ActivePoint = ({
     positions.value = newPositions;
   }, [data]);
 
-  const activePointPosition = useDerivedValue(() => {
-    const y = positions.value[activeIndex.value]?.y;
-    const x = positions.value[activeIndex.value]?.x;
-
-    if (x !== undefined && y !== undefined) {
-      return {
-        x,
-        y,
-      };
-    }
-
-    return {
-      x: 0,
-      y: 0,
-    };
-  }, [activeIndex]);
-
-  useAnimatedReaction(
-    () => {
-      return {
-        activeIndex: activeIndex.value,
-        activeTouch: activeTouch.value,
-      };
-    },
-    (current) => {
-      if (activeTouch.value === true) {
-        try {
-          activePointSV.value = data[current.activeIndex];
-        } catch (e) {
-          // console.log(error);
-        }
-      }
-    },
-    [activeIndex, data, activeTouch]
-  );
-
   useAnimatedReaction(
     () => {
       return { activeIndex: activeIndex.value, activeTouch: activeTouch.value };
     },
-    (current) => {
+    (current, previous) => {
+      const currentIndexData = data[current.activeIndex];
+
       if (current.activeIndex !== null && current.activeTouch === true) {
         try {
           if (onPointChange) {
-            runOnJS(onPointChange)(data[current.activeIndex]);
+            runOnJS(onPointChange)(currentIndexData);
           }
         } catch (e) {
-          // console.log(error);
+          // error
+        }
+      }
+
+      // active point position
+      if (current.activeIndex !== previous?.activeIndex) {
+        const point = positions.value[activeIndex.value];
+        const y = point?.y;
+        const x = point?.x;
+
+        if (x !== undefined && y !== undefined) {
+          activePointPosition.value = {
+            x,
+            y,
+          };
+        } else {
+          activePointPosition.value = {
+            x: 0,
+            y: 0,
+          };
+        }
+      }
+
+      if (current.activeTouch) {
+        activePointSV.value = currentIndexData;
+      }
+
+      // point and line animations
+      if (current.activeTouch !== previous?.activeTouch) {
+        if (current.activeTouch === true) {
+          pointOpacity.value = withTiming(1, { duration: 200 });
+          lineOpacitySV.value = withTiming(verticalLineOpacity, {
+            duration: 200,
+          });
+        } else {
+          pointOpacity.value = withTiming(0, { duration: 200 });
+          lineOpacitySV.value = withTiming(0, { duration: 200 });
         }
       }
     },
     [activeIndex, data, activeTouch]
-  );
-
-  useAnimatedReaction(
-    () => {
-      return activeTouch.value;
-    },
-    (result) => {
-      if (result) {
-        pointOpacity.value = withTiming(1, { duration: 200 });
-        lineOpacitySV.value = withTiming(verticalLineOpacity, {
-          duration: 200,
-        });
-      } else {
-        pointOpacity.value = withTiming(0, { duration: 200 });
-        lineOpacitySV.value = withTiming(0, { duration: 200 });
-      }
-    },
-    [activeTouch]
   );
 
   const activePointProps = useAnimatedProps(() => {
