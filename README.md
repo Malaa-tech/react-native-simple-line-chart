@@ -9,7 +9,8 @@ A simple/interactive/fast line chart component for React Native using d3, react-
 - ✅  Linear gradient line color  
 - ✅  Supports different curve types  
 - ✅  Full utilization of reanimated and shared values  
-- ✅  Supports area chart presentation   
+- ✅  Supports area chart presentation
+- ✅  Supports transition animations
 
  
 ### How we use it in Malaa App
