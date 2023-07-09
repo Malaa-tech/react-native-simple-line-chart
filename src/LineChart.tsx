@@ -53,8 +53,7 @@ function LineChart({
   onPointFocus = LINE_CHART.onPointFocus,
   onPointLoseFocus = LINE_CHART.onPointLoseFocus,
   activePointSharedValue,
-  line1,
-  line2 = LINE_CHART.line2,
+  lines = [],
 }: LineChartProps) {
   const svgHeight = height;
   const svgWidth = width;
@@ -90,7 +89,7 @@ function LineChart({
     if (extraConfig?.initialActivePoint) {
       activeTouch.value = true;
       if (onPointFocus) {
-        const point = line1.data[extraConfig?.initialActivePoint as number];
+        const point = lines[0]?.data[extraConfig?.initialActivePoint as number];
         if (point) {
           onPointFocus(point);
         }
@@ -98,7 +97,7 @@ function LineChart({
     } else {
       onPointLoseFocusLocal();
     }
-  }, [line1.data]);
+  }, [lines[0]?.data]);
 
   const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
     if (isSimultaneousHandlersEnabled === true) {
@@ -144,8 +143,7 @@ function LineChart({
       <AnimatedView style={{ backgroundColor }}>
         <Svg width={svgWidth} height={svgHeight} fill="transparent">
           <SvgPath
-            line1={line1}
-            line2={line2}
+            lines={lines}
             svgHeight={svgHeight}
             svgWidth={svgWidth}
             activeTouch={activeTouch}
@@ -167,14 +165,15 @@ export const MemoizedLineChart = React.memo(
   LineChart,
   (previousProps, nextProps) => {
     if (
-      JSON.stringify(previousProps.line1) !== JSON.stringify(nextProps.line1)
+      JSON.stringify(previousProps.lines[0]) !==
+      JSON.stringify(nextProps.lines[0])
     ) {
       return false;
     }
 
     if (
-      JSON.stringify(previousProps.line2?.data) !==
-      JSON.stringify(nextProps.line2?.data)
+      JSON.stringify(previousProps.lines[2]?.data) !==
+      JSON.stringify(nextProps.lines[2]?.data)
     ) {
       return false;
     }
@@ -182,6 +181,13 @@ export const MemoizedLineChart = React.memo(
     if (
       JSON.stringify(previousProps.backgroundColor) !==
       JSON.stringify(nextProps.backgroundColor)
+    ) {
+      return false;
+    }
+
+    if (
+      JSON.stringify(previousProps.extraConfig) !==
+      JSON.stringify(nextProps.extraConfig)
     ) {
       return false;
     }

@@ -6,14 +6,10 @@ import { SharedValue } from 'react-native-reanimated';
  */
 export type LineChart = {
   /**
-   * The line configuration object
-   * @required
+   * The data for the chart
+   * @required at least one line is required
    */
-  line1: Line;
-  /**
-   * Supply this if you want to create a multi line chart (note that the chart will only support two lines, and the two lines should have the same number of data points)
-   */
-  line2?: Line;
+  lines: Line[];
   /**
    * The height of the chart
    * @default 200

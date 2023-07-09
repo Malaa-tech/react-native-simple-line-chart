@@ -21,8 +21,7 @@ import { AnimatedG, AnimatedPath } from './AnimatedComponents';
 import useChartAnimation from './animations/animations';
 
 const SvgPath = ({
-  line1,
-  line2,
+  lines,
   svgHeight,
   svgWidth,
   activeTouchX,
@@ -33,8 +32,7 @@ const SvgPath = ({
   endSpacing,
   initialActivePoint,
 }: {
-  line1: Line;
-  line2?: Line;
+  lines: Line[];
   svgHeight: number;
   svgWidth: number;
   activeTouchX: SharedValue<number>;
@@ -45,7 +43,10 @@ const SvgPath = ({
   initialActivePoint?: number;
   onPointChange: (point?: DataPoint) => void;
 }) => {
-  const allData = line1.data.concat(line2?.data || []);
+  const allData = lines.reduce((acc, line) => {
+    // @ts-ignore
+    return acc.concat(line?.data);
+  }, []);
 
   const activeIndex = useDerivedValue(() => {
     if (activeTouchX.value === 0 && initialActivePoint) {
@@ -58,24 +59,27 @@ const SvgPath = ({
     const percentageToTimestampValue = interpolate(
       percentage,
       [0, 100],
-      [line1.data[0]?.x || 0, line1.data[line1.data.length - 1]?.x || 100]
+      [
+        lines[0]?.data[0]?.x || 0,
+        lines[0]?.data[(lines[0]?.data || []).length - 1]?.x || 100,
+      ]
     );
 
     let activeIndexLocal = getIndexOfTheNearestXPoint(
-      line1.data,
+      lines[0]?.data || [],
       percentageToTimestampValue
     );
 
-    if (activeIndexLocal >= line1.data.length) {
-      activeIndexLocal = line1.data.length - 1;
+    if (activeIndexLocal >= (lines[0]?.data || []).length) {
+      activeIndexLocal = (lines[0]?.data || []).length - 1;
     }
 
     return activeIndexLocal;
-  }, [activeTouchX, line1.data]);
+  }, [activeTouchX, lines[0]?.data]);
 
   return (
     <>
-      {[line1, line2]
+      {lines
         .filter((line) => line?.data)
         .map((line, index) => {
           if (line?.data) {
@@ -145,7 +149,7 @@ const LineComponent = ({
     setTimeout(() => {
       forceRerender();
     }, 300);
-  }, []);
+  }, [extraConfig]);
 
   const {
     startAnimation,
@@ -181,7 +185,12 @@ const LineComponent = ({
     } else {
       setLocalPath(path);
     }
-  }, [line.data.map((item) => item.y).join(''), line.curve, line.key, allData]);
+  }, [
+    line.data.map((item) => item?.y).join(''),
+    line.curve,
+    line.key,
+    allData,
+  ]);
 
   if (localPath === undefined) {
     return null;
