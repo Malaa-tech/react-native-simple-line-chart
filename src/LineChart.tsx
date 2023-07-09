@@ -80,7 +80,9 @@ function LineChart({
       onPointLoseFocus();
     }
     if (activePointSharedValue && !extraConfig?.alwaysShowActivePoint) {
-      activePointSharedValue.value = undefined;
+      setTimeout(() => {
+        activePointSharedValue.value = undefined;
+      }, 10);
     }
   };
 
