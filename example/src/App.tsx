@@ -21,7 +21,7 @@ const generateData = ({
   range: number;
 }) => {
   return [...Array(numberOfPoints).fill(undefined)].map((_v, index) => {
-    const y = range + Math.round(Math.random() * 500);
+    const y = range + Math.round(Math.random() * 1000);
     const x: number = moment()
       .subtract(numberOfPoints - index, 'hours')
       .toDate()
@@ -40,18 +40,28 @@ const generateData = ({
 export default function App() {
   const [data, setData] = React.useState(undefined);
   const [data2, setData2] = React.useState(undefined);
+  const [data3, setData3] = React.useState(undefined);
+  const [data4, setData4] = React.useState(undefined);
+
   const [numberOfPoints, setNumberOfPoints] = React.useState(30);
+  const [numberOfLines, setNumberOfLines] = React.useState(2);
   const [color, setColor] = React.useState('pink');
   const [isLinearGradient, setIsLinearGradient] = React.useState(false);
   const [isEndPoint, setIsEndPoint] = React.useState(true);
   const [isAreaChart, setIsAreaChart] = React.useState(false);
-  const [isMultipleLines, setIsMultipleLines] = React.useState(false);
   const [chartType, setChartType] = React.useState('linear');
+  const [isAnimationEnabled, setIsAnimationEnabled] = React.useState(true);
 
-  React.useEffect(() => {
+  const randomize = () => {
     setData(generateData({ numberOfPoints, range: 3000 }) as any);
     setData2(generateData({ numberOfPoints, range: 1500 }) as any);
-  }, [numberOfPoints, isMultipleLines, isEndPoint]);
+    setData3(generateData({ numberOfPoints, range: 2000 }) as any);
+    setData4(generateData({ numberOfPoints, range: 1000 }) as any);
+  };
+
+  React.useEffect(() => {
+    randomize();
+  }, [numberOfPoints, isEndPoint, numberOfLines, isAreaChart]);
 
   if (!data) {
     return <></>;
@@ -63,12 +73,15 @@ export default function App() {
         <Chart
           data={data}
           data2={data2}
+          data3={data3}
+          data4={data4}
+          numberOfLines={numberOfLines}
           isAreaChart={isAreaChart}
           color={color}
           isEndPoint={isEndPoint}
           isLinearGradient={isLinearGradient}
-          isMultipleLines={isMultipleLines}
           chartType={chartType}
+          isAnimationEnabled={isAnimationEnabled}
         />
 
         <View style={{ flexDirection: 'row', marginTop: 40 }}>
@@ -101,38 +114,87 @@ export default function App() {
           </View>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={{ marginHorizontal: 5 }}>
             <Button
-              title="monotone"
+              title="1 Line"
               color={color}
               onPress={() => {
-                setChartType('monotone');
+                setNumberOfLines(1);
               }}
             />
           </View>
           <View style={{ marginHorizontal: 5 }}>
             <Button
-              title="step"
+              title="2 Lines"
               color={color}
               onPress={() => {
-                setChartType('step');
+                setNumberOfLines(2);
               }}
             />
           </View>
           <View style={{ marginHorizontal: 5 }}>
             <Button
-              title="linear"
+              title="4 Lines"
               color={color}
               onPress={() => {
-                setChartType('linear');
+                setNumberOfLines(4);
               }}
             />
           </View>
         </View>
 
+        {chartType === 'linear' && (
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ marginHorizontal: 5 }}>
+              <Button
+                title="Toggle Animation"
+                color={color}
+                onPress={() => {
+                  if (isAnimationEnabled === false) {
+                    setIsAreaChart(false);
+                  }
+                  setIsAnimationEnabled(!isAnimationEnabled);
+                }}
+              />
+            </View>
+          </View>
+        )}
+
+        {!isAnimationEnabled && (
+          <View style={{ flexDirection: 'row', marginTop: 0 }}>
+            <View style={{ marginHorizontal: 5 }}>
+              <Button
+                title="monotone"
+                color={color}
+                onPress={() => {
+                  setChartType('monotone');
+                }}
+              />
+            </View>
+            <View style={{ marginHorizontal: 5 }}>
+              <Button
+                title="step"
+                color={color}
+                onPress={() => {
+                  setChartType('step');
+                }}
+              />
+            </View>
+            <View style={{ marginHorizontal: 5 }}>
+              <Button
+                title="linear"
+                color={color}
+                onPress={() => {
+                  setChartType('linear');
+                }}
+              />
+            </View>
+          </View>
+        )}
+
         {!isLinearGradient && (
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <View style={{ flexDirection: 'row', marginTop: 0 }}>
             <View style={{ marginHorizontal: 5 }}>
               <Button
                 title="Coral"
@@ -173,7 +235,7 @@ export default function App() {
         )}
 
         <View
-          style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}
         >
           <Text style={{ marginRight: 10, color }}>Linear Gradient</Text>
           <Switch
@@ -225,38 +287,19 @@ export default function App() {
             onValueChange={() => {
               if (isAreaChart === false) {
                 setIsEndPoint(false);
+                setIsAnimationEnabled(false);
               }
               setIsAreaChart(!isAreaChart);
             }}
             value={isAreaChart}
           />
         </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: Platform.select({ ios: 20, android: 5 }),
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ marginRight: 10, color }}>Multiple Lines</Text>
-          <Switch
-            trackColor={{ false: '#767577', true: 'lightgreen' }}
-            thumbColor={isMultipleLines ? 'lightcyan' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={() => {
-              setIsMultipleLines(!isMultipleLines);
-            }}
-            value={isMultipleLines}
-          />
-        </View>
-        <View style={{ marginHorizontal: 5 }}>
+        <View style={{ marginHorizontal: 5, marginTop: 10 }}>
           <Button
             title="Randomize"
             color={color}
             onPress={() => {
-              setData(generateData({ numberOfPoints, range: 3000 }) as any);
-              setData2(generateData({ numberOfPoints, range: 1500 }) as any);
+              randomize();
             }}
           />
         </View>
@@ -268,11 +311,14 @@ export default function App() {
 const Chart = ({
   data,
   data2,
+  data3,
+  data4,
   color,
   isLinearGradient,
   isAreaChart,
   isEndPoint,
-  isMultipleLines,
+  isAnimationEnabled,
+  numberOfLines,
   chartType,
 }: any) => {
   const [activeDataPoint, setActiveDataPoint] = React.useState<
@@ -292,110 +338,185 @@ const Chart = ({
         {activeDataPoint || ' '}
       </Text>
       <LineChart
-        line1={{
-          data,
-          activePointConfig: {
-            color,
-            borderColor: 'black',
-            radius: 4,
-            showVerticalLine: true,
-            verticalLineColor: 'gray',
-            verticalLineOpacity: 0.7,
-            verticalLineWidth: 1,
-            verticalLineDashArray: [10, 5],
-          },
-          lineWidth: 4,
-          lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
-          fillColor: isAreaChart ? color : undefined,
-          curve: chartType,
-          endPointConfig: isEndPoint
-            ? {
-                color,
-                radius: 5,
-                animated: true,
-              }
-            : undefined,
-          activePointComponent: (point: DataPoint | any) => {
-            return (
-              <View
-                style={{
-                  backgroundColor: color,
-                  padding: 10,
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: 'white' }}>
-                  {point?.extraData?.formattedValue}
-                </Text>
-                <Text style={{ color: 'white' }}>
-                  {point?.extraData?.formattedTime}
-                </Text>
-              </View>
-            );
-          },
-        }}
-        line2={
-          isMultipleLines
-            ? {
-                data: data2,
-                activePointConfig: {
+        key={isAnimationEnabled ? 'asdf' : '23333'}
+        lines={[
+          {
+            data,
+            activePointConfig: {
+              color,
+              borderColor: 'black',
+              radius: 4,
+              showVerticalLine: true,
+              verticalLineColor: 'gray',
+              verticalLineOpacity: 0.7,
+              verticalLineWidth: 1,
+              verticalLineDashArray: [10, 5],
+            },
+            lineWidth: 4,
+            lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
+            fillColor: isAreaChart ? color : undefined,
+            curve: chartType,
+            endPointConfig: isEndPoint
+              ? {
                   color,
-                  borderColor: 'black',
-                  radius: 4,
-                  showVerticalLine: true,
-                  verticalLineColor: 'gray',
-                  verticalLineOpacity: 0.7,
-                  verticalLineWidth: 1,
-                  verticalLineDashArray: [10, 5],
-                },
-                lineWidth: 4,
-                lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
-                fillColor: isAreaChart ? color : undefined,
-                endPointConfig: isEndPoint
-                  ? {
-                      color,
-                      radius: 5,
-                      animated: true,
-                    }
-                  : undefined,
-                curve: chartType,
-                activePointComponent: (point: DataPoint | any) => {
-                  return (
-                    <View
-                      style={{
-                        backgroundColor: color,
-                        padding: 10,
-                        borderRadius: 10,
-                        marginTop: 10,
-                      }}
-                    >
-                      <Text style={{ color: 'white' }}>
-                        {point?.extraData?.formattedValue}
-                      </Text>
-                      <Text style={{ color: 'white' }}>
-                        {point?.extraData?.formattedTime}
-                      </Text>
-                    </View>
-                  );
-                },
-              }
-            : undefined
-        }
+                  radius: 5,
+                  animated: true,
+                }
+              : undefined,
+            activePointComponent: (point: DataPoint | any) => {
+              return (
+                <View
+                  style={{
+                    backgroundColor: color,
+                    padding: 10,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>
+                    {point?.extraData?.formattedValue}
+                  </Text>
+                </View>
+              );
+            },
+          },
+          {
+            data: data4,
+            activePointConfig: {
+              color,
+              borderColor: 'black',
+              radius: 4,
+              showVerticalLine: true,
+              verticalLineColor: 'gray',
+              verticalLineOpacity: 0.7,
+              verticalLineWidth: 1,
+              verticalLineDashArray: [10, 5],
+            },
+            lineWidth: 4,
+            lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
+            fillColor: isAreaChart ? color : undefined,
+            curve: chartType,
+            endPointConfig: isEndPoint
+              ? {
+                  color,
+                  radius: 5,
+                  animated: true,
+                }
+              : undefined,
+            activePointComponent: (point: DataPoint | any) => {
+              return (
+                <View
+                  style={{
+                    backgroundColor: color,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>
+                    {point?.extraData?.formattedValue}
+                  </Text>
+                </View>
+              );
+            },
+          },
+          {
+            data: data3,
+            activePointConfig: {
+              color,
+              borderColor: 'black',
+              radius: 4,
+              showVerticalLine: true,
+              verticalLineColor: 'gray',
+              verticalLineOpacity: 0.7,
+              verticalLineWidth: 1,
+              verticalLineDashArray: [10, 5],
+            },
+            lineWidth: 4,
+            lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
+            fillColor: isAreaChart ? color : undefined,
+            curve: chartType,
+            endPointConfig: isEndPoint
+              ? {
+                  color,
+                  radius: 5,
+                  animated: true,
+                }
+              : undefined,
+            activePointComponent: (point: DataPoint | any) => {
+              return (
+                <View
+                  style={{
+                    backgroundColor: color,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>
+                    {point?.extraData?.formattedValue}
+                  </Text>
+                </View>
+              );
+            },
+          },
+          {
+            data: data2,
+            activePointConfig: {
+              color,
+              borderColor: 'black',
+              radius: 4,
+              showVerticalLine: true,
+              verticalLineColor: 'gray',
+              verticalLineOpacity: 0.7,
+              verticalLineWidth: 1,
+              verticalLineDashArray: [10, 5],
+            },
+            lineWidth: 4,
+            lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
+            fillColor: isAreaChart ? color : undefined,
+            endPointConfig: isEndPoint
+              ? {
+                  color,
+                  radius: 5,
+                  animated: true,
+                }
+              : undefined,
+            curve: chartType,
+            activePointComponent: (point: DataPoint | any) => {
+              return (
+                <View
+                  style={{
+                    backgroundColor: color,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>
+                    {point?.extraData?.formattedValue}
+                  </Text>
+                </View>
+              );
+            },
+          },
+        ].slice(0, numberOfLines)}
         extraConfig={{
           endSpacing: isEndPoint ? 20 : 0,
           alwaysShowActivePoint: false,
           alwaysStartYAxisFromZero: false,
           hideActivePointOnBlur: true,
           initialActivePoint: undefined,
+          animationConfig: isAnimationEnabled
+            ? {
+                animationType: 'transitionAttach',
+                duration: 1000,
+              }
+            : undefined,
           calculateChartYAxisMinMax: (min: number, max: number) => {
             return {
               min,
               max,
             };
-          },
-          animationConfig: {
-            duration: 1500,
-            animationType: 'transitionUniform',
           },
         }}
         onPointFocus={(point) => {
