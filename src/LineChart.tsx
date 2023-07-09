@@ -187,13 +187,6 @@ export const MemoizedLineChart = React.memo(
       return false;
     }
 
-    if (
-      JSON.stringify(previousProps.extraConfig) !==
-      JSON.stringify(nextProps.extraConfig)
-    ) {
-      return false;
-    }
-
     return true;
   }
 );
