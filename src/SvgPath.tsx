@@ -148,7 +148,7 @@ const LineComponent = ({
   useEffect(() => {
     setTimeout(() => {
       forceRerender();
-    }, 300);
+    }, 500);
   }, [extraConfig]);
 
   const {
