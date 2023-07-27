@@ -111,7 +111,7 @@ const ActivePoint = ({
       // active point position
       if (
         current.activeIndex !== previous?.activeIndex ||
-        currentIndexData.y !== activePointPosition?.value.y
+        currentIndexData?.y !== activePointPosition?.value.y
       ) {
         const point = positions.value[activeIndex.value];
         const y = point?.y;
