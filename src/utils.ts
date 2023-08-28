@@ -116,20 +116,23 @@ export const getIndexOfTheNearestXPoint = (
 ) => {
   'worklet';
 
-  let closest = array[0];
+  if (!array || array.length === 0) return -1;
+
   let closestIndex = 0;
 
-  for (let i = 0; i < array.length; i++) {
-    while (
-      closest &&
-      array[i] &&
-      // @ts-ignore
-      Math.abs(array[i].x - value) < Math.abs(closest.x - value)
-    ) {
-      closest = array[i];
+  // @ts-ignore
+  let closestDistance = Math.abs(array[0].x - value);
+
+  for (let i = 1; i < array.length; i++) {
+    // @ts-ignore
+    const currentDistance = Math.abs(array[i].x - value);
+
+    if (currentDistance < closestDistance) {
+      closestDistance = currentDistance;
       closestIndex = i;
     }
   }
+
   return closestIndex;
 };
 
