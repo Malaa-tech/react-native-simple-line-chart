@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { runOnJS } from 'react-native-reanimated';
 import * as d3 from 'd3';
 import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
 
