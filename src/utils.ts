@@ -1,4 +1,5 @@
-import { useCallback, useState, useRef, useEffect } from 'react';
+import { useCallback, useState } from 'react';
+import { runOnJS } from 'react-native-reanimated';
 import * as d3 from 'd3';
 import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
 
@@ -109,26 +110,6 @@ export const createNewPath = ({
   };
 };
 
-// given an array of numbers, return the number closest to the target
-export const closest = (arr: number[], target: number) => {
-  if (!arr || arr.length === 0) return null;
-  if (arr.length === 1) return arr[0];
-
-  for (let i = 1; i < arr.length; i++) {
-    // As soon as a number bigger than target is found, return the previous or current
-    // number depending on which has smaller difference to the target.
-    if ((arr[i] as number) > target) {
-      const p = arr[i - 1];
-      const c = arr[i];
-      if (p && c) {
-        return Math.abs(p - target) < Math.abs(c - target) ? p : c;
-      }
-    }
-  }
-  // No number in array is bigger so return the last.
-  return arr[arr.length - 1];
-};
-
 export const getIndexOfTheNearestXPoint = (
   array: DataPoint[],
   value: number
@@ -158,11 +139,3 @@ export const useForceReRender = () => {
 
   return forceUpdate;
 };
-
-export function usePrevious(value: any) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}

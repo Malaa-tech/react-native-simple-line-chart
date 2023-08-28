@@ -117,7 +117,7 @@ export interface EndPointConfig {
    */
   radius?: number;
   /**
-   * Weather the end point should be animated (paulse animation)
+   * Weather the end point should be animated (pulse animation)
    */
   animated?: boolean;
 }
@@ -217,7 +217,7 @@ export interface ExtraConfig {
  * Setting this for enabling animations
  * limitations: animations doesn't work with area chart presentation
  * limitations: 'linear' curve type is the only supported type for animations
- * limitations: switching animations will cause a carsh, and you will need to restart the app
+ * limitations: switching animations will cause a crash, and you will need to restart the app
  */
 export interface AnimationConfig {
   /**
