@@ -49,29 +49,36 @@ const SvgPath = ({
   }, []);
 
   const activeIndex = useDerivedValue(() => {
-    if (activeTouchX.value === 0 && initialActivePoint) {
+    const activeTouchWithoutDecimals = Math.round(activeTouchX.value);
+
+    if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
       return initialActivePoint;
     }
 
-    const percentage =
-      (activeTouchX.value / (svgWidth - (endSpacing || 20))) * 100;
+    const data = lines[0]?.data || [];
+    const dataLength = data.length;
+    const firstDataPoint = data[0];
+    const lastDataPoint = data[dataLength - 1];
+
+    const minData = firstDataPoint ? firstDataPoint.x : 0;
+    const maxData = lastDataPoint ? lastDataPoint.x : 100;
+
+    const denominator = svgWidth - (endSpacing || 20);
+    const percentage = (activeTouchWithoutDecimals / denominator) * 100;
 
     const percentageToTimestampValue = interpolate(
       percentage,
       [0, 100],
-      [
-        lines[0]?.data[0]?.x || 0,
-        lines[0]?.data[(lines[0]?.data || []).length - 1]?.x || 100,
-      ]
+      [minData, maxData]
     );
 
     let activeIndexLocal = getIndexOfTheNearestXPoint(
-      lines[0]?.data || [],
+      data,
       percentageToTimestampValue
     );
 
-    if (activeIndexLocal >= (lines[0]?.data || []).length) {
-      activeIndexLocal = (lines[0]?.data || []).length - 1;
+    if (activeIndexLocal >= dataLength) {
+      activeIndexLocal = dataLength - 1;
     }
 
     return activeIndexLocal;
