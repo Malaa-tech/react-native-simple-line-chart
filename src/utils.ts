@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { useCallback, useState } from 'react';
 import * as d3 from 'd3';
 import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
@@ -117,22 +118,31 @@ export const getIndexOfTheNearestXPoint = (
 
   if (!array || array.length === 0) return -1;
 
-  let closestIndex = 0;
+  let left = 0;
+  let right = array.length - 1;
 
-  // @ts-ignore
-  let closestDistance = Math.abs(array[0].x - value);
-
-  for (let i = 1; i < array.length; i++) {
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
     // @ts-ignore
-    const currentDistance = Math.abs(array[i].x - value);
+    const midValue = array[mid].x;
 
-    if (currentDistance < closestDistance) {
-      closestDistance = currentDistance;
-      closestIndex = i;
+    if (midValue === value) {
+      return mid;
+    }
+    if (midValue < value) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
     }
   }
 
-  return closestIndex;
+  // At this point, left and right index are around the target value.
+  // @ts-ignore
+  const leftDistance = Math.abs(array[left]?.x - value);
+  // @ts-ignore
+  const rightDistance = Math.abs(array[right]?.x - value);
+
+  return leftDistance < rightDistance ? left : right;
 };
 
 export const useForceReRender = () => {
