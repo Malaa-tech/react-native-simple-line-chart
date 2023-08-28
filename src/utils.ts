@@ -24,8 +24,8 @@ export const createNewPath = ({
   svgWidth: number;
   svgHeight: number;
   endSpacing: number;
-  data: DataPoint[]; // this line data
-  allData: DataPoint[]; // all lines data
+  data: DataPoint[];
+  allData: DataPoint[];
   isFilled?: boolean;
   alwaysStartYAxisFromZero: boolean;
   curve?: LineCurve;
@@ -49,16 +49,16 @@ export const createNewPath = ({
     };
   };
 
-  // get the min and max values for the x axis
-  const xDomain = d3.extent([...allData.map((val) => val.y)]);
+  // get the min and max values for the y axis
+  const [minY, maxY] = d3.extent([...allData.map((val) => val.y)]) || [0, 0];
+
+  // Avoid repeated computation
+  const chartMinMax = getChartMinMaxValues(minY || 0, maxY || 10);
 
   // create the y scale
   const y = d3
     .scaleLinear()
-    .domain([
-      getChartMinMaxValues(xDomain[0] || 0, xDomain[1] || 0).max as number,
-      getChartMinMaxValues(xDomain[0] || 0, xDomain[1] || 0).min as number,
-    ])
+    .domain([chartMinMax.max as number, chartMinMax.min as number])
     .range([10, svgHeight - 10]);
 
   // create the x scale
@@ -67,40 +67,34 @@ export const createNewPath = ({
     .domain([data[0]?.x || 0, data[data.length - 1]?.x || 1])
     .range([0, svgWidth - endSpacing]);
 
+  const curveMapping = {
+    cardinal: d3.curveCardinal,
+    step: d3.curveStep,
+    linear: d3.curveLinear,
+    monotone: d3.curveMonotoneX,
+  };
+
+  const selectedCurve = curveMapping[curve || 'linear'] || d3.curveLinear;
+
+  // Precompute the date objects
+  const dataWithDates = data.map((d) => ({ ...d, dateObj: new Date(d?.x) }));
+
   // create the line
   const getLine = () => {
-    // if the line is filled, we need to add the bottom of the svg to the path
     if (isFilled) {
       return d3
-        .area<DataPoint>()
-        .x((d) => x(new Date(d?.x)))
+        .area<DataPoint & { dateObj: Date }>()
+        .x((d) => x(d.dateObj))
         .y0(svgHeight + 10)
         .y1((d) => y(d.y));
     }
-
-    // if the line is not filled, we just return the line
     return d3
-      .line<DataPoint>()
-      .x((d) => x(new Date(d?.x)))
+      .line<DataPoint & { dateObj: Date }>()
+      .x((d) => x(d.dateObj))
       .y((d) => y(d.y));
   };
 
-  const getCurve = () => {
-    switch (curve) {
-      case 'cardinal':
-        return d3.curveCardinal;
-      case 'step':
-        return d3.curveStep;
-      case 'linear':
-        return d3.curveLinear;
-      case 'monotone':
-        return d3.curveMonotoneX;
-      default:
-        return d3.curveLinear;
-    }
-  };
-
-  const line = getLine().curve(getCurve())(data);
+  const line = getLine().curve(selectedCurve)(dataWithDates);
 
   return {
     d: line,
