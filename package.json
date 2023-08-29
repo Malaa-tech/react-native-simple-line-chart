@@ -1,7 +1,7 @@
 {
   "name": "react-native-simple-line-chart",
   "version": "0.29.4",
-  "description": "A fast, interactive and simple line chart component for React Native",
+  "description": "A fast, interactive, animated and simple line chart component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index",
@@ -37,9 +37,12 @@
     "bootstrap": "yarn example && yarn install"
   },
   "keywords": [
-    "react-native",
-    "ios",
-    "android"
+    "React Native",
+    "Line Chart",
+    "Charts",
+    "Chart Library",
+    "UI Component",
+    "Graphs"
   ],
   "repository": "https://github.com/Malaa-tech/react-native-simple-line-chart",
   "author": "Wadah Esam <wadah-wleed@hotmail.com> (https://github.com/WadhahEssam)",

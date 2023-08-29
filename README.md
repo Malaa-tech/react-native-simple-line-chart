@@ -1,7 +1,7 @@
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Malaa-tech/react-native-simple-line-chart)
 
 # React Native Simple Line Chart
-A simple/interactive/fast line chart component for React Native using d3, react-native-svg, react-native-gesture-handler and react-native-reanimated.
+A simple, interactive, animated, and fast Line Chart component for React Native.
 
 ### 🦄 Features
 - ✅  Supports RTL languages   
