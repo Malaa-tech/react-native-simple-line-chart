@@ -203,11 +203,18 @@ const LineComponent = ({
     return null;
   }
 
+  const getBackgroundIdentifier = () => {
+    if (isLineColorGradient) {
+      return `${identifier}gradient`;
+    }
+    return `${identifier}solid`;
+  };
+
   return (
     <>
       <Defs>
         {!isLineColorGradient && (
-          <LinearGradient id={identifier}>
+          <LinearGradient id={getBackgroundIdentifier()}>
             <Stop
               offset="100%"
               stopColor={backgroundColor || (line.lineColor as string)}
@@ -219,7 +226,7 @@ const LineComponent = ({
 
         {isLineColorGradient && (
           <LinearGradient
-            id={identifier}
+            id={getBackgroundIdentifier()}
             gradientUnits="userSpaceOnUse"
             x1="300"
             y1="150"
@@ -247,7 +254,7 @@ const LineComponent = ({
       >
         <AnimatedPath
           strokeLinejoin="round"
-          stroke={`url(#${identifier})`}
+          stroke={`url(#${getBackgroundIdentifier()})`}
           strokeWidth={line.lineWidth || 2}
           fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
           fillOpacity={0.5}
