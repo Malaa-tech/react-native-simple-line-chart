@@ -292,8 +292,14 @@ const LineComponent = ({
             ACTIVE_POINT_CONFIG.borderColor
           }
           showVerticalLine={
-            line?.activePointConfig?.showVerticalLine ||
-            ACTIVE_POINT_CONFIG.showVerticalLine
+            line?.activePointConfig?.showVerticalLine !== undefined
+              ? line?.activePointConfig?.showVerticalLine
+              : ACTIVE_POINT_CONFIG.showVerticalLine
+          }
+          showActivePointCircle={
+            line?.activePointConfig?.showActivePointCircle !== undefined
+              ? line?.activePointConfig?.showActivePointCircle
+              : ACTIVE_POINT_CONFIG.showActivePointCircle
           }
           verticalLineColor={
             line?.activePointConfig?.verticalLineColor ||

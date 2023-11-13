@@ -31,6 +31,7 @@ const ActivePoint = ({
   borderColor,
   radius,
   showVerticalLine,
+  showActivePointCircle,
   verticalLineColor,
   verticalLineOpacity,
   verticalLineWidth,
@@ -49,6 +50,7 @@ const ActivePoint = ({
   borderColor: ColorValue;
   radius: number;
   showVerticalLine: boolean;
+  showActivePointCircle: boolean;
   verticalLineColor: ColorValue;
   verticalLineOpacity: number;
   verticalLineWidth: number;
@@ -188,16 +190,20 @@ const ActivePoint = ({
           }
         />
       )}
-      <AnimatedCircle
-        fill={borderColor}
-        animatedProps={activePointProps}
-        r={radius * 1.3}
-      />
-      <AnimatedCircle
-        fill={color}
-        animatedProps={activePointProps}
-        r={radius}
-      />
+      {showActivePointCircle && (
+        <>
+          <AnimatedCircle
+            fill={borderColor}
+            animatedProps={activePointProps}
+            r={radius * 1.3}
+          />
+          <AnimatedCircle
+            fill={color}
+            animatedProps={activePointProps}
+            r={radius}
+          />
+        </>
+      )}
     </>
   );
 };

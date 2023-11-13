@@ -147,6 +147,11 @@ export interface ActivePointConfig {
    */
   showVerticalLine?: boolean;
   /**
+   * Weather to show a circle around the active point
+   * @default true
+   */
+  showActivePointCircle?: boolean;
+  /**
    * The color of the vertical line
    * @default 'gray'
    */

@@ -5,6 +5,7 @@ export const ACTIVE_POINT_CONFIG = {
   borderColor: 'black',
   radius: 4,
   showVerticalLine: false,
+  showActivePointCircle: true,
   verticalLineColor: 'gray',
   verticalLineOpacity: 1,
   verticalLineWidth: 1,
