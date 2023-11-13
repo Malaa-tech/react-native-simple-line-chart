@@ -4,7 +4,6 @@ import React, {
   ReactElement,
   useCallback,
   useEffect,
-  useMemo,
 } from 'react';
 import {
   interpolate,
@@ -88,16 +87,9 @@ const SvgPath = ({
     return activeIndexLocal;
   }, [activeTouchX, lines[0]?.data]);
 
-  const checkedLines = useMemo(() => {
-    if (extraConfig?.invertLineOrder) {
-      return [...lines].reverse();
-    }
-    return lines;
-  }, [lines, extraConfig?.invertLineOrder]);
-
   return (
     <>
-      {checkedLines.map((line, index) => {
+      {lines.map((line, index) => {
         if (line?.data) {
           return (
             <MemoizedLineComponent
@@ -110,7 +102,9 @@ const SvgPath = ({
               activeTouch={activeTouch}
               identifier={`${index}`}
               extraConfig={extraConfig}
-              onPointChange={index === 0 ? onPointChange : undefined}
+              onPointChange={
+                index === extraConfig.leadLineIndex ? onPointChange : undefined
+              }
             />
           );
         }
