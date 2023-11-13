@@ -150,7 +150,6 @@ function LineChart({
             svgWidth={svgWidth}
             activeTouch={activeTouch}
             activeTouchX={activeTouchX}
-            backgroundColor={backgroundColor}
             extraConfig={extraConfig}
             initialActivePoint={extraConfig?.initialActivePoint}
             endSpacing={extraConfig?.endSpacing}

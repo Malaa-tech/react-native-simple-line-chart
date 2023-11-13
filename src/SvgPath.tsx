@@ -1,5 +1,10 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  JSXElementConstructor,
+  ReactElement,
+  useCallback,
+  useEffect,
+} from 'react';
 import {
   interpolate,
   SharedValue,
@@ -26,7 +31,6 @@ const SvgPath = ({
   svgWidth,
   activeTouchX,
   activeTouch,
-  backgroundColor,
   extraConfig,
   onPointChange,
   endSpacing,
@@ -37,7 +41,6 @@ const SvgPath = ({
   svgWidth: number;
   activeTouchX: SharedValue<number>;
   activeTouch: SharedValue<boolean>;
-  backgroundColor?: string;
   extraConfig: ExtraConfig;
   endSpacing?: number;
   initialActivePoint?: number;
@@ -99,7 +102,6 @@ const SvgPath = ({
                 svgWidth={svgWidth}
                 activeIndex={activeIndex}
                 activeTouch={activeTouch}
-                backgroundColor={backgroundColor}
                 identifier={`${index}`}
                 extraConfig={extraConfig}
                 onPointChange={index === 0 ? onPointChange : undefined}
@@ -120,7 +122,6 @@ const LineComponent = ({
   svgWidth,
   activeTouch,
   activeIndex,
-  backgroundColor,
   identifier,
   extraConfig,
   onPointChange,
@@ -131,7 +132,6 @@ const LineComponent = ({
   svgWidth: number;
   activeTouch: SharedValue<boolean>;
   activeIndex: SharedValue<number>;
-  backgroundColor?: string;
   identifier: string;
   extraConfig: ExtraConfig;
   onPointChange?: (point?: DataPoint) => void;
@@ -199,52 +199,58 @@ const LineComponent = ({
     allData,
   ]);
 
+  const getBackgroundIdentifier = () => {
+    return `${identifier}`;
+  };
+
+  const getStopPoints = useCallback(() => {
+    if (isLineColorGradient) {
+      const colors = line.lineColor as string[];
+      return colors.map((color, index) => {
+        const offset = (index / (colors.length - 1)) * 100;
+
+        return (
+          <Stop
+            key={`${index}`}
+            offset={`${offset}%`}
+            stopColor={color}
+            stopOpacity="1"
+          />
+        );
+      });
+    }
+
+    return (
+      <Stop
+        offset="100%"
+        stopColor={line.lineColor as string}
+        stopOpacity="1"
+      />
+    );
+  }, [line.lineColor]);
+
   if (localPath === undefined) {
     return null;
   }
 
-  const getBackgroundIdentifier = () => {
-    if (isLineColorGradient) {
-      return `${identifier}gradient`;
-    }
-    return `${identifier}solid`;
-  };
-
   return (
     <>
       <Defs>
-        {!isLineColorGradient && (
-          <LinearGradient id={getBackgroundIdentifier()}>
-            <Stop
-              offset="100%"
-              stopColor={backgroundColor || (line.lineColor as string)}
-            />
-
-            <Stop offset="90%" stopColor={line.lineColor as string} />
-          </LinearGradient>
-        )}
-
-        {isLineColorGradient && (
-          <LinearGradient
-            id={getBackgroundIdentifier()}
-            gradientUnits="userSpaceOnUse"
-            x1="300"
-            y1="150"
-            x2="0"
-            y2="0"
-          >
-            <Stop
-              offset="1"
-              stopColor={(line.lineColor as string[])[0]}
-              stopOpacity="1"
-            />
-            <Stop
-              offset="0"
-              stopColor={(line.lineColor as string[])[1]}
-              stopOpacity="1"
-            />
-          </LinearGradient>
-        )}
+        <LinearGradient
+          id={getBackgroundIdentifier()}
+          gradientUnits="userSpaceOnUse"
+          x1="300"
+          y1="150"
+          x2="0"
+          y2="0"
+        >
+          {
+            getStopPoints() as ReactElement<
+              any,
+              string | JSXElementConstructor<any>
+            >[]
+          }
+        </LinearGradient>
       </Defs>
 
       <AnimatedG
