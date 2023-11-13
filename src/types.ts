@@ -222,10 +222,10 @@ export interface ExtraConfig {
    */
   animationConfig?: AnimationConfig;
   /**
-   * The line where the onPointFocus & activePointSharedValue will be called on
-   * @default 0
+   * Invert the order of the lines (useful when you want to show the last line on top)
+   * @default false
    */
-  leadLineIndex?: number;
+  invertLineOrder?: boolean;
 }
 
 /**
