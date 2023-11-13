@@ -43,6 +43,10 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     activeOffsetX: extraConfig.activeOffsetX || EXTRA_CONFIG.activeOffsetX,
     animationConfig:
       extraConfig.animationConfig || EXTRA_CONFIG.animationConfig,
+    invertLineOrder:
+      extraConfig.invertLineOrder !== undefined
+        ? extraConfig.invertLineOrder
+        : EXTRA_CONFIG.invertLineOrder,
   };
 };
 function LineChart({

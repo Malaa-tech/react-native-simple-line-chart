@@ -221,6 +221,11 @@ export interface ExtraConfig {
    * Animation configuration
    */
   animationConfig?: AnimationConfig;
+  /**
+   * Invert the order of the lines (useful when you want to show the last line on top)
+   * @default false
+   */
+  invertLineOrder?: boolean;
 }
 
 /**
