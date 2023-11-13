@@ -18,11 +18,11 @@ The configuration for the last point in the line
 
 • `Optional` **animated**: `boolean`
 
-Weather the end point should be animated (paulse animation)
+Weather the end point should be animated (pulse animation)
 
 #### Defined in
 
-[src/types.ts:122](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L122)
+[src/types.ts:122](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L122)
 
 ___
 
@@ -34,7 +34,7 @@ The color of the end point
 
 #### Defined in
 
-[src/types.ts:114](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L114)
+[src/types.ts:114](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L114)
 
 ___
 
@@ -46,4 +46,4 @@ The border radius of the end point
 
 #### Defined in
 
-[src/types.ts:118](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L118)
+[src/types.ts:118](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L118)

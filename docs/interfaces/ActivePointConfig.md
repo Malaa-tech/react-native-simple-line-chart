@@ -9,8 +9,10 @@ The configuration for the active point (the point that is shown when the user ta
 ### Properties
 
 - [borderColor](ActivePointConfig.md#bordercolor)
+- [borderWidth](ActivePointConfig.md#borderwidth)
 - [color](ActivePointConfig.md#color)
 - [radius](ActivePointConfig.md#radius)
+- [showActivePointCircle](ActivePointConfig.md#showactivepointcircle)
 - [showVerticalLine](ActivePointConfig.md#showverticalline)
 - [verticalLineColor](ActivePointConfig.md#verticallinecolor)
 - [verticalLineDashArray](ActivePointConfig.md#verticallinedasharray)
@@ -23,7 +25,7 @@ The configuration for the active point (the point that is shown when the user ta
 
 • `Optional` **borderColor**: `ColorValue`
 
-the border color for the active point
+the border color for the active point circle
 
 **`Default`**
 
@@ -31,7 +33,23 @@ the border color for the active point
 
 #### Defined in
 
-[src/types.ts:138](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L138)
+[src/types.ts:138](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L138)
+
+___
+
+### borderWidth
+
+• `Optional` **borderWidth**: `number`
+
+the border width for the active point circle
+
+**`Default`**
+
+2
+
+#### Defined in
+
+[src/types.ts:143](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L143)
 
 ___
 
@@ -39,7 +57,7 @@ ___
 
 • `Optional` **color**: `ColorValue`
 
-The color of the active point
+The color of the active point circle
 
 **`Default`**
 
@@ -47,7 +65,7 @@ The color of the active point
 
 #### Defined in
 
-[src/types.ts:133](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L133)
+[src/types.ts:133](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L133)
 
 ___
 
@@ -55,7 +73,7 @@ ___
 
 • `Optional` **radius**: `number`
 
-the border radius for the active point
+the border radius for the active point circle
 
 **`Default`**
 
@@ -63,7 +81,23 @@ the border radius for the active point
 
 #### Defined in
 
-[src/types.ts:143](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L143)
+[src/types.ts:148](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L148)
+
+___
+
+### showActivePointCircle
+
+• `Optional` **showActivePointCircle**: `boolean`
+
+Weather to show a circle around the active point
+
+**`Default`**
+
+true
+
+#### Defined in
+
+[src/types.ts:158](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L158)
 
 ___
 
@@ -79,7 +113,7 @@ false
 
 #### Defined in
 
-[src/types.ts:148](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L148)
+[src/types.ts:153](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L153)
 
 ___
 
@@ -95,7 +129,7 @@ The color of the vertical line
 
 #### Defined in
 
-[src/types.ts:153](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L153)
+[src/types.ts:163](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L163)
 
 ___
 
@@ -111,7 +145,7 @@ The dash array for the vertical line (this will create a dashed line)
 
 #### Defined in
 
-[src/types.ts:168](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L168)
+[src/types.ts:178](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L178)
 
 ___
 
@@ -127,7 +161,7 @@ The opacity of the vertical line (number between 0 and 1)
 
 #### Defined in
 
-[src/types.ts:158](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L158)
+[src/types.ts:168](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L168)
 
 ___
 
@@ -143,4 +177,4 @@ The width of the vertical line
 
 #### Defined in
 
-[src/types.ts:163](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/758c3af/src/types.ts#L163)
+[src/types.ts:173](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L173)

@@ -3,7 +3,7 @@ React Native Simple Line Chart / [Exports](modules.md)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Malaa-tech/react-native-simple-line-chart)
 
 # React Native Simple Line Chart
-A simple/interactive/fast line chart component for React Native using d3, react-native-svg, react-native-gesture-handler and react-native-reanimated.
+A simple, interactive, animated, and fast Line Chart component for React Native.
 
 ### 🦄 Features
 - ✅  Supports RTL languages   
@@ -13,11 +13,10 @@ A simple/interactive/fast line chart component for React Native using d3, react-
 - ✅  Full utilization of reanimated and shared values  
 - ✅  Supports area chart presentation
 - ✅  Supports transition animations
-
  
 ### How we use it in Malaa App
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24798045/216769217-b993ec1a-fe57-438b-a32b-22ee2ac91a59.gif" width="270"/>
+<img src="https://github.com/Malaa-tech/react-native-simple-line-chart/assets/24798045/ba07cba2-edb7-498c-92eb-45e6d633b2ad.gif" width="270"/>
 <img src="https://user-images.githubusercontent.com/24798045/216769222-036ed3b7-a40c-4589-b129-7443737ade25.gif" width="270"/>
 <img src="https://user-images.githubusercontent.com/24798045/216769372-9d8dc695-71f9-488d-8bba-e804de9dc5ba.gif" width="270"/>
 </p>
