@@ -29,7 +29,6 @@ export const EXTRA_CONFIG = {
   calculateChartYAxisMinMax: undefined,
   activeOffsetX: [0, 0],
   animationConfig: undefined,
-  invertLineOrder: false,
 };
 
 export const LINE_CHART = {

@@ -4,7 +4,6 @@ import React, {
   ReactElement,
   useCallback,
   useEffect,
-  useMemo,
 } from 'react';
 import {
   interpolate,
@@ -88,35 +87,30 @@ const SvgPath = ({
     return activeIndexLocal;
   }, [activeTouchX, lines[0]?.data]);
 
-  const checkedLines = useMemo(() => {
-    if (extraConfig?.invertLineOrder) {
-      return [...lines].reverse();
-    }
-    return lines;
-  }, [lines, extraConfig?.invertLineOrder]);
-
   return (
     <>
-      {checkedLines.map((line, index) => {
-        if (line?.data) {
-          return (
-            <MemoizedLineComponent
-              key={`${index}`}
-              line={line}
-              allData={allData}
-              svgHeight={svgHeight}
-              svgWidth={svgWidth}
-              activeIndex={activeIndex}
-              activeTouch={activeTouch}
-              identifier={`${index}`}
-              extraConfig={extraConfig}
-              onPointChange={index === 0 ? onPointChange : undefined}
-            />
-          );
-        }
-        // @ts-ignore
-        return <View key={`${index}`} />;
-      })}
+      {lines
+        .filter((line) => line?.data)
+        .map((line, index) => {
+          if (line?.data) {
+            return (
+              <MemoizedLineComponent
+                key={`${index}`}
+                line={line}
+                allData={allData}
+                svgHeight={svgHeight}
+                svgWidth={svgWidth}
+                activeIndex={activeIndex}
+                activeTouch={activeTouch}
+                identifier={`${index}`}
+                extraConfig={extraConfig}
+                onPointChange={index === 0 ? onPointChange : undefined}
+              />
+            );
+          }
+          // @ts-ignore
+          return <View key={`${index}`} />;
+        })}
     </>
   );
 };
