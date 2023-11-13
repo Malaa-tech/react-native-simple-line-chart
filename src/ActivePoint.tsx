@@ -29,6 +29,7 @@ const ActivePoint = ({
   onPointChange,
   color,
   borderColor,
+  borderWidth,
   radius,
   showVerticalLine,
   showActivePointCircle,
@@ -48,6 +49,7 @@ const ActivePoint = ({
   onPointChange?: (point?: DataPoint) => void;
   color: ColorValue;
   borderColor: ColorValue;
+  borderWidth: number;
   radius: number;
   showVerticalLine: boolean;
   showActivePointCircle: boolean;
@@ -195,7 +197,7 @@ const ActivePoint = ({
           <AnimatedCircle
             fill={borderColor}
             animatedProps={activePointProps}
-            r={radius * 1.3}
+            r={radius + borderWidth}
           />
           <AnimatedCircle
             fill={color}

@@ -291,6 +291,12 @@ const LineComponent = ({
             line?.activePointConfig?.borderColor ||
             ACTIVE_POINT_CONFIG.borderColor
           }
+          borderWidth={
+            line?.activePointConfig?.borderWidth !== undefined &&
+            line?.activePointConfig?.borderWidth >= 0
+              ? line?.activePointConfig?.borderWidth
+              : ACTIVE_POINT_CONFIG.borderWidth
+          }
           showVerticalLine={
             line?.activePointConfig?.showVerticalLine !== undefined
               ? line?.activePointConfig?.showVerticalLine

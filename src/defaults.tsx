@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native';
 export const ACTIVE_POINT_CONFIG = {
   color: 'black',
   borderColor: 'black',
+  borderWidth: 2,
   radius: 4,
   showVerticalLine: false,
   showActivePointCircle: true,

@@ -127,17 +127,22 @@ export interface EndPointConfig {
  */
 export interface ActivePointConfig {
   /**
-   * The color of the active point
+   * The color of the active point circle
    * @default 'black'
    */
   color?: ColorValue;
   /**
-   * the border color for the active point
+   * the border color for the active point circle
    * @default 'black'
    */
   borderColor?: ColorValue;
   /**
-   * the border radius for the active point
+   * the border width for the active point circle
+   * @default 2
+   */
+  borderWidth?: number;
+  /**
+   * the border radius for the active point circle
    * @default 4
    */
   radius?: number;
