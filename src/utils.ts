@@ -85,6 +85,12 @@ export const createNewPath = ({
       return d3
         .area<DataPoint & { dateObj: Date }>()
         .x((d) => x(d.dateObj))
+        .x0((d, index) => {
+          if (index === 0) {
+            return x(d.dateObj) - 2;
+          }
+          return x(d.dateObj);
+        })
         .y0(svgHeight + 10)
         .y1((d) => y(d.y));
     }
