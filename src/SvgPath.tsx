@@ -204,30 +204,35 @@ const LineComponent = ({
   };
 
   const getStopPoints = useCallback(() => {
-    if (isLineColorGradient) {
-      const colors = line.lineColor as string[];
-      return colors.map((color, index) => {
-        const offset = (index / (colors.length - 1)) * 100;
+    const getColors = () => {
+      if (isLineColorGradient) {
+        return line.lineColor as string[];
+      }
+      return [line.lineColor as string, line.lineColor as string];
+    };
 
-        return (
-          <Stop
-            key={`${index}`}
-            offset={`${offset}%`}
-            stopColor={color}
-            stopOpacity="1"
-          />
-        );
-      });
-    }
+    const colors = getColors();
 
-    return (
-      <Stop
-        offset="100%"
-        stopColor={line.lineColor as string}
-        stopOpacity="1"
-      />
-    );
-  }, [line.lineColor]);
+    return colors.map((color, index) => {
+      const offset = 100 - (index / (colors.length - 1)) * 100;
+
+      const getStopOpacity = () => {
+        if (line.trailingOpacity !== undefined && index === 0) {
+          return `${line.trailingOpacity}`;
+        }
+        return '1';
+      };
+
+      return (
+        <Stop
+          key={`${index}`}
+          offset={`${offset}%`}
+          stopColor={color}
+          stopOpacity={getStopOpacity()}
+        />
+      );
+    });
+  }, [line.lineColor, line.trailingOpacity]);
 
   if (localPath === undefined) {
     return null;

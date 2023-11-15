@@ -1,5 +1,6 @@
 import { ColorValue } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
+import { NumberProp } from 'react-native-svg';
 
 /**
  * The props for the LineChart component
@@ -62,6 +63,11 @@ export interface Line {
    * The color of the line (supplying an array of colors will create a linear gradient)
    */
   lineColor?: ColorValue | ColorValue[];
+  /**
+   * the opacity of the begging of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
+   * @default "1"
+   */
+  trailingOpacity?: NumberProp;
   /**
    * The color of the fill under the line (creates an area chart)
    */

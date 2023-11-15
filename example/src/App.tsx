@@ -354,6 +354,7 @@ const Chart = ({
             },
             lineWidth: 4,
             lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,
+            trailingOpacity: '0.3',
             fillColor: isAreaChart ? color : undefined,
             curve: chartType,
             endPointConfig: isEndPoint
