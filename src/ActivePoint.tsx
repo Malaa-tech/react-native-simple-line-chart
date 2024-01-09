@@ -63,6 +63,7 @@ const ActivePoint = ({
     x: 0,
     y: 0,
     extraData: {
+      isInitialPoint: true,
       date: undefined,
     },
   });
@@ -123,11 +124,17 @@ const ActivePoint = ({
           const x = point?.x;
 
           if (x !== undefined && y !== undefined) {
+            if (pointOpacity.value === 0) {
+              pointOpacity.value = 1;
+              lineOpacitySV.value = 1;
+            }
             activePointPosition.value = {
               x,
               y,
             };
           } else {
+            pointOpacity.value = 0;
+            lineOpacitySV.value = 0;
             activePointPosition.value = {
               x: 0,
               y: 0,
@@ -142,6 +149,11 @@ const ActivePoint = ({
 
       // point and line animations
       if (current.activeTouch !== previous?.activeTouch) {
+        // if user touched in a place where there is no point (for example a point with disableActivePoint: true)
+        if (activePointSV.value?.extraData?.isInitialPoint === true) {
+          return;
+        }
+
         if (current.activeTouch === true) {
           pointOpacity.value = withTiming(1, { duration: 200 });
           lineOpacitySV.value = withTiming(verticalLineOpacity, {
