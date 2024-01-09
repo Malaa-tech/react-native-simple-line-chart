@@ -43,6 +43,8 @@ export default function App() {
   const [data3, setData3] = React.useState(undefined);
   const [data4, setData4] = React.useState(undefined);
 
+  const [uniqueKey, setUniqueKey] = React.useState(Math.random());
+
   const [numberOfPoints, setNumberOfPoints] = React.useState(30);
   const [numberOfLines, setNumberOfLines] = React.useState(2);
   const [color, setColor] = React.useState('pink');
@@ -71,6 +73,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Chart
+          key={uniqueKey}
           data={data}
           data2={data2}
           data3={data3}
@@ -300,6 +303,13 @@ export default function App() {
             color={color}
             onPress={() => {
               randomize();
+            }}
+          />
+          <Button
+            title="Reset"
+            color={color}
+            onPress={() => {
+              setUniqueKey(Math.random());
             }}
           />
         </View>
