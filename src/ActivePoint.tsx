@@ -150,7 +150,10 @@ const ActivePoint = ({
       // point and line animations
       if (current.activeTouch !== previous?.activeTouch) {
         // if user touched in a place where there is no point (for example a point with disableActivePoint: true)
-        if (activePointSV.value?.extraData?.isInitialPoint === true) {
+        if (
+          activePointSV.value === undefined ||
+          activePointSV.value?.extraData?.isInitialPoint === true
+        ) {
           return;
         }
 
