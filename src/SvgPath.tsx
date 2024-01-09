@@ -14,12 +14,7 @@ import { Platform, View } from 'react-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import {
-  createNewPath,
-  getIndexOfTheNearestXPoint,
-  PathObject,
-  useForceReRender,
-} from './utils';
+import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
@@ -148,10 +143,8 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const [isReadyToRenderBackground, setIsReadyToRenderBackground] =
-    React.useState(Platform.OS === 'android');
-  const [localPath, setLocalPath] = React.useState<PathObject>(
-    createNewPath({
+  const localCreateNewPath = () => {
+    return createNewPath({
       data: line?.data || [],
       allData,
       endSpacing: extraConfig.endSpacing || 20,
@@ -162,17 +155,14 @@ const LineComponent = ({
       curve: line.curve,
       calculateChartYAxisMinMax:
         extraConfig.calculateChartYAxisMinMax || undefined,
-    })
+    });
+  };
+
+  const [isReadyToRenderBackground, setIsReadyToRenderBackground] =
+    React.useState(Platform.OS === 'android');
+  const [localPath, setLocalPath] = React.useState<PathObject>(
+    localCreateNewPath()
   );
-
-  const forceRerender = useForceReRender();
-
-  // forcing a re-render after x ms to fix sharedValues not causing a rerender.
-  useEffect(() => {
-    setTimeout(() => {
-      forceRerender();
-    }, 1500);
-  }, [extraConfig]);
 
   const {
     startAnimation,
@@ -186,18 +176,7 @@ const LineComponent = ({
   });
 
   useEffect(() => {
-    const path = createNewPath({
-      data: line?.data || [],
-      allData,
-      endSpacing: extraConfig.endSpacing || 20,
-      svgHeight,
-      svgWidth,
-      isFilled: line.fillColor !== undefined,
-      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
-      curve: line.curve,
-      calculateChartYAxisMinMax:
-        extraConfig.calculateChartYAxisMinMax || undefined,
-    });
+    const path = localCreateNewPath();
 
     if (extraConfig.animationConfig) {
       startAnimation({
