@@ -102,40 +102,42 @@ const ActivePoint = ({
     (current, previous) => {
       const currentIndexData = data[current.activeIndex];
 
-      if (current.activeIndex !== null && current.activeTouch === true) {
-        try {
-          if (onPointChange) {
-            runOnJS(onPointChange)(currentIndexData);
+      if (currentIndexData?.disableActivePoint !== true) {
+        if (current.activeIndex !== null && current.activeTouch === true) {
+          try {
+            if (onPointChange) {
+              runOnJS(onPointChange)(currentIndexData);
+            }
+          } catch (e) {
+            // error
           }
-        } catch (e) {
-          // error
         }
-      }
 
-      // active point position
-      if (
-        current.activeIndex !== previous?.activeIndex ||
-        currentIndexData?.y !== activePointPosition?.value.y
-      ) {
-        const point = positions.value[activeIndex.value];
-        const y = point?.y;
-        const x = point?.x;
+        // active point position
+        if (
+          current.activeIndex !== previous?.activeIndex ||
+          currentIndexData?.y !== activePointPosition?.value.y
+        ) {
+          const point = positions.value[activeIndex.value];
+          const y = point?.y;
+          const x = point?.x;
 
-        if (x !== undefined && y !== undefined) {
-          activePointPosition.value = {
-            x,
-            y,
-          };
-        } else {
-          activePointPosition.value = {
-            x: 0,
-            y: 0,
-          };
+          if (x !== undefined && y !== undefined) {
+            activePointPosition.value = {
+              x,
+              y,
+            };
+          } else {
+            activePointPosition.value = {
+              x: 0,
+              y: 0,
+            };
+          }
         }
-      }
 
-      if (current.activeTouch) {
-        activePointSV.value = currentIndexData;
+        if (current.activeTouch) {
+          activePointSV.value = currentIndexData;
+        }
       }
 
       // point and line animations

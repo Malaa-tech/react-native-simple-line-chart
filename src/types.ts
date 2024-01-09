@@ -105,6 +105,10 @@ export interface DataPoint<T = any> {
    */
   y: number;
   /**
+   * disable the active point for this data point
+   */
+  disableActivePoint?: boolean;
+  /**
    * Any extra data you want to pass to the data point (this will be passed to the active point component)
    */
   extraData?: T;
