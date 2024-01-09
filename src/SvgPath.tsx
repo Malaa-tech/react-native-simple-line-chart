@@ -10,7 +10,7 @@ import {
   SharedValue,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
@@ -148,6 +148,8 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
+  const [isReadyToRenderBackground, setIsReadyToRenderBackground] =
+    React.useState(Platform.OS === 'android');
   const [localPath, setLocalPath] = React.useState<PathObject>(
     createNewPath({
       data: line?.data || [],
@@ -250,23 +252,25 @@ const LineComponent = ({
 
   return (
     <>
-      <Defs>
-        <LinearGradient
-          id={getBackgroundIdentifier()}
-          gradientUnits="userSpaceOnUse"
-          x1="300"
-          y1="150"
-          x2="0"
-          y2="0"
-        >
-          {
-            getStopPoints() as ReactElement<
-              any,
-              string | JSXElementConstructor<any>
-            >[]
-          }
-        </LinearGradient>
-      </Defs>
+      {isReadyToRenderBackground && (
+        <Defs>
+          <LinearGradient
+            id={getBackgroundIdentifier()}
+            gradientUnits="userSpaceOnUse"
+            x1="300"
+            y1="150"
+            x2="0"
+            y2="0"
+          >
+            {
+              getStopPoints() as ReactElement<
+                any,
+                string | JSXElementConstructor<any>
+              >[]
+            }
+          </LinearGradient>
+        </Defs>
+      )}
 
       <AnimatedG
         style={{
@@ -274,6 +278,17 @@ const LineComponent = ({
         }}
       >
         <AnimatedPath
+          onLayout={(e) => {
+            // this is a hack to fix the ios flashes white on mount
+            if (
+              Number.isFinite(e.nativeEvent.layout.width) &&
+              Platform.OS === 'ios'
+            ) {
+              setTimeout(() => {
+                setIsReadyToRenderBackground(true);
+              }, 20);
+            }
+          }}
           strokeLinecap="round"
           stroke={`url(#${getBackgroundIdentifier()})`}
           strokeWidth={line.lineWidth || 2}
