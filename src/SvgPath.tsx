@@ -47,7 +47,8 @@ const SvgPath = ({
   }, []);
 
   const activeIndex = useDerivedValue(() => {
-    const activeTouchWithoutDecimals = Math.round(activeTouchX.value);
+    // eslint-disable-next-line no-bitwise
+    const activeTouchWithoutDecimals = ~~activeTouchX.value;
 
     if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
       return initialActivePoint;
