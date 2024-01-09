@@ -148,7 +148,21 @@ const LineComponent = ({
     return ACTIVE_POINT_CONFIG.color;
   }, [line?.activePointConfig?.color, line?.lineColor, isLineColorGradient]);
 
-  const [localPath, setLocalPath] = React.useState<PathObject>();
+  const [localPath, setLocalPath] = React.useState<PathObject>(
+    createNewPath({
+      data: line?.data || [],
+      allData,
+      endSpacing: extraConfig.endSpacing || 20,
+      svgHeight,
+      svgWidth,
+      isFilled: line.fillColor !== undefined,
+      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
+      curve: line.curve,
+      calculateChartYAxisMinMax:
+        extraConfig.calculateChartYAxisMinMax || undefined,
+    })
+  );
+
   const forceRerender = useForceReRender();
 
   // forcing a re-render after x ms to fix sharedValues not causing a rerender.
@@ -234,10 +248,6 @@ const LineComponent = ({
     });
   }, [line.lineColor, line.trailingOpacity]);
 
-  if (localPath === undefined) {
-    return null;
-  }
-
   return (
     <>
       <Defs>
@@ -274,8 +284,8 @@ const LineComponent = ({
 
         {line.endPointConfig && (
           <EndPoint
-            x={localPath.x(localPath.data[localPath.data.length - 1]?.x || 0)}
-            y={localPath.y(localPath.data[localPath.data.length - 1]?.y || 0)}
+            x={localPath?.x(localPath?.data[localPath.data.length - 1]?.x || 0)}
+            y={localPath?.y(localPath?.data[localPath.data.length - 1]?.y || 0)}
             color={line.endPointConfig?.color || END_POINT.color}
             animated={line.endPointConfig?.animated || END_POINT.animated}
             radius={line.endPointConfig?.radius || END_POINT.radius}
@@ -286,7 +296,7 @@ const LineComponent = ({
 
       {line !== undefined && line.activePointConfig !== undefined && (
         <ActivePoint
-          data={localPath.data}
+          data={localPath?.data || []}
           activeTouch={activeTouch}
           width={svgWidth}
           height={svgHeight}
