@@ -51,6 +51,7 @@ export const createNewPath = ({
 
   // get the min and max values for the y axis
   const [minY, maxY] = d3.extent([...allData.map((val) => val.y)]) || [0, 0];
+  const [minX, maxX] = d3.extent([...allData.map((val) => val.x)]) || [0, 0];
 
   // Avoid repeated computation
   const chartMinMax = getChartMinMaxValues(minY || 0, maxY || 10);
@@ -64,7 +65,7 @@ export const createNewPath = ({
   // create the x scale
   const x = d3
     .scaleUtc()
-    .domain([data[0]?.x || 0, data[data.length - 1]?.x || 1])
+    .domain([minX || 0, maxX || 1])
     .range([0, svgWidth - endSpacing]);
 
   const curveMapping = {
