@@ -264,7 +264,7 @@ const LineComponent = ({
         }}
       >
         <AnimatedPath
-          strokeLinejoin="round"
+          strokeLinecap="round"
           stroke={`url(#${getBackgroundIdentifier()})`}
           strokeWidth={line.lineWidth || 2}
           fill={line.fillColor !== undefined ? line.fillColor : 'transparent'}
