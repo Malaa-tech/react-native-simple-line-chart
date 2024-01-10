@@ -124,17 +124,11 @@ const ActivePoint = ({
           const x = point?.x;
 
           if (x !== undefined && y !== undefined) {
-            if (pointOpacity.value === 0) {
-              pointOpacity.value = 1;
-              lineOpacitySV.value = 1;
-            }
             activePointPosition.value = {
               x,
               y,
             };
           } else {
-            pointOpacity.value = 0;
-            lineOpacitySV.value = 0;
             activePointPosition.value = {
               x: 0,
               y: 0,
@@ -144,6 +138,17 @@ const ActivePoint = ({
 
         if (current.activeTouch) {
           activePointSV.value = currentIndexData;
+        }
+      }
+
+      if (current.activeTouch === true) {
+        if (activePointSV.value === undefined && pointOpacity.value === 1) {
+          pointOpacity.value = 0;
+          lineOpacitySV.value = 0;
+        }
+        if (activePointSV.value !== undefined && pointOpacity.value === 0) {
+          pointOpacity.value = 1;
+          lineOpacitySV.value = 1;
         }
       }
 
