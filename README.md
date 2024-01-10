@@ -14,11 +14,10 @@ A simple, interactive, animated, and fast Line Chart component for React Native.
  
 ### How we use it in Malaa App
 <p align="center">
-<img src="https://github.com/Malaa-tech/react-native-simple-line-chart/assets/24798045/ba07cba2-edb7-498c-92eb-45e6d633b2ad.gif" width="270"/>
-<img src="https://user-images.githubusercontent.com/24798045/216769222-036ed3b7-a40c-4589-b129-7443737ade25.gif" width="270"/>
+<img src="https://github.com/Malaa-tech/react-native-simple-line-chart/assets/24798045/c48c7ace-8230-4363-843c-1d250fc22110" width="300"/>
+<img src="https://github.com/Malaa-tech/react-native-simple-line-chart/assets/24798045/74aa91d3-e69c-4a85-8d62-d6a77be550d2" width="320"/>
 <img src="https://user-images.githubusercontent.com/24798045/216769372-9d8dc695-71f9-488d-8bba-e804de9dc5ba.gif" width="270"/>
 </p>
-
 
 
 ### 🔮 Example App Demo
