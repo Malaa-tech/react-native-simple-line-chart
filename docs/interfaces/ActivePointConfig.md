@@ -33,7 +33,7 @@ the border color for the active point circle
 
 #### Defined in
 
-[src/types.ts:138](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L138)
+[src/types.ts:148](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L148)
 
 ___
 
@@ -49,7 +49,7 @@ the border width for the active point circle
 
 #### Defined in
 
-[src/types.ts:143](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L143)
+[src/types.ts:153](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L153)
 
 ___
 
@@ -65,7 +65,7 @@ The color of the active point circle
 
 #### Defined in
 
-[src/types.ts:133](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L133)
+[src/types.ts:143](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L143)
 
 ___
 
@@ -81,7 +81,7 @@ the border radius for the active point circle
 
 #### Defined in
 
-[src/types.ts:148](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L148)
+[src/types.ts:158](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L158)
 
 ___
 
@@ -97,7 +97,7 @@ true
 
 #### Defined in
 
-[src/types.ts:158](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L158)
+[src/types.ts:168](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L168)
 
 ___
 
@@ -113,7 +113,7 @@ false
 
 #### Defined in
 
-[src/types.ts:153](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L153)
+[src/types.ts:163](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L163)
 
 ___
 
@@ -129,7 +129,7 @@ The color of the vertical line
 
 #### Defined in
 
-[src/types.ts:163](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L163)
+[src/types.ts:173](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L173)
 
 ___
 
@@ -145,7 +145,7 @@ The dash array for the vertical line (this will create a dashed line)
 
 #### Defined in
 
-[src/types.ts:178](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L178)
+[src/types.ts:188](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L188)
 
 ___
 
@@ -161,7 +161,7 @@ The opacity of the vertical line (number between 0 and 1)
 
 #### Defined in
 
-[src/types.ts:168](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L168)
+[src/types.ts:178](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L178)
 
 ___
 
@@ -177,4 +177,4 @@ The width of the vertical line
 
 #### Defined in
 
-[src/types.ts:173](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L173)
+[src/types.ts:183](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L183)

@@ -39,4 +39,4 @@ The props for the LineChart component
 
 #### Defined in
 
-[src/types.ts:7](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/b1965b6/src/types.ts#L7)
+[src/types.ts:8](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d8bd645/src/types.ts#L8)
