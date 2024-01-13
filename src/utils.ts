@@ -1,7 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { useCallback, useState } from 'react';
 import * as d3 from 'd3';
-import { calculateChartYAxisMinMax, DataPoint, LineCurve } from './types';
+import { calculateChartAxisMinMax, DataPoint, LineCurve } from './types';
 
 export type PathObject = {
   d: string | null;
@@ -10,28 +10,18 @@ export type PathObject = {
   data: DataPoint[];
 };
 
-export const createNewPath = ({
-  svgWidth,
-  svgHeight,
-  endSpacing,
-  data,
+export const getChartMinMaxValue = ({
   allData,
-  isFilled = false,
   alwaysStartYAxisFromZero,
-  curve,
   calculateChartYAxisMinMax,
+  calculateChartXAxisMinMax,
 }: {
-  svgWidth: number;
-  svgHeight: number;
-  endSpacing: number;
-  data: DataPoint[];
   allData: DataPoint[];
-  isFilled?: boolean;
   alwaysStartYAxisFromZero: boolean;
-  curve?: LineCurve;
-  calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
-}): PathObject => {
-  const getChartMinMaxValues = (minValue: number, maxValue: number) => {
+  calculateChartYAxisMinMax?: calculateChartAxisMinMax;
+  calculateChartXAxisMinMax?: calculateChartAxisMinMax;
+}) => {
+  const getChartMinMaxValuesForY = (minValue: number, maxValue: number) => {
     if (alwaysStartYAxisFromZero) {
       return {
         min: 0,
@@ -49,23 +39,63 @@ export const createNewPath = ({
     };
   };
 
-  // get the min and max values for the y axis
+  const getChartMinMaxValuesForX = (minValue: number, maxValue: number) => {
+    if (calculateChartXAxisMinMax) {
+      return calculateChartXAxisMinMax(minValue, maxValue);
+    }
+
+    return {
+      min: minValue,
+      max: maxValue,
+    };
+  };
+
+  // get the min and max values for the y & x axis
   const [minY, maxY] = d3.extent([...allData.map((val) => val.y)]) || [0, 0];
   const [minX, maxX] = d3.extent([...allData.map((val) => val.x)]) || [0, 0];
 
   // Avoid repeated computation
-  const chartMinMax = getChartMinMaxValues(minY || 0, maxY || 10);
+  const charYtMinMax = getChartMinMaxValuesForY(minY || 0, maxY || 10);
+  const charXtMinMax = getChartMinMaxValuesForX(minX || 0, maxX || 10);
+
+  return {
+    minY: charYtMinMax.min,
+    maxY: charYtMinMax.max,
+    minX: charXtMinMax.min,
+    maxX: charXtMinMax.max,
+  };
+};
+
+export const createNewPath = ({
+  svgWidth,
+  svgHeight,
+  endSpacing,
+  data,
+  isFilled = false,
+  curve,
+  axisMinMax,
+}: {
+  svgWidth: number;
+  svgHeight: number;
+  endSpacing: number;
+  data: DataPoint[];
+  isFilled?: boolean;
+  curve?: LineCurve;
+  axisMinMax: ReturnType<typeof getChartMinMaxValue>;
+}): PathObject => {
+  // get the min and max values for the y & x axis
+  const { maxX, maxY, minX, minY } = axisMinMax;
 
   // create the y scale
   const y = d3
     .scaleLinear()
-    .domain([chartMinMax.max as number, chartMinMax.min as number])
+    .domain([maxY as number, minY as number])
     .range([10, svgHeight - 10]);
 
   // create the x scale
   const x = d3
     .scaleUtc()
-    .domain([minX || 0, maxX || 1])
+    .domain([minX, maxX])
     .range([0, svgWidth - endSpacing]);
 
   const curveMapping = {

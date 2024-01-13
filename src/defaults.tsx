@@ -27,6 +27,7 @@ export const EXTRA_CONFIG = {
   simultaneousHandlers: undefined,
   endSpacing: 0,
   calculateChartYAxisMinMax: undefined,
+  calculateChartXAxisMinMax: undefined,
   activeOffsetX: [0, 0],
   animationConfig: undefined,
 };

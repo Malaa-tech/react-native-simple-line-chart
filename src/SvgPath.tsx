@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   useCallback,
   useEffect,
+  useMemo,
 } from 'react';
 import {
   interpolate,
@@ -14,7 +15,12 @@ import { Platform, View } from 'react-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
-import { createNewPath, getIndexOfTheNearestXPoint, PathObject } from './utils';
+import {
+  createNewPath,
+  getChartMinMaxValue,
+  getIndexOfTheNearestXPoint,
+  PathObject,
+} from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
 import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
@@ -46,6 +52,17 @@ const SvgPath = ({
     return acc.concat(line?.data);
   }, []);
 
+  const axisMinMax = useMemo(() => {
+    return getChartMinMaxValue({
+      allData,
+      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
+      calculateChartYAxisMinMax:
+        extraConfig.calculateChartYAxisMinMax || undefined,
+      calculateChartXAxisMinMax:
+        extraConfig.calculateChartXAxisMinMax || undefined,
+    });
+  }, [allData]);
+
   const activeIndex = useDerivedValue(() => {
     // eslint-disable-next-line no-bitwise
     const activeTouchWithoutDecimals = ~~activeTouchX.value;
@@ -56,11 +73,9 @@ const SvgPath = ({
 
     const data = lines[0]?.data || [];
     const dataLength = data.length;
-    const firstDataPoint = data[0];
-    const lastDataPoint = data[dataLength - 1];
 
-    const minData = firstDataPoint ? firstDataPoint.x : 0;
-    const maxData = lastDataPoint ? lastDataPoint.x : 100;
+    const minData = axisMinMax.minX;
+    const maxData = axisMinMax.maxX;
 
     const denominator = svgWidth - (endSpacing || 20);
     const percentage = (activeTouchWithoutDecimals / denominator) * 100;
@@ -101,6 +116,7 @@ const SvgPath = ({
                 identifier={`${index}`}
                 extraConfig={extraConfig}
                 onPointChange={index === 0 ? onPointChange : undefined}
+                axisMinMax={axisMinMax}
               />
             );
           }
@@ -121,6 +137,7 @@ const LineComponent = ({
   identifier,
   extraConfig,
   onPointChange,
+  axisMinMax,
 }: {
   line: Line;
   allData: DataPoint[];
@@ -131,6 +148,7 @@ const LineComponent = ({
   identifier: string;
   extraConfig: ExtraConfig;
   onPointChange?: (point?: DataPoint) => void;
+  axisMinMax: ReturnType<typeof getChartMinMaxValue>;
 }) => {
   const isLineColorGradient = Array.isArray(line.lineColor);
 
@@ -147,15 +165,12 @@ const LineComponent = ({
   const localCreateNewPath = () => {
     return createNewPath({
       data: line?.data || [],
-      allData,
       endSpacing: extraConfig.endSpacing || 20,
       svgHeight,
       svgWidth,
       isFilled: line.fillColor !== undefined,
-      alwaysStartYAxisFromZero: extraConfig.alwaysStartYAxisFromZero || false,
       curve: line.curve,
-      calculateChartYAxisMinMax:
-        extraConfig.calculateChartYAxisMinMax || undefined,
+      axisMinMax,
     });
   };
 

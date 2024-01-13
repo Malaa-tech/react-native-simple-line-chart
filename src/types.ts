@@ -226,7 +226,11 @@ export interface ExtraConfig {
   /**
    * supplying this function will allow you to customize the y axis min and max values
    */
-  calculateChartYAxisMinMax?: calculateChartYAxisMinMax;
+  calculateChartYAxisMinMax?: calculateChartAxisMinMax;
+  /**
+   * supplying this function will allow you to customize the x axis min and max values
+   */
+  calculateChartXAxisMinMax?: calculateChartAxisMinMax;
   /**
    * Animation configuration
    */
@@ -265,7 +269,7 @@ export type ActivePointComponentSharedValue = (
   activePoint: DataPointSharedValue
 ) => React.ReactNode;
 
-export type calculateChartYAxisMinMax = (
+export type calculateChartAxisMinMax = (
   min: number,
   max: number
 ) => { min: number; max: number };

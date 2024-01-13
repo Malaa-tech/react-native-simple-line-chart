@@ -40,6 +40,9 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     calculateChartYAxisMinMax:
       extraConfig.calculateChartYAxisMinMax ||
       EXTRA_CONFIG.calculateChartYAxisMinMax,
+    calculateChartXAxisMinMax:
+      extraConfig.calculateChartXAxisMinMax ||
+      EXTRA_CONFIG.calculateChartXAxisMinMax,
     activeOffsetX: extraConfig.activeOffsetX || EXTRA_CONFIG.activeOffsetX,
     animationConfig:
       extraConfig.animationConfig || EXTRA_CONFIG.animationConfig,
