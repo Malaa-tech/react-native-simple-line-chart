@@ -252,8 +252,8 @@ const LineComponent = ({
           <LinearGradient
             id={getBackgroundIdentifier()}
             gradientUnits="userSpaceOnUse"
-            x1="300"
-            y1="150"
+            x1="120"
+            y1="0"
             x2="0"
             y2="0"
           >
