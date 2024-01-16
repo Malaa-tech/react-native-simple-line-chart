@@ -48,8 +48,11 @@ const SvgPath = ({
   onPointChange: (point?: DataPoint) => void;
 }) => {
   const allData = lines.reduce((acc, line) => {
-    // @ts-ignore
-    return acc.concat(line?.data);
+    if (line.data !== undefined) {
+      // @ts-ignore
+      return acc.concat(line?.data);
+    }
+    return acc;
   }, []);
 
   const axisMinMax = useMemo(() => {
