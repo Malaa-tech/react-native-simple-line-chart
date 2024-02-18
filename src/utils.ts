@@ -154,26 +154,67 @@ export const getIndexOfTheNearestXPoint = (
 
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
-    // @ts-ignore
-    const midValue = array[mid].x;
+    const midPoint = array[mid];
 
-    if (midValue === value) {
-      return mid;
+    // Skip disabled points by adjusting the search range
+    if (midPoint?.disableActivePoint !== true) {
+      // Check direction to move: towards left or right
+      const canMoveLeft =
+        mid > 0 && array[mid - 1]?.disableActivePoint !== true;
+      const canMoveRight =
+        mid < array.length - 1 && array[mid + 1]?.disableActivePoint !== true;
+
+      if (
+        canMoveLeft &&
+        (!canMoveRight ||
+          Math.abs((array[mid - 1] as DataPoint).x - value) <
+            Math.abs((array[mid + 1] as DataPoint).x - value))
+      ) {
+        right = mid - 1; // Move left
+      } else if (canMoveRight) {
+        left = mid + 1; // Move right
+      } else {
+        // If neither direction has an enabled point, exit or handle accordingly
+        return -1; // No enabled points close to this position
+      }
+
+      // eslint-disable-next-line no-continue
+      continue; // Skip the rest of the loop to reevaluate with new left/right
     }
-    if (midValue < value) {
+
+    if (midPoint.x === value) {
+      return mid; // Found the target value
+    }
+    if (midPoint.x < value) {
       left = mid + 1;
     } else {
       right = mid - 1;
     }
   }
 
-  // At this point, left and right index are around the target value.
-  // @ts-ignore
-  const leftDistance = Math.abs(array[left]?.x - value);
-  // @ts-ignore
-  const rightDistance = Math.abs(array[right]?.x - value);
+  // Adjustments for finding the closest enabled point if the exact match isn't found
+  let closestIndex = -1;
+  let smallestDistance = Infinity;
 
-  return leftDistance < rightDistance ? left : right;
+  // Check the closest enabled points from left and right
+  const checkAndSetClosest = (index: number) => {
+    if (
+      index >= 0 &&
+      index < array.length &&
+      array[index]?.disableActivePoint !== true
+    ) {
+      const distance = Math.abs((array[index] as DataPoint)?.x - value);
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+        closestIndex = index;
+      }
+    }
+  };
+
+  checkAndSetClosest(left);
+  checkAndSetClosest(right);
+
+  return closestIndex;
 };
 
 export const useForceReRender = () => {
