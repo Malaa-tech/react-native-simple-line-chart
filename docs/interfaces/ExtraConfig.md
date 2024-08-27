@@ -1,152 +1,147 @@
-[React Native Simple Line Chart](../README.md) / [Exports](../modules.md) / ExtraConfig
+[**React Native Simple Line Chart**](../README.md) • **Docs**
+
+***
+
+[React Native Simple Line Chart](../globals.md) / ExtraConfig
 
 # Interface: ExtraConfig
 
 More configuration for the chart
 
-## Table of contents
-
-### Properties
-
-- [activeOffsetX](ExtraConfig.md#activeoffsetx)
-- [alwaysShowActivePoint](ExtraConfig.md#alwaysshowactivepoint)
-- [alwaysStartYAxisFromZero](ExtraConfig.md#alwaysstartyaxisfromzero)
-- [animationConfig](ExtraConfig.md#animationconfig)
-- [calculateChartXAxisMinMax](ExtraConfig.md#calculatechartxaxisminmax)
-- [calculateChartYAxisMinMax](ExtraConfig.md#calculatechartyaxisminmax)
-- [endSpacing](ExtraConfig.md#endspacing)
-- [hideActivePointOnBlur](ExtraConfig.md#hideactivepointonblur)
-- [initialActivePoint](ExtraConfig.md#initialactivepoint)
-- [simultaneousHandlers](ExtraConfig.md#simultaneoushandlers)
-
 ## Properties
 
-### activeOffsetX
+### activeOffsetX?
 
-• `Optional` **activeOffsetX**: `number`[]
+> `optional` **activeOffsetX**: [`number`, `number`]
 
 Supplying activeOffsetX for the gesture handler, if the offset is reached, the simultaneousHandlers will be disabled
 
-**`Default`**
+#### Default
 
+```ts
 [0,0]
+```
 
 #### Defined in
 
-[src/types.ts:220](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L220)
+[src/types.ts:220](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L220)
 
-___
+***
 
-### alwaysShowActivePoint
+### alwaysShowActivePoint?
 
-• `Optional` **alwaysShowActivePoint**: `boolean`
+> `optional` **alwaysShowActivePoint**: `boolean`
 
 Settings this to true will make the active point always visible rather than visible when pressing on the chart
 
-**`Default`**
+#### Default
 
+```ts
 false
+```
 
 #### Defined in
 
-[src/types.ts:199](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L199)
+[src/types.ts:199](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L199)
 
-___
+***
 
-### alwaysStartYAxisFromZero
+### alwaysStartYAxisFromZero?
 
-• `Optional` **alwaysStartYAxisFromZero**: `boolean`
+> `optional` **alwaysStartYAxisFromZero**: `boolean`
 
 Settings this to true will make the chart y axis start from zero even if the minimum value is greater than zero
 
 #### Defined in
 
-[src/types.ts:211](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L211)
+[src/types.ts:211](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L211)
 
-___
+***
 
-### animationConfig
+### animationConfig?
 
-• `Optional` **animationConfig**: [`AnimationConfig`](AnimationConfig.md)
+> `optional` **animationConfig**: [`AnimationConfig`](AnimationConfig.md)
 
 Animation configuration
 
 #### Defined in
 
-[src/types.ts:237](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L237)
+[src/types.ts:237](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L237)
 
-___
+***
 
-### calculateChartXAxisMinMax
+### calculateChartXAxisMinMax?
 
-• `Optional` **calculateChartXAxisMinMax**: `calculateChartAxisMinMax`
+> `optional` **calculateChartXAxisMinMax**: `calculateChartAxisMinMax`
 
 supplying this function will allow you to customize the x axis min and max values
 
 #### Defined in
 
-[src/types.ts:233](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L233)
+[src/types.ts:233](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L233)
 
-___
+***
 
-### calculateChartYAxisMinMax
+### calculateChartYAxisMinMax?
 
-• `Optional` **calculateChartYAxisMinMax**: `calculateChartAxisMinMax`
+> `optional` **calculateChartYAxisMinMax**: `calculateChartAxisMinMax`
 
 supplying this function will allow you to customize the y axis min and max values
 
 #### Defined in
 
-[src/types.ts:229](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L229)
+[src/types.ts:229](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L229)
 
-___
+***
 
-### endSpacing
+### endSpacing?
 
-• `Optional` **endSpacing**: `number`
+> `optional` **endSpacing**: `number`
 
 Space between the end of the chart the the end of the view (like paddingEnd)
 
-**`Default`**
+#### Default
 
+```ts
 0
+```
 
 #### Defined in
 
-[src/types.ts:225](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L225)
+[src/types.ts:225](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L225)
 
-___
+***
 
-### hideActivePointOnBlur
+### hideActivePointOnBlur?
 
-• `Optional` **hideActivePointOnBlur**: `boolean`
+> `optional` **hideActivePointOnBlur**: `boolean`
 
 Settings this to true will make the active point always visible after the user taps on the chart rather than hiding after pressOut
 
 #### Defined in
 
-[src/types.ts:207](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L207)
+[src/types.ts:207](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L207)
 
-___
+***
 
-### initialActivePoint
+### initialActivePoint?
 
-• `Optional` **initialActivePoint**: `number`
+> `optional` **initialActivePoint**: `number`
 
 This is the index of the initial active point (the point that will be active when the chart first renders), if you didn't set (alwaysShowActivePoint) to true then there is no reason to set this.
 
 #### Defined in
 
-[src/types.ts:203](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L203)
+[src/types.ts:203](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L203)
 
-___
+***
 
-### simultaneousHandlers
+### simultaneousHandlers?
 
-• `Optional` **simultaneousHandlers**: `any`
+> `optional` **simultaneousHandlers**: `any`
 
 Supplying simultaneousHandlers will make the chart work with other gesture handlers
 
 #### Defined in
 
-[src/types.ts:215](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/d9a44a4/src/types.ts#L215)
+[src/types.ts:215](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L215)

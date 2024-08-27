@@ -1,4 +1,6 @@
-React Native Simple Line Chart / [Exports](modules.md)
+**React Native Simple Line Chart** • [**Docs**](globals.md)
+
+***
 
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Malaa-tech/react-native-simple-line-chart)
 

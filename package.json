@@ -84,8 +84,8 @@
     "react-native-reanimated": "~3.10.1",
     "react-native-svg": "15.2.0",
     "release-it": "^15.0.0",
-    "typedoc": "^0.23.24",
-    "typedoc-plugin-markdown": "^3.14.0",
+    "typedoc": "^0.26.6",
+    "typedoc-plugin-markdown": "^4.2.6",
     "typescript": "~5.3.3"
   },
   "peerDependencies": {
