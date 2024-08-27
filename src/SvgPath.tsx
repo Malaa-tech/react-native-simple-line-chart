@@ -197,7 +197,7 @@ const LineComponent = ({
   useEffect(() => {
     const path = localCreateNewPath();
 
-    if (extraConfig.animationConfig) {
+    if (extraConfig.animationConfig && startAnimation) {
       startAnimation({
         action: () => {
           setLocalPath(path);
@@ -271,9 +271,14 @@ const LineComponent = ({
       )}
 
       <AnimatedG
-        style={{
-          ...lineWrapperAnimatedStyle,
-        }}
+        // @ts-ignore
+        style={
+          lineWrapperAnimatedStyle
+            ? {
+                ...lineWrapperAnimatedStyle,
+              }
+            : undefined
+        }
       >
         <AnimatedPath
           onLayout={(e) => {
@@ -295,7 +300,7 @@ const LineComponent = ({
           animatedProps={lineAnimatedProps}
         />
 
-        {line.endPointConfig && (
+        {line.endPointConfig && endPointAnimation && (
           <EndPoint
             x={localPath?.x(localPath?.data[localPath.data.length - 1]?.x || 0)}
             y={localPath?.y(localPath?.data[localPath.data.length - 1]?.y || 0)}

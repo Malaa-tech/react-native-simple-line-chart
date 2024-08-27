@@ -28,7 +28,7 @@ export const EXTRA_CONFIG = {
   endSpacing: 0,
   calculateChartYAxisMinMax: undefined,
   calculateChartXAxisMinMax: undefined,
-  activeOffsetX: [0, 0],
+  activeOffsetX: [0, 0] as [number, number],
   animationConfig: undefined,
 };
 

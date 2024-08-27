@@ -1,4 +1,8 @@
-import { SharedValue } from 'react-native-reanimated';
+import {
+  SharedValue,
+  useAnimatedProps,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { PathObject } from '../utils';
 import useTransitionAttach from './transitionAttach';
 import { AnimationType } from '../types';
@@ -23,12 +27,19 @@ export type animationHook = (props: {
   path?: PathObject;
   duration?: number;
   enabled?: boolean;
-}) => {
-  lineAnimatedProps: any;
-  lineWrapperAnimatedStyle: any;
-  startAnimation: startAnimationFunction;
-  endPointAnimation: endPointAnimationFunction;
-};
+}) =>
+  | {
+      lineAnimatedProps: ReturnType<typeof useAnimatedProps>;
+      lineWrapperAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
+      startAnimation: startAnimationFunction;
+      endPointAnimation: endPointAnimationFunction;
+    }
+  | {
+      lineAnimatedProps: undefined;
+      lineWrapperAnimatedStyle: undefined;
+      startAnimation: undefined;
+      endPointAnimation: undefined;
+    };
 
 const useChartAnimation = ({
   duration,

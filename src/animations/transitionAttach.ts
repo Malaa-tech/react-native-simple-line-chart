@@ -21,7 +21,12 @@ import {
 
 const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
   if (!enabled) {
-    return {};
+    return {
+      lineAnimatedProps: undefined,
+      lineWrapperAnimatedStyle: undefined,
+      startAnimation: undefined,
+      endPointAnimation: undefined,
+    };
   }
   const DURATION = duration || 0;
   const pathYSV = useSharedValue<number[]>([]);
@@ -135,7 +140,7 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
     });
   };
 
-  const result: any = {
+  const result = {
     lineWrapperAnimatedStyle,
     lineAnimatedProps,
     startAnimation,

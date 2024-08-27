@@ -22,7 +22,12 @@ import {
 
 const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
   if (!enabled) {
-    return {};
+    return {
+      endPointAnimation: undefined,
+      lineAnimatedProps: undefined,
+      lineWrapperAnimatedStyle: undefined,
+      startAnimation: undefined,
+    };
   }
   const DURATION = duration || 0;
   const pathYSV = useSharedValue<number[]>([]);
@@ -125,7 +130,7 @@ const useTransitionUniform: animationHook = ({ path, duration, enabled }) => {
     });
   };
 
-  const result: any = {
+  const result = {
     lineWrapperAnimatedStyle,
     lineAnimatedProps,
     startAnimation,
