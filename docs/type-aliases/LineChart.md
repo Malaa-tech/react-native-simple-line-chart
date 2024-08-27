@@ -78,4 +78,4 @@ The width of the chart (default value is the width of the screen)
 
 ## Defined in
 
-[src/types.ts:8](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L8)
+[src/types.ts:8](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L8)

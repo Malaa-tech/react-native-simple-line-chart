@@ -18,7 +18,7 @@ The component to render when the user taps on the chart
 
 #### Defined in
 
-[src/types.ts:78](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L78)
+[src/types.ts:78](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L78)
 
 ***
 
@@ -30,7 +30,7 @@ The same as (activePointComponent) but the component will receive the shared val
 
 #### Defined in
 
-[src/types.ts:82](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L82)
+[src/types.ts:82](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L82)
 
 ***
 
@@ -42,7 +42,7 @@ The configuration for the active point (the point that is shown when the user ta
 
 #### Defined in
 
-[src/types.ts:61](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L61)
+[src/types.ts:61](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L61)
 
 ***
 
@@ -60,7 +60,7 @@ The curve of the line
 
 #### Defined in
 
-[src/types.ts:95](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L95)
+[src/types.ts:95](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L95)
 
 ***
 
@@ -72,7 +72,7 @@ The data points for the line containing an array of objects with x and y values 
 
 #### Defined in
 
-[src/types.ts:57](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L57)
+[src/types.ts:57](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L57)
 
 ***
 
@@ -84,7 +84,7 @@ The end point configuration (the point appearing at the end of the line)
 
 #### Defined in
 
-[src/types.ts:90](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L90)
+[src/types.ts:90](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L90)
 
 ***
 
@@ -96,7 +96,7 @@ The color of the fill under the line (creates an area chart)
 
 #### Defined in
 
-[src/types.ts:74](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L74)
+[src/types.ts:74](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L74)
 
 ***
 
@@ -108,7 +108,7 @@ Optional key to indicate that the line has changed (helps with triggering animat
 
 #### Defined in
 
-[src/types.ts:53](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L53)
+[src/types.ts:53](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L53)
 
 ***
 
@@ -120,7 +120,7 @@ The color of the line (supplying an array of colors will create a linear gradien
 
 #### Defined in
 
-[src/types.ts:65](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L65)
+[src/types.ts:65](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L65)
 
 ***
 
@@ -132,7 +132,7 @@ The width of the line
 
 #### Defined in
 
-[src/types.ts:86](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L86)
+[src/types.ts:86](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L86)
 
 ***
 
@@ -150,4 +150,4 @@ the opacity of the begging of the line (gives it gradient effect if you have col
 
 #### Defined in
 
-[src/types.ts:70](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/22f2d3526511b6e2c9eacbca888612e2ecff7f4e/src/types.ts#L70)
+[src/types.ts:70](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/1e608e6b6d295bb8e951ef279bc3801598fcb7fa/src/types.ts#L70)

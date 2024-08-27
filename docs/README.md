@@ -135,4 +135,4 @@ export default function App() {
 ```
 
 ## 📖 Docs 
-[Click here for docs and type defs](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/main/docs/modules.md)
+[Click here for docs and type defs](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/main/docs/globals.md)
