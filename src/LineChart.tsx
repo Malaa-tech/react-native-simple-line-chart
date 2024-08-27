@@ -65,6 +65,7 @@ function LineChart({
   const [isSimultaneousHandlersEnabled, setIsSimultaneousHandlersEnabled] =
     React.useState(true);
   extraConfig = getExtraConfig(extraConfig || {});
+  const { alwaysShowActivePoint, hideActivePointOnBlur } = extraConfig;
 
   const onPointChange = (point?: DataPoint) => {
     if (point) {
@@ -105,19 +106,20 @@ function LineChart({
   }, [lines[0]?.data]);
 
   const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
+    'worklet';
+
     if (isSimultaneousHandlersEnabled === true) {
-      setIsSimultaneousHandlersEnabled(false);
+      runOnJS(setIsSimultaneousHandlersEnabled)(false);
     }
     activeTouch.value = true;
     activeTouchX.value = e.x;
   };
 
   const onPanEnd = () => {
-    setIsSimultaneousHandlersEnabled(true);
-    if (
-      extraConfig?.alwaysShowActivePoint === false ||
-      extraConfig?.hideActivePointOnBlur === true
-    ) {
+    'worklet';
+
+    runOnJS(setIsSimultaneousHandlersEnabled)(true);
+    if (alwaysShowActivePoint === false || hideActivePointOnBlur === true) {
       activeTouch.value = false;
     }
     runOnJS(onPointLoseFocusLocal)();
@@ -132,7 +134,6 @@ function LineChart({
           )
           .onBegin(onPanUpdate)
           .onUpdate(onPanUpdate)
-          .onEnd(onPanEnd)
           .onFinalize(onPanEnd)
       : Gesture.Pan()
           .activeOffsetX(
@@ -140,7 +141,6 @@ function LineChart({
           )
           .onBegin(onPanUpdate)
           .onUpdate(onPanUpdate)
-          .onEnd(onPanEnd)
           .onFinalize(onPanEnd);
 
   return (
