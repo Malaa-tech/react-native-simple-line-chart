@@ -276,3 +276,7 @@ export type calculateChartAxisMinMax = (
 
 export type onPointFocus = (activePoint: DataPoint) => void;
 export type onPointLoseFocus = () => void;
+
+export type LineChartRef = {
+  setActiveIndex: (index: number | undefined) => void;
+};

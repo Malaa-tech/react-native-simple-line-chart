@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import {
   Gesture,
   GestureDetector,
@@ -9,7 +9,12 @@ import Svg from 'react-native-svg';
 import { AnimatedView } from './AnimatedComponents';
 import { EXTRA_CONFIG, LINE_CHART } from './defaults';
 import SvgPath from './SvgPath';
-import { DataPoint, ExtraConfig, LineChart as LineChartProps } from './types';
+import {
+  DataPoint,
+  ExtraConfig,
+  LineChart as LineChartProps,
+  LineChartRef,
+} from './types';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
   return {
@@ -48,121 +53,142 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
       extraConfig.animationConfig || EXTRA_CONFIG.animationConfig,
   };
 };
-function LineChart({
-  height = LINE_CHART.height,
-  width = LINE_CHART.width,
-  extraConfig,
-  backgroundColor = LINE_CHART.backgroundColor,
-  onPointFocus = LINE_CHART.onPointFocus,
-  onPointLoseFocus = LINE_CHART.onPointLoseFocus,
-  activePointSharedValue,
-  lines = [],
-}: LineChartProps) {
-  const svgHeight = height;
-  const svgWidth = width;
-  const activeTouchX = useSharedValue(0);
-  const activeTouch = useSharedValue(false);
-  const [isSimultaneousHandlersEnabled, setIsSimultaneousHandlersEnabled] =
-    React.useState(true);
-  extraConfig = getExtraConfig(extraConfig || {});
-  const { alwaysShowActivePoint, hideActivePointOnBlur } = extraConfig;
+const LineChart = forwardRef<LineChartRef, LineChartProps>(
+  (
+    {
+      height = LINE_CHART.height,
+      width = LINE_CHART.width,
+      extraConfig,
+      backgroundColor = LINE_CHART.backgroundColor,
+      onPointFocus = LINE_CHART.onPointFocus,
+      onPointLoseFocus = LINE_CHART.onPointLoseFocus,
+      activePointSharedValue,
+      lines = [],
+    },
+    ref
+  ) => {
+    const svgHeight = height;
+    const svgWidth = width;
+    const activeTouchX = useSharedValue(0);
+    const activeTouch = useSharedValue(false);
+    const [isSimultaneousHandlersEnabled, setIsSimultaneousHandlersEnabled] =
+      React.useState(true);
+    extraConfig = getExtraConfig(extraConfig || {});
+    const { alwaysShowActivePoint, hideActivePointOnBlur } = extraConfig;
 
-  const onPointChange = (point?: DataPoint) => {
-    if (point) {
-      if (onPointFocus) {
-        runOnJS(onPointFocus)(point);
-      }
-      if (activePointSharedValue) {
-        activePointSharedValue.value = point;
-      }
-    }
-  };
-
-  const onPointLoseFocusLocal = () => {
-    if (onPointLoseFocus) {
-      onPointLoseFocus();
-    }
-    if (activePointSharedValue && !extraConfig?.alwaysShowActivePoint) {
-      setTimeout(() => {
-        activePointSharedValue.value = undefined;
-      }, 10);
-    }
-  };
-
-  useEffect(() => {
-    if (extraConfig?.initialActivePoint) {
-      activeTouch.value = true;
-      if (onPointFocus) {
-        const point = lines[0]?.data
-          ? lines[0]?.data[extraConfig?.initialActivePoint as number]
-          : undefined;
-        if (point) {
-          onPointFocus(point);
+    const onPointChange = (point?: DataPoint) => {
+      if (point) {
+        if (onPointFocus) {
+          runOnJS(onPointFocus)(point);
+        }
+        if (activePointSharedValue) {
+          activePointSharedValue.value = point;
         }
       }
-    } else {
-      onPointLoseFocusLocal();
-    }
-  }, [lines[0]?.data]);
+    };
 
-  const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
-    'worklet';
+    const onPointLoseFocusLocal = () => {
+      if (onPointLoseFocus) {
+        onPointLoseFocus();
+      }
+      if (activePointSharedValue && !extraConfig?.alwaysShowActivePoint) {
+        setTimeout(() => {
+          activePointSharedValue.value = undefined;
+        }, 10);
+      }
+    };
 
-    if (isSimultaneousHandlersEnabled === true) {
-      runOnJS(setIsSimultaneousHandlersEnabled)(false);
-    }
-    activeTouch.value = true;
-    activeTouchX.value = e.x;
-  };
+    useEffect(() => {
+      if (extraConfig?.initialActivePoint) {
+        activeTouch.value = true;
+        if (onPointFocus) {
+          const point = lines[0]?.data
+            ? lines[0]?.data[extraConfig?.initialActivePoint as number]
+            : undefined;
+          if (point) {
+            onPointFocus(point);
+          }
+        }
+      } else {
+        onPointLoseFocusLocal();
+      }
+    }, [lines[0]?.data]);
 
-  const onPanEnd = () => {
-    'worklet';
+    const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
+      'worklet';
 
-    runOnJS(setIsSimultaneousHandlersEnabled)(true);
-    if (alwaysShowActivePoint === false || hideActivePointOnBlur === true) {
-      activeTouch.value = false;
-    }
-    runOnJS(onPointLoseFocusLocal)();
-  };
+      if (isSimultaneousHandlersEnabled === true) {
+        runOnJS(setIsSimultaneousHandlersEnabled)(false);
+      }
+      activeTouch.value = true;
+      activeTouchX.value = e.x;
+    };
 
-  const panGesture =
-    extraConfig.simultaneousHandlers && isSimultaneousHandlersEnabled
-      ? Gesture.Pan()
-          .simultaneousWithExternalGesture(extraConfig.simultaneousHandlers)
-          .activeOffsetX(
-            extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
-          )
-          .onBegin(onPanUpdate)
-          .onUpdate(onPanUpdate)
-          .onFinalize(onPanEnd)
-      : Gesture.Pan()
-          .activeOffsetX(
-            extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
-          )
-          .onBegin(onPanUpdate)
-          .onUpdate(onPanUpdate)
-          .onFinalize(onPanEnd);
+    const onPanEnd = () => {
+      'worklet';
 
-  return (
-    <GestureDetector gesture={panGesture}>
-      <AnimatedView style={{ backgroundColor }}>
-        <Svg width={svgWidth} height={svgHeight} fill="transparent">
-          <SvgPath
-            lines={lines}
-            svgHeight={svgHeight}
-            svgWidth={svgWidth}
-            activeTouch={activeTouch}
-            activeTouchX={activeTouchX}
-            extraConfig={extraConfig}
-            initialActivePoint={extraConfig?.initialActivePoint}
-            endSpacing={extraConfig?.endSpacing}
-            onPointChange={onPointChange}
-          />
-        </Svg>
-      </AnimatedView>
-    </GestureDetector>
-  );
-}
+      runOnJS(setIsSimultaneousHandlersEnabled)(true);
+      if (alwaysShowActivePoint === false || hideActivePointOnBlur === true) {
+        activeTouch.value = false;
+      }
+      runOnJS(onPointLoseFocusLocal)();
+    };
+
+    const panGesture =
+      extraConfig.simultaneousHandlers && isSimultaneousHandlersEnabled
+        ? Gesture.Pan()
+            .simultaneousWithExternalGesture(extraConfig.simultaneousHandlers)
+            .activeOffsetX(
+              extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
+            )
+            .onBegin(onPanUpdate)
+            .onUpdate(onPanUpdate)
+            .onFinalize(onPanEnd)
+        : Gesture.Pan()
+            .activeOffsetX(
+              extraConfig?.activeOffsetX || EXTRA_CONFIG.activeOffsetX
+            )
+            .onBegin(onPanUpdate)
+            .onUpdate(onPanUpdate)
+            .onFinalize(onPanEnd);
+
+    useImperativeHandle(ref, () => ({
+      setActiveIndex(index) {
+        if (
+          index &&
+          lines[0] &&
+          lines[0].data &&
+          Array.isArray(lines[0].data)
+        ) {
+          activeTouch.value = true;
+          activeTouchX.value = index * (width / (lines[0].data.length - 1));
+        } else {
+          activeTouch.value = false;
+        }
+      },
+    }));
+
+    return (
+      <GestureDetector gesture={panGesture}>
+        <AnimatedView style={{ backgroundColor }}>
+          <Svg width={svgWidth} height={svgHeight} fill="transparent">
+            <SvgPath
+              lines={lines}
+              svgHeight={svgHeight}
+              svgWidth={svgWidth}
+              activeTouch={activeTouch}
+              activeTouchX={activeTouchX}
+              extraConfig={extraConfig}
+              initialActivePoint={extraConfig?.initialActivePoint}
+              endSpacing={extraConfig?.endSpacing}
+              onPointChange={onPointChange}
+            />
+          </Svg>
+        </AnimatedView>
+      </GestureDetector>
+    );
+  }
+);
 
 /** @ignore */
 export const MemoizedLineChart = React.memo(

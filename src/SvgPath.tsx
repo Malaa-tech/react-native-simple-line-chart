@@ -70,6 +70,11 @@ const SvgPath = ({
     // eslint-disable-next-line no-bitwise
     const activeTouchWithoutDecimals = ~~activeTouchX.value;
 
+    console.log({
+      activeTouchWithoutDecimals,
+      initialActivePoint,
+    });
+
     if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
       return initialActivePoint;
     }

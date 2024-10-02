@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LineChart from 'react-native-simple-line-chart';
-import { DataPoint } from 'src/types';
+import { DataPoint, LineChartRef } from 'src/types';
 
 const generateData = ({
   numberOfPoints,
@@ -54,6 +54,8 @@ export default function App() {
   const [chartType, setChartType] = React.useState('linear');
   const [isAnimationEnabled, setIsAnimationEnabled] = React.useState(true);
 
+  const chartRef = React.useRef<LineChartRef>(null);
+
   const randomize = () => {
     setData(generateData({ numberOfPoints, range: 3000 }) as any);
     setData2(generateData({ numberOfPoints, range: 1500 }) as any);
@@ -85,6 +87,7 @@ export default function App() {
           isLinearGradient={isLinearGradient}
           chartType={chartType}
           isAnimationEnabled={isAnimationEnabled}
+          chartRef={chartRef}
         />
 
         <View style={{ flexDirection: 'row', marginTop: 40 }}>
@@ -313,6 +316,32 @@ export default function App() {
             }}
           />
         </View>
+
+        <View
+          style={{ marginHorizontal: 5, marginTop: 10, flexDirection: 'row' }}
+        >
+          <Button
+            title="Force Active 5"
+            color={color}
+            onPress={() => {
+              chartRef?.current?.setActiveIndex(5);
+            }}
+          />
+          <Button
+            title="Force Active 1"
+            color={color}
+            onPress={() => {
+              chartRef?.current?.setActiveIndex(1);
+            }}
+          />
+          <Button
+            title="Force Active undefined"
+            color={color}
+            onPress={() => {
+              chartRef?.current?.setActiveIndex(undefined);
+            }}
+          />
+        </View>
       </View>
     </GestureHandlerRootView>
   );
@@ -330,6 +359,7 @@ const Chart = ({
   isAnimationEnabled,
   numberOfLines,
   chartType,
+  chartRef,
 }: any) => {
   const [activeDataPoint, setActiveDataPoint] = React.useState<
     number | undefined
@@ -348,6 +378,7 @@ const Chart = ({
         {activeDataPoint || ' '}
       </Text>
       <LineChart
+        ref={chartRef}
         key={isAnimationEnabled ? 'asdf' : '23333'}
         lines={[
           {
