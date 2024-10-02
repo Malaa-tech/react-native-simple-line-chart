@@ -37,6 +37,7 @@ const ActivePoint = ({
   verticalLineOpacity,
   verticalLineWidth,
   verticalLineDashArray,
+  animateTransition,
 }: {
   data: DataPoint[];
   activeTouch: SharedValue<boolean>;
@@ -57,6 +58,7 @@ const ActivePoint = ({
   verticalLineOpacity: number;
   verticalLineWidth: number;
   verticalLineDashArray: number[];
+  animateTransition: boolean;
 }) => {
   const positions = useSharedValue<{ x: number; y: number }[]>([]);
   const activePointSV = useSharedValue<DataPoint | undefined>({
@@ -178,8 +180,8 @@ const ActivePoint = ({
 
   const activePointProps = useAnimatedProps(() => {
     return {
-      cx: activePointPosition.value.x,
-      cy: activePointPosition.value.y,
+      cx: withTiming(activePointPosition.value.x, { duration: 200 }),
+      cy: withTiming(activePointPosition.value.y, { duration: 200 }),
       opacity: pointOpacity.value,
     };
   });

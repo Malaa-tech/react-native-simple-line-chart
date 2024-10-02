@@ -392,6 +392,7 @@ const Chart = ({
               verticalLineOpacity: 0.7,
               verticalLineWidth: 1,
               verticalLineDashArray: [10, 5],
+              animateTransition: true,
             },
             lineWidth: 4,
             lineColor: isLinearGradient ? ['#f5dd4b', '#81b0ff'] : color,

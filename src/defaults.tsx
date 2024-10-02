@@ -11,6 +11,7 @@ export const ACTIVE_POINT_CONFIG = {
   verticalLineOpacity: 1,
   verticalLineWidth: 1,
   verticalLineDashArray: [0],
+  animateTransition: false,
 };
 
 export const END_POINT = {

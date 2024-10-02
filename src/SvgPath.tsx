@@ -367,6 +367,11 @@ const LineComponent = ({
             line?.activePointConfig?.verticalLineOpacity ||
             ACTIVE_POINT_CONFIG.verticalLineOpacity
           }
+          animateTransition={
+            line?.activePointConfig?.animateTransition !== undefined
+              ? line?.activePointConfig?.animateTransition
+              : ACTIVE_POINT_CONFIG.animateTransition
+          }
           radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
       )}

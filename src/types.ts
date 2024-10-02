@@ -186,6 +186,11 @@ export interface ActivePointConfig {
    * @default [0]
    */
   verticalLineDashArray?: number[];
+  /**
+   * Weather to animate the transition of the active point
+   * @default false
+   */
+  animateTransition?: boolean;
 }
 
 /**
