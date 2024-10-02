@@ -70,6 +70,11 @@ const SvgPath = ({
     // eslint-disable-next-line no-bitwise
     const activeTouchWithoutDecimals = ~~activeTouchX.value;
 
+    console.log({
+      activeTouchWithoutDecimals,
+      initialActivePoint,
+    });
+
     if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
       return initialActivePoint;
     }
@@ -361,6 +366,11 @@ const LineComponent = ({
           verticalLineOpacity={
             line?.activePointConfig?.verticalLineOpacity ||
             ACTIVE_POINT_CONFIG.verticalLineOpacity
+          }
+          animateTransition={
+            line?.activePointConfig?.animateTransition !== undefined
+              ? line?.activePointConfig?.animateTransition
+              : ACTIVE_POINT_CONFIG.animateTransition
           }
           radius={line?.activePointConfig?.radius || ACTIVE_POINT_CONFIG.radius}
         />
