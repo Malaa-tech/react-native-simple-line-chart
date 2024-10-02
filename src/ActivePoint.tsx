@@ -180,15 +180,27 @@ const ActivePoint = ({
 
   const activePointProps = useAnimatedProps(() => {
     return {
-      cx: withTiming(activePointPosition.value.x, { duration: 200 }),
-      cy: withTiming(activePointPosition.value.y, { duration: 200 }),
+      cx: withTiming(activePointPosition.value.x, {
+        duration: animateTransition ? 200 : 0,
+      }),
+      cy: withTiming(activePointPosition.value.y, {
+        duration: animateTransition ? 200 : 0,
+      }),
       opacity: pointOpacity.value,
     };
   });
 
+  const verticalLineActivePosition = useSharedValue(
+    activePointPosition.value.x || 0
+  );
   const horizontalLineProps = useAnimatedProps(() => {
+    verticalLineActivePosition.value = withTiming(
+      activePointPosition.value.x || 0,
+      { duration: animateTransition ? 200 : 0 }
+    );
+
     return {
-      d: `M ${activePointPosition.value.x} ${height} v ${-height}`,
+      d: `M ${verticalLineActivePosition.value} ${height} v ${-height}`,
       opacity: lineOpacitySV.value,
     };
   });
@@ -199,9 +211,9 @@ const ActivePoint = ({
         <AnimatedPath
           stroke={verticalLineColor}
           strokeWidth={verticalLineWidth}
-          animatedProps={horizontalLineProps}
           strokeLinejoin="round"
           strokeDasharray={verticalLineDashArray}
+          animatedProps={horizontalLineProps}
         />
       )}
       {(activePointComponent || activePointComponentWithSharedValue) && (
