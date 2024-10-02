@@ -155,7 +155,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
     useImperativeHandle(ref, () => ({
       setActiveIndex(index) {
         if (
-          index &&
+          index !== undefined &&
           lines[0] &&
           lines[0].data &&
           Array.isArray(lines[0].data)
