@@ -50,8 +50,8 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
       // reanimated handles arrays with 16 elements as a matrix
       // so we double the latest elements
       if (newPathXArray.length === 16) {
-        newPathXArray.push(newPathXArray[15]);
-        newPathYArray.push(newPathYArray[15]);
+        newPathXArray.push(newPathXArray[15] as number);
+        newPathYArray.push(newPathYArray[15] as number);
       }
 
       pathXSV.value = withTiming(newPathXArray, {
@@ -97,8 +97,8 @@ const useTransitionAttach: animationHook = ({ path, duration, enabled }) => {
       // reanimated handles arrays with 16 elements as a matrix
       // so we double the latest elements
       if (newPathXArray.length === 16) {
-        newPathXArray.push(newPathXArray[15]);
-        newPathYArray.push(newPathYArray[15]);
+        newPathXArray.push(newPathXArray[15] as number);
+        newPathYArray.push(newPathYArray[15] as number);
       }
       pathXSV.value = withTiming(newPathXArray, {
         duration: DURATION / 2,
