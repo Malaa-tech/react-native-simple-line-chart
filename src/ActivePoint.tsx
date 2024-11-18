@@ -37,6 +37,7 @@ const ActivePoint = ({
   verticalLineOpacity,
   verticalLineWidth,
   verticalLineDashArray,
+  animateTransition,
 }: {
   data: DataPoint[];
   activeTouch: SharedValue<boolean>;
@@ -57,6 +58,7 @@ const ActivePoint = ({
   verticalLineOpacity: number;
   verticalLineWidth: number;
   verticalLineDashArray: number[];
+  animateTransition: boolean;
 }) => {
   const positions = useSharedValue<{ x: number; y: number }[]>([]);
   const activePointSV = useSharedValue<DataPoint | undefined>({
@@ -178,15 +180,27 @@ const ActivePoint = ({
 
   const activePointProps = useAnimatedProps(() => {
     return {
-      cx: activePointPosition.value.x,
-      cy: activePointPosition.value.y,
+      cx: withTiming(activePointPosition.value.x, {
+        duration: animateTransition ? 200 : 0,
+      }),
+      cy: withTiming(activePointPosition.value.y, {
+        duration: animateTransition ? 200 : 0,
+      }),
       opacity: pointOpacity.value,
     };
   });
 
+  const verticalLineActivePosition = useSharedValue(
+    activePointPosition.value.x || 0
+  );
   const horizontalLineProps = useAnimatedProps(() => {
+    verticalLineActivePosition.value = withTiming(
+      activePointPosition.value.x || 0,
+      { duration: animateTransition ? 200 : 0 }
+    );
+
     return {
-      d: `M ${activePointPosition.value.x} ${height} v ${-height}`,
+      d: `M ${verticalLineActivePosition.value} ${height} v ${-height}`,
       opacity: lineOpacitySV.value,
     };
   });
@@ -197,9 +211,9 @@ const ActivePoint = ({
         <AnimatedPath
           stroke={verticalLineColor}
           strokeWidth={verticalLineWidth}
-          animatedProps={horizontalLineProps}
           strokeLinejoin="round"
           strokeDasharray={verticalLineDashArray}
+          animatedProps={horizontalLineProps}
         />
       )}
       {(activePointComponent || activePointComponentWithSharedValue) && (

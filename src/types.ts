@@ -186,6 +186,11 @@ export interface ActivePointConfig {
    * @default [0]
    */
   verticalLineDashArray?: number[];
+  /**
+   * Weather to animate the transition of the active point
+   * @default false
+   */
+  animateTransition?: boolean;
 }
 
 /**
@@ -276,3 +281,7 @@ export type calculateChartAxisMinMax = (
 
 export type onPointFocus = (activePoint: DataPoint) => void;
 export type onPointLoseFocus = () => void;
+
+export type LineChartRef = {
+  setActiveIndex: (index: number | undefined) => void;
+};
