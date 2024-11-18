@@ -108,10 +108,10 @@ export default function App() {
           </View>
           <View style={{ marginHorizontal: 5 }}>
             <Button
-              title="10 points"
+              title="16 points"
               color={color}
               onPress={() => {
-                setNumberOfPoints(10);
+                setNumberOfPoints(16);
               }}
             />
           </View>
