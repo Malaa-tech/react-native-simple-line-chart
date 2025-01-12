@@ -316,6 +316,7 @@ const LineComponent = ({
                     }
                     fillOpacity={0.5}
                     animatedProps={lineAnimatedProps}
+                    strokeDasharray={line.strokeDasharray}
                 />
 
                 {line.endPointConfig && endPointAnimation && (

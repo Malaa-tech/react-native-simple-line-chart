@@ -1,6 +1,7 @@
+import {ComponentProps} from 'react';
 import {ColorValue} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
-import {NumberProp} from 'react-native-svg';
+import {NumberProp, Path} from 'react-native-svg';
 
 /**
  * The props for the LineChart component
@@ -73,6 +74,10 @@ export interface Line {
      * @default "1"
      */
     trailingOpacity?: NumberProp;
+    /**
+     * specify the strokeDasharray for the line
+     */
+    strokeDasharray?: ComponentProps<typeof Path>['strokeDasharray'];
     /**
      * The color of the fill under the line (creates an area chart)
      */
