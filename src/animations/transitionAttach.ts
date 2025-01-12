@@ -46,6 +46,13 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
 
             const isInitial = pathXSV.value.length === 0;
 
+            // reanimated handles arrays with 16 elements as a matrix
+            // so we double the latest elements
+            if (newPathXArray.length === 16) {
+                newPathXArray.push(newPathXArray[15] as number);
+                newPathYArray.push(newPathYArray[15] as number);
+            }
+
             pathXSV.value = withTiming(newPathXArray, {
                 duration: isInitial ? 0 : DURATION / 2,
             });
@@ -62,6 +69,13 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
                 ),
                 ...newPathXArray,
             ];
+
+            // reanimated handles arrays with 16 elements as a matrix
+            // so we double the latest elements
+            if (pathArrayXAfter.length === 16) {
+                pathArrayXAfter.push(pathArrayXAfter[15]);
+            }
+
             pathXSV.value = withTiming(pathArrayXAfter, {
                 duration: DURATION / 2,
             });
@@ -72,10 +86,24 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
                 ),
                 ...newPathYArray,
             ];
+
+            // reanimated handles arrays with 16 elements as a matrix
+            // so we double the latest elements
+            if (pathArrayYAfter.length === 16) {
+                pathArrayYAfter.push(pathArrayYAfter[15]);
+            }
+
             pathYSV.value = withTiming(pathArrayYAfter, {
                 duration: DURATION / 2,
             });
         } else {
+            // reanimated handles arrays with 16 elements as a matrix
+            // so we double the latest elements
+            if (newPathXArray.length === 16) {
+                newPathXArray.push(newPathXArray[15] as number);
+                newPathYArray.push(newPathYArray[15] as number);
+            }
+
             pathXSV.value = withTiming(newPathXArray, {
                 duration: DURATION / 2,
             });
