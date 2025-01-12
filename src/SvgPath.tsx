@@ -71,11 +71,6 @@ const SvgPath = ({
         // eslint-disable-next-line no-bitwise
         const activeTouchWithoutDecimals = ~~activeTouchX.value;
 
-        console.log({
-            activeTouchWithoutDecimals,
-            initialActivePoint,
-        });
-
         if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
             return initialActivePoint;
         }
@@ -233,7 +228,11 @@ const LineComponent = ({
             if (isLineColorGradient) {
                 return line.lineColor as string[];
             }
-            return [line.lineColor as string, line.lineColor as string];
+            return [
+                line.lineColor as string,
+                line.lineColor as string,
+                line.lineColor as string,
+            ];
         };
 
         const colors = getColors();
@@ -242,7 +241,10 @@ const LineComponent = ({
             const offset = 100 - (index / (colors.length - 1)) * 100;
 
             const getStopOpacity = () => {
-                if (line.trailingOpacity !== undefined && index === 1) {
+                if (
+                    line.trailingOpacity !== undefined &&
+                    index === colors.length - 1
+                ) {
                     return `${line.trailingOpacity}`;
                 }
                 if (line.leadingOpacity !== undefined && index === 0) {
@@ -269,7 +271,7 @@ const LineComponent = ({
                     <LinearGradient
                         id={getBackgroundIdentifier()}
                         gradientUnits="userSpaceOnUse"
-                        x1="120"
+                        x1={svgWidth}
                         y1="0"
                         x2="0"
                         y2="0"
