@@ -17,6 +17,8 @@ import {
 } from './types';
 import {PathObject, useForceReRender} from './utils';
 
+type PositionSharedValue = {x: number; y: number; y2?: number};
+
 const ActivePoint = ({
     data,
     activeTouch,
@@ -60,7 +62,7 @@ const ActivePoint = ({
     verticalLineDashArray: number[];
     animateTransition: boolean;
 }) => {
-    const positions = useSharedValue<{x: number; y: number}[]>([]);
+    const positions = useSharedValue<PositionSharedValue[]>([]);
     const activePointSV = useSharedValue<DataPoint | undefined>({
         x: 0,
         y: 0,
@@ -82,9 +84,12 @@ const ActivePoint = ({
     }, []);
 
     useEffect(() => {
-        const newPositions: {x: number; y: number}[] = [];
+        const newPositions: PositionSharedValue[] = [];
         data.forEach(item => {
-            const y = path.y(item.y);
+            const y =
+                item?.y2 !== undefined
+                    ? path.y(item.y - item.y2) // check for ranged chart
+                    : path.y(item.y);
             const x = path.x(item.x);
 
             if (x !== undefined && y !== undefined) {

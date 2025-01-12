@@ -105,15 +105,7 @@ export interface Line {
     curve?: LineCurve;
 }
 
-export interface DataPoint<T = any> {
-    /**
-     * The x value of the data point
-     */
-    x: number;
-    /**
-     * The y value of the data point (if your data is a time series then this should be a timestamp)
-     */
-    y: number;
+export type DataPoint<T = any> = {
     /**
      * disable the active point for this data point
      */
@@ -122,7 +114,19 @@ export interface DataPoint<T = any> {
      * Any extra data you want to pass to the data point (this will be passed to the active point component)
      */
     extraData?: T;
-}
+    /**
+     * The x value of the data point (if your data is a time series then this should be a timestamp)
+     */
+    x: number;
+    /**
+     * The y value of the data point, it also represents y2 if you are doing a range chart
+     */
+    y: number;
+    /**
+     * The second value of the data point, in case you are doing a range chart, if not supplied then the chart will be a normal line chart
+     */
+    y2?: number;
+};
 
 /**
  * The configuration for the last point in the line

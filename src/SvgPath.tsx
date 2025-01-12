@@ -49,6 +49,16 @@ const SvgPath = ({
 }) => {
     const allData = lines.reduce((acc, line) => {
         if (line.data !== undefined) {
+            if (line.data[0]?.y2 !== undefined) {
+                const sideLine = line.data.map(item => {
+                    return {
+                        x: item.x,
+                        y: item?.y2,
+                    };
+                });
+                // @ts-ignore
+                acc.concat(sideLine);
+            }
             // @ts-ignore
             return acc.concat(line?.data);
         }
@@ -213,7 +223,14 @@ const LineComponent = ({
             setLocalPath(path);
         }
     }, [
-        line?.data.map(item => item?.y).join(''),
+        line?.data
+            .map(item => {
+                if (item.y2) {
+                    return `${item.y}${item.y2}`;
+                }
+                return item?.y;
+            })
+            .join(''),
         line.curve,
         line.key,
         allData,
@@ -411,8 +428,22 @@ const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
         prev.line.curve === next.line.curve &&
         prev.line.lineColor === next.line.lineColor &&
         prev.line.key === next.line.key &&
-        prev.allData.map(item => item.y).join('') ===
-            next.allData.map(item => item.y).join('')
+        prev.allData
+            .map(item => {
+                if (item?.y2 !== undefined) {
+                    return `${item.y}${item.y2}`;
+                }
+                return item?.y;
+            })
+            .join('') ===
+            next.allData
+                .map(item => {
+                    if (item?.y2 !== undefined) {
+                        return `${item.y}${item.y2}`;
+                    }
+                    return item?.y;
+                })
+                .join('')
     );
 });
 

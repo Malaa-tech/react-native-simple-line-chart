@@ -112,6 +112,25 @@ export const createNewPath = ({
 
     // create the line
     const getLine = () => {
+        // check if ranged line
+        if (data[0]?.y2) {
+            return d3
+                .area<DataPoint & {dateObj: Date}>()
+                .x(d => x(d.dateObj))
+                .x0((d, index) => {
+                    if (index === 0) {
+                        return x(d.dateObj) - 2;
+                    }
+                    return x(d.dateObj);
+                })
+                .y0(d => {
+                    return y(d.y2 || 0);
+                })
+                .y1(d => {
+                    return y(d.y);
+                });
+        }
+
         if (isFilled) {
             return d3
                 .area<DataPoint & {dateObj: Date}>()
