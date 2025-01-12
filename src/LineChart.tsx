@@ -180,7 +180,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
               activeTouchX={activeTouchX}
               extraConfig={extraConfig}
               initialActivePoint={extraConfig?.initialActivePoint}
-              endSpacing={extraConfig?.endSpacing}
+              endSpacing={extraConfig?.endSpacing === undefined ? EXTRA_CONFIG.endSpacing : extraConfig?.endSpacing}
               onPointChange={onPointChange}
             />
           </Svg>

@@ -26,7 +26,7 @@ export const EXTRA_CONFIG = {
   alwaysStartYAxisFromZero: false,
   initialActivePoint: 0,
   simultaneousHandlers: undefined,
-  endSpacing: 0,
+  endSpacing: 20,
   calculateChartYAxisMinMax: undefined,
   calculateChartXAxisMinMax: undefined,
   activeOffsetX: [0, 0] as [number, number],

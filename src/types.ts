@@ -67,7 +67,12 @@ export interface Line {
    * the opacity of the begging of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
    * @default "1"
    */
-  trailingOpacity?: NumberProp;
+  leadingOpacity?: NumberProp;
+   /**
+   * the opacity of the end of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
+   * @default "1"
+   */
+   trailingOpacity?: NumberProp;
   /**
    * The color of the fill under the line (creates an area chart)
    */

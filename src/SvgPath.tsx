@@ -22,7 +22,7 @@ import {
   PathObject,
 } from './utils';
 import { DataPoint, ExtraConfig, Line } from './types';
-import { ACTIVE_POINT_CONFIG, END_POINT } from './defaults';
+import { ACTIVE_POINT_CONFIG, END_POINT, EXTRA_CONFIG } from './defaults';
 import { AnimatedG, AnimatedPath } from './AnimatedComponents';
 import useChartAnimation from './animations/animations';
 
@@ -43,7 +43,7 @@ const SvgPath = ({
   activeTouchX: SharedValue<number>;
   activeTouch: SharedValue<boolean>;
   extraConfig: ExtraConfig;
-  endSpacing?: number;
+  endSpacing: number;
   initialActivePoint?: number;
   onPointChange: (point?: DataPoint) => void;
 }) => {
@@ -85,7 +85,7 @@ const SvgPath = ({
     const minData = axisMinMax.minX;
     const maxData = axisMinMax.maxX;
 
-    const denominator = svgWidth - (endSpacing || 20);
+    const denominator = svgWidth - endSpacing;
     const percentage = (activeTouchWithoutDecimals / denominator) * 100;
 
     const percentageToTimestampValue = interpolate(
@@ -173,7 +173,7 @@ const LineComponent = ({
   const localCreateNewPath = () => {
     return createNewPath({
       data: line?.data || [],
-      endSpacing: extraConfig.endSpacing || 20,
+      endSpacing: extraConfig.endSpacing === undefined ? EXTRA_CONFIG.endSpacing : extraConfig.endSpacing,
       svgHeight,
       svgWidth,
       isFilled: line.fillColor !== undefined,
@@ -236,8 +236,11 @@ const LineComponent = ({
       const offset = 100 - (index / (colors.length - 1)) * 100;
 
       const getStopOpacity = () => {
-        if (line.trailingOpacity !== undefined && index === 0) {
+        if (line.trailingOpacity !== undefined && index === 1) {
           return `${line.trailingOpacity}`;
+        }
+        if (line.leadingOpacity !== undefined && index === 0) {
+          return `${line.leadingOpacity}`;
         }
         return '1';
       };
