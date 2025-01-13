@@ -75,7 +75,7 @@ const SvgPath = ({
             calculateChartXAxisMinMax:
                 extraConfig.calculateChartXAxisMinMax || undefined,
         });
-    }, [allData]);
+    }, [allData, lines]);
 
     const activeIndex = useDerivedValue(() => {
         // eslint-disable-next-line no-bitwise
@@ -281,27 +281,36 @@ const LineComponent = ({
         });
     }, [line.lineColor, line.trailingOpacity]);
 
+    const pathStartX = line?.data[0]?.x
+        ? localPath?.x(line?.data[0]?.x)
+        : undefined;
+    const pathEndX = line?.data[line?.data?.length - 1]?.x
+        ? localPath?.x(line?.data[line?.data?.length - 1]?.x || 0)
+        : undefined;
+
     return (
         <>
-            {isReadyToRenderBackground && (
-                <Defs>
-                    <LinearGradient
-                        id={getBackgroundIdentifier()}
-                        gradientUnits="userSpaceOnUse"
-                        x1={svgWidth}
-                        y1="0"
-                        x2="0"
-                        y2="0"
-                    >
-                        {
-                            getStopPoints() as ReactElement<
-                                any,
-                                string | JSXElementConstructor<any>
-                            >[]
-                        }
-                    </LinearGradient>
-                </Defs>
-            )}
+            {isReadyToRenderBackground &&
+                pathStartX !== undefined &&
+                pathEndX !== undefined && (
+                    <Defs>
+                        <LinearGradient
+                            id={getBackgroundIdentifier()}
+                            gradientUnits="userSpaceOnUse"
+                            x1={pathEndX}
+                            y1="0"
+                            x2={pathStartX}
+                            y2="0"
+                        >
+                            {
+                                getStopPoints() as ReactElement<
+                                    any,
+                                    string | JSXElementConstructor<any>
+                                >[]
+                            }
+                        </LinearGradient>
+                    </Defs>
+                )}
 
             <AnimatedG
                 // @ts-ignore
