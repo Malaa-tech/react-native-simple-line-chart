@@ -103,9 +103,14 @@ export interface Line {
     curve?: LineCurve;
     /**
      * Toggle this to create an area chart, (it will take the same color as the lineColor)
-     * @default 'false'
+     * @default false
      */
     isAreaChart?: boolean;
+    /**
+     * The fill opacity of the area chart
+     * @default 1
+     */
+    fillOpacity?: number;
 }
 
 export type DataPoint<T = any> = {

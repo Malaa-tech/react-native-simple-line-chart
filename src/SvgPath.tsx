@@ -391,6 +391,7 @@ const LineComponent = ({
                             ? `url(#${getBackgroundIdentifier()})`
                             : 'transparent'
                     }
+                    fillOpacity={line?.fillOpacity}
                     animatedProps={lineAnimatedProps}
                     strokeDasharray={line.strokeDasharray}
                 />
