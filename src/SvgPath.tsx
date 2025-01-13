@@ -333,7 +333,6 @@ const LineComponent = ({
                             ? line.fillColor
                             : 'transparent'
                     }
-                    fillOpacity={0.5}
                     animatedProps={lineAnimatedProps}
                     strokeDasharray={line.strokeDasharray}
                 />
