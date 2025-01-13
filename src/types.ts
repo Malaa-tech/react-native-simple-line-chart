@@ -81,10 +81,6 @@ export interface Line {
      */
     strokeDasharray?: ComponentProps<typeof Path>['strokeDasharray'];
     /**
-     * The color of the fill under the line (creates an area chart)
-     */
-    fillColor?: ColorValue;
-    /**
      * The component to render when the user taps on the chart
      */
     activePointComponent?: ActivePointComponent;
@@ -105,6 +101,11 @@ export interface Line {
      * @default 'linear'
      */
     curve?: LineCurve;
+    /**
+     * Toggle this to create an area chart, (it will take the same color as the lineColor)
+     * @default 'false'
+     */
+    isAreaChart?: boolean;
 }
 
 export type DataPoint<T = any> = {

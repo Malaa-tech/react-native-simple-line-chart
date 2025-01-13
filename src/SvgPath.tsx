@@ -167,6 +167,7 @@ const LineComponent = ({
     axisMinMax: ReturnType<typeof getChartMinMaxValue>;
 }) => {
     const isLineColorGradient = Array.isArray(line.lineColor);
+    const isRangedLineChart = line.data[0]?.y2 !== undefined;
 
     const getActivePointColor = useCallback(() => {
         if (line.activePointConfig?.color) {
@@ -187,7 +188,7 @@ const LineComponent = ({
                     : extraConfig.endSpacing,
             svgHeight,
             svgWidth,
-            isFilled: line.fillColor !== undefined,
+            isFilled: line.isAreaChart === true,
             curve: line.curve,
             axisMinMax,
         });
@@ -380,10 +381,14 @@ const LineComponent = ({
                     }}
                     strokeLinecap="round"
                     stroke={`url(#${getBackgroundIdentifier()})`}
-                    strokeWidth={line.lineWidth || 2}
+                    strokeWidth={
+                        line.lineWidth === undefined ? 2 : line.lineWidth
+                    }
                     fill={
-                        line.fillColor !== undefined
-                            ? line.fillColor
+                        (line.isAreaChart !== undefined &&
+                            line.isAreaChart === true) ||
+                        isRangedLineChart
+                            ? `url(#${getBackgroundIdentifier()})`
                             : 'transparent'
                     }
                     animatedProps={lineAnimatedProps}
