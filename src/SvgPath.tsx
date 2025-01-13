@@ -246,34 +246,78 @@ const LineComponent = ({
                 return line.lineColor as string[];
             }
             return [
-                line.lineColor as string,
-                line.lineColor as string,
-                line.lineColor as string,
+                line.lineColor as string, // leading opacity
+                line.lineColor as string, // controlling position of the leading opacity
+                line.lineColor as string, // controlling position of the trailing opacity
+                line.lineColor as string, // trailing opacity
             ];
         };
 
         const colors = getColors();
 
         return colors.map((color, index) => {
-            const offset = 100 - (index / (colors.length - 1)) * 100;
+            const defaultOffset = 100 - (index / (colors.length - 1)) * 100;
+
+            const getOffset = () => {
+                if (
+                    isLineColorGradient ||
+                    index === 0 ||
+                    index === colors?.length - 1
+                ) {
+                    return defaultOffset;
+                }
+
+                if (index === 1) {
+                    if (
+                        typeof line?.leadingOpacity === 'object' &&
+                        line?.leadingOpacity?.leadingPercentage
+                    ) {
+                        return (
+                            100 - line?.leadingOpacity?.leadingPercentage / 2
+                        );
+                    } else {
+                        return 50;
+                    }
+                }
+                if (index === colors.length - 2) {
+                    if (
+                        typeof line?.trailingOpacity === 'object' &&
+                        line?.trailingOpacity?.trailingPercentage
+                    ) {
+                        return line?.trailingOpacity?.trailingPercentage / 2;
+                    } else {
+                        return 50;
+                    }
+                }
+
+                return defaultOffset;
+            };
 
             const getStopOpacity = () => {
-                if (
-                    line.trailingOpacity !== undefined &&
-                    index === colors.length - 1
-                ) {
-                    return `${line.trailingOpacity}`;
-                }
-                if (line.leadingOpacity !== undefined && index === 0) {
+                if (index === 0 && line.leadingOpacity !== undefined) {
+                    if (typeof line.leadingOpacity === 'object') {
+                        return `${line.leadingOpacity.opacity}`;
+                    }
                     return `${line.leadingOpacity}`;
                 }
+
+                if (
+                    index === colors.length - 1 &&
+                    line.trailingOpacity !== undefined
+                ) {
+                    if (typeof line.trailingOpacity === 'object') {
+                        return `${line.trailingOpacity.opacity}`;
+                    }
+                    return `${line.trailingOpacity}`;
+                }
+
                 return '1';
             };
 
             return (
                 <Stop
                     key={`${index}`}
-                    offset={`${offset}%`}
+                    offset={`${getOffset()}%`}
                     stopColor={color}
                     stopOpacity={getStopOpacity()}
                 />

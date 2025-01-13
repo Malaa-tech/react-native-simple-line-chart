@@ -68,12 +68,14 @@ export interface Line {
      * the opacity of the begging of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
      * @default "1"
      */
-    leadingOpacity?: NumberProp;
+    leadingOpacity?: NumberProp | {leadingPercentage: number; opacity: number};
     /**
      * the opacity of the end of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
      * @default "1"
      */
-    trailingOpacity?: NumberProp;
+    trailingOpacity?:
+        | NumberProp
+        | {trailingPercentage: number; opacity: number};
     /**
      * specify the strokeDasharray for the line
      */
