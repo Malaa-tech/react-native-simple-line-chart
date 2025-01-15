@@ -51,7 +51,12 @@ export const getChartMinMaxValue = ({
     };
 
     // get the min and max values for the y & x axis
-    const [minY, maxY] = d3.extent([...allData.map(val => val.y)]) || [0, 0];
+    const [minY, maxY] = d3.extent([
+        ...allData.map(val => val.y),
+        ...allData
+            .filter(val => val?.y2 !== undefined)
+            .map(val => (val?.y2 ? val.y2 : 0)),
+    ]) || [0, 0];
     const [minX, maxX] = d3.extent([...allData.map(val => val.x)]) || [0, 0];
 
     // Avoid repeated computation
