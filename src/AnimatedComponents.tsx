@@ -1,5 +1,5 @@
 import Animated from 'react-native-reanimated';
-import { Circle, G, Path } from 'react-native-svg';
+import {Circle, G, Path} from 'react-native-svg';
 
 export const AnimatedView = Animated.View;
 export const AnimatedCircle = Animated.createAnimatedComponent(Circle);
