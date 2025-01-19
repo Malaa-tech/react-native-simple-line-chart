@@ -42,7 +42,10 @@ export default function App() {
                                     },
                                 },
                             ],
-                            leadingOpacity: 0.2,
+                            leadingOpacity: {
+                                opacity: 0,
+                                leadingPercentage: 100,
+                            },
                             lineColor: 'red',
                             curve: 'cardinal',
                         },
@@ -83,6 +86,10 @@ export default function App() {
                                 },
                             ],
                             curve: 'step',
+                            lineColor: 'blue',
+                            leadingOpacity: 0,
+                            trailingOpacity: 0.2,
+                            isAreaChart: true,
                         },
                         {
                             data: [
@@ -95,7 +102,15 @@ export default function App() {
                                     },
                                 },
                                 {
-                                    y: 15,
+                                    y: 20,
+                                    x: new Date('2020-01-07').getTime(),
+                                    extraData: {
+                                        formattedValue: '35$',
+                                        formattedTime: '2020-01-04',
+                                    },
+                                },
+                                {
+                                    y: 20,
                                     x: new Date('2020-01-08').getTime(),
                                     extraData: {
                                         formattedValue: '35$',
@@ -103,9 +118,46 @@ export default function App() {
                                     },
                                 },
                             ],
-                            lineColor: 'green',
-                            curve: 'monotone',
-                            trailingOpacity: 0.5,
+                            strokeDasharray: [10, 10],
+                            lineColor: '#0000FA',
+                            curve: 'linear',
+                            leadingOpacity: 0,
+                        },
+                        {
+                            data: [
+                                {
+                                    y: 20,
+                                    y2: 20,
+                                    x: new Date('2020-01-06').getTime(),
+                                    extraData: {
+                                        formattedValue: '35$',
+                                        formattedTime: '2020-01-04',
+                                    },
+                                },
+                                {
+                                    y: 25,
+                                    y2: 10,
+                                    x: new Date('2020-01-07').getTime(),
+                                    extraData: {
+                                        formattedValue: '35$',
+                                        formattedTime: '2020-01-04',
+                                    },
+                                },
+                                {
+                                    y: 20,
+                                    y2: 20,
+                                    x: new Date('2020-01-08').getTime(),
+                                    extraData: {
+                                        formattedValue: '35$',
+                                        formattedTime: '2020-01-04',
+                                    },
+                                },
+                            ],
+                            lineColor: '#0000FA',
+                            lineWidth: 0,
+                            curve: 'cardinal',
+                            leadingOpacity: 0,
+                            trailingOpacity: 0,
                         },
                     ]}
                     extraConfig={{

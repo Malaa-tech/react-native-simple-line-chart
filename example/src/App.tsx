@@ -409,7 +409,7 @@ const Chart = ({
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
                         trailingOpacity: '0.3',
-                        fillColor: isAreaChart ? color : undefined,
+                        isAreaChart,
                         curve: chartType,
                         endPointConfig: isEndPoint
                             ? {
@@ -450,7 +450,7 @@ const Chart = ({
                         lineColor: isLinearGradient
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
-                        fillColor: isAreaChart ? color : undefined,
+                        isAreaChart,
                         curve: chartType,
                         endPointConfig: isEndPoint
                             ? {
@@ -492,7 +492,7 @@ const Chart = ({
                         lineColor: isLinearGradient
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
-                        fillColor: isAreaChart ? color : undefined,
+                        isAreaChart,
                         curve: chartType,
                         endPointConfig: isEndPoint
                             ? {
@@ -534,7 +534,7 @@ const Chart = ({
                         lineColor: isLinearGradient
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
-                        fillColor: isAreaChart ? color : undefined,
+                        isAreaChart,
                         endPointConfig: isEndPoint
                             ? {
                                   color,
