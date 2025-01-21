@@ -326,12 +326,18 @@ const LineComponent = ({
         });
     }, [line.lineColor, line.trailingOpacity]);
 
-    const pathStartX = line?.data[0]?.x
-        ? localPath?.x(line?.data[0]?.x)
-        : undefined;
-    const pathEndX = line?.data[line?.data?.length - 1]?.x
-        ? localPath?.x(line?.data[line?.data?.length - 1]?.x || 0)
-        : undefined;
+    const {pathStartX, pathEndX} = useMemo(() => {
+        const pathStartX = line?.data[0]?.x
+            ? localPath?.x(line?.data[0]?.x)
+            : 0;
+        const pathEndX = line?.data[line?.data?.length - 1]?.x
+            ? localPath?.x(line?.data[line?.data?.length - 1]?.x || 0)
+            : svgWidth;
+        return {
+            pathStartX,
+            pathEndX,
+        };
+    }, []);
 
     return (
         <>
@@ -342,10 +348,10 @@ const LineComponent = ({
                         <LinearGradient
                             id={getBackgroundIdentifier()}
                             gradientUnits="userSpaceOnUse"
-                            x1={pathEndX}
                             y1="0"
-                            x2={pathStartX}
                             y2="0"
+                            x1={pathEndX}
+                            x2={pathStartX}
                         >
                             {
                                 getStopPoints() as ReactElement<
