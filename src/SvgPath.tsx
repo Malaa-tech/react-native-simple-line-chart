@@ -6,9 +6,10 @@ import React, {
     useEffect,
     useMemo,
 } from 'react';
-import {
+import Animated, {
     interpolate,
     SharedValue,
+    useAnimatedProps,
     useDerivedValue,
 } from 'react-native-reanimated';
 import {Platform, View} from 'react-native';
@@ -25,6 +26,8 @@ import {DataPoint, ExtraConfig, Line} from './types';
 import {ACTIVE_POINT_CONFIG, END_POINT, EXTRA_CONFIG} from './defaults';
 import {AnimatedG, AnimatedPath} from './AnimatedComponents';
 import useChartAnimation from './animations/animations';
+
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 const SvgPath = ({
     lines,
@@ -326,18 +329,17 @@ const LineComponent = ({
         });
     }, [line.lineColor, line.trailingOpacity]);
 
-    const {pathStartX, pathEndX} = useMemo(() => {
-        const pathStartX = line?.data[0]?.x
-            ? localPath?.x(line?.data[0]?.x)
-            : 0;
-        const pathEndX = line?.data[line?.data?.length - 1]?.x
-            ? localPath?.x(line?.data[line?.data?.length - 1]?.x || 0)
-            : svgWidth;
+    const pathStartX = line?.data[0]?.x ? localPath?.x(line?.data[0]?.x) : 0;
+    const pathEndX = line?.data[line?.data?.length - 1]?.x
+        ? localPath?.x(line?.data[line?.data?.length - 1]?.x || 0)
+        : svgWidth;
+
+    const linearGradientAnimatedProps = useAnimatedProps(() => {
         return {
-            pathStartX,
-            pathEndX,
+            x1: pathEndX,
+            x2: pathStartX,
         };
-    }, []);
+    });
 
     return (
         <>
@@ -345,13 +347,12 @@ const LineComponent = ({
                 pathStartX !== undefined &&
                 pathEndX !== undefined && (
                     <Defs>
-                        <LinearGradient
+                        <AnimatedLinearGradient
                             id={getBackgroundIdentifier()}
                             gradientUnits="userSpaceOnUse"
                             y1="0"
                             y2="0"
-                            x1={pathEndX}
-                            x2={pathStartX}
+                            animatedProps={linearGradientAnimatedProps}
                         >
                             {
                                 getStopPoints() as ReactElement<
@@ -359,7 +360,7 @@ const LineComponent = ({
                                     string | JSXElementConstructor<any>
                                 >[]
                             }
-                        </LinearGradient>
+                        </AnimatedLinearGradient>
                     </Defs>
                 )}
 
