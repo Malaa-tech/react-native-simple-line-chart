@@ -201,7 +201,7 @@ const ActivePoint = ({
             cy: withTiming(activePointPosition.value.y, {
                 duration: animateTransition ? 200 : 0,
             }),
-            opacity: withTiming(pointOpacity.value, {duration: 200}),
+            opacity: pointOpacity.value,
         };
     });
 
