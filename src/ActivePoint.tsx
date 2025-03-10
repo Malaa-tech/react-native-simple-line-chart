@@ -73,7 +73,7 @@ const ActivePoint = ({
     });
     const pointOpacity = useSharedValue(0);
     const lineOpacitySV = useSharedValue(0);
-    const activePointPosition = useSharedValue({x: 0, y: 0});
+    const activePointPosition = useSharedValue({x: -radius, y: -radius});
     const forceRerender = useForceReRender();
 
     // forcing a re-render after x ms to fix sharedValues not causing a rerender.
@@ -143,8 +143,8 @@ const ActivePoint = ({
                         };
                     } else {
                         activePointPosition.value = {
-                            x: 0,
-                            y: 0,
+                            x: -radius,
+                            y: -radius,
                         };
                     }
                 }
@@ -182,13 +182,11 @@ const ActivePoint = ({
                 }
 
                 if (current.activeTouch === true) {
-                    pointOpacity.value = withTiming(1, {duration: 200});
-                    lineOpacitySV.value = withTiming(verticalLineOpacity, {
-                        duration: 200,
-                    });
+                    pointOpacity.value = 1;
+                    lineOpacitySV.value = verticalLineOpacity;
                 } else {
-                    pointOpacity.value = withTiming(0, {duration: 200});
-                    lineOpacitySV.value = withTiming(0, {duration: 200});
+                    pointOpacity.value = 0;
+                    lineOpacitySV.value = 0;
                 }
             }
         },
@@ -203,7 +201,7 @@ const ActivePoint = ({
             cy: withTiming(activePointPosition.value.y, {
                 duration: animateTransition ? 200 : 0,
             }),
-            opacity: pointOpacity.value,
+            opacity: withTiming(pointOpacity.value, {duration: 200}),
         };
     });
 
@@ -218,7 +216,7 @@ const ActivePoint = ({
 
         return {
             d: `M ${verticalLineActivePosition.value} ${height} v ${-height}`,
-            opacity: lineOpacitySV.value,
+            opacity: withTiming(lineOpacitySV.value, {duration: 200}),
         };
     });
 
