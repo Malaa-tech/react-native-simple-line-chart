@@ -73,7 +73,8 @@ const ActivePoint = ({
     });
     const pointOpacity = useSharedValue(0);
     const lineOpacitySV = useSharedValue(0);
-    const activePointPosition = useSharedValue({x: -radius, y: -radius});
+    const activePointPositionX = useSharedValue(-radius);
+    const activePointPositionY = useSharedValue(-radius);
     const forceRerender = useForceReRender();
 
     // forcing a re-render after x ms to fix sharedValues not causing a rerender.
@@ -130,22 +131,22 @@ const ActivePoint = ({
                 // active point position
                 if (
                     current.activeIndex !== previous?.activeIndex ||
-                    currentIndexData?.y !== activePointPosition?.value.y
+                    currentIndexData?.y !== activePointPositionY?.value
                 ) {
                     const point = positions.value[activeIndex.value];
                     const y = point?.y;
                     const x = point?.x;
 
                     if (x !== undefined && y !== undefined) {
-                        activePointPosition.value = {
-                            x,
-                            y,
-                        };
+                        activePointPositionX.value = withTiming(x, {
+                            duration: animateTransition ? 200 : 0,
+                        });
+                        activePointPositionY.value = withTiming(y, {
+                            duration: animateTransition ? 200 : 0,
+                        });
                     } else {
-                        activePointPosition.value = {
-                            x: -radius,
-                            y: -radius,
-                        };
+                        activePointPositionX.value = -radius;
+                        activePointPositionY.value = -radius;
                     }
                 }
 
@@ -195,28 +196,24 @@ const ActivePoint = ({
 
     const activePointProps = useAnimatedProps(() => {
         return {
-            cx: withTiming(activePointPosition.value.x, {
-                duration: animateTransition ? 200 : 0,
-            }),
-            cy: withTiming(activePointPosition.value.y, {
-                duration: animateTransition ? 200 : 0,
-            }),
+            cx: activePointPositionX.value,
+            cy: activePointPositionY.value,
             opacity: pointOpacity.value,
         };
     });
 
     const verticalLineActivePosition = useSharedValue(
-        activePointPosition.value.x || 0,
+        activePointPositionX.value || 0,
     );
     const horizontalLineProps = useAnimatedProps(() => {
         verticalLineActivePosition.value = withTiming(
-            activePointPosition.value.x || 0,
+            activePointPositionX.value || 0,
             {duration: animateTransition ? 200 : 0},
         );
 
         return {
             d: `M ${verticalLineActivePosition.value} ${height} v ${-height}`,
-            opacity: withTiming(lineOpacitySV.value, {duration: 200}),
+            opacity: lineOpacitySV.value,
         };
     });
 
@@ -234,7 +231,8 @@ const ActivePoint = ({
             {(activePointComponent || activePointComponentWithSharedValue) && (
                 <ActivePointComponentWrapper
                     activePointSharedValue={activePointSV}
-                    activePointPosition={activePointPosition}
+                    activePointPositionX={activePointPositionX}
+                    activePointPositionY={activePointPositionY}
                     pointOpacity={pointOpacity}
                     width={width}
                     activePointComponent={activePointComponent}

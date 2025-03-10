@@ -19,14 +19,16 @@ import {
 } from './types';
 
 const ActivePointComponentWrapper = ({
-    activePointPosition,
+    activePointPositionX,
+    activePointPositionY,
     pointOpacity,
     width,
     activePointSharedValue,
     activePointComponentWithSharedValue,
     activePointComponent,
 }: {
-    activePointPosition: SharedValue<{x: number; y: number}>;
+    activePointPositionX: SharedValue<number>;
+    activePointPositionY: SharedValue<number>;
     pointOpacity: SharedValue<number>;
     width: number;
     activePointSharedValue: DataPointSharedValue;
@@ -41,7 +43,7 @@ const ActivePointComponentWrapper = ({
     const forceRerender = useForceReRender();
 
     const componentPositionX = useDerivedValue(() => {
-        const xPosition = activePointPosition.value.x;
+        const xPosition = activePointPositionX.value;
 
         if (I18nManager.isRTL) {
             if (
@@ -68,7 +70,7 @@ const ActivePointComponentWrapper = ({
             );
         }
         return xPosition + SPACE_BETWEEN_COMPONENT_AND_LINE;
-    }, [activePointPosition, activeComponentWidthSV]);
+    }, [activePointPositionX, activePointPositionY, activeComponentWidthSV]);
 
     const viewAnimatedStyle = useAnimatedStyle(() => {
         return {
