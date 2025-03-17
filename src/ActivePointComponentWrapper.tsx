@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {I18nManager, View} from 'react-native';
 import {
     runOnJS,
@@ -36,11 +36,22 @@ const ActivePointComponentWrapper = ({
     activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
 }) => {
     const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
+    const wrapperRef = React.useRef<View>(null);
     const activeComponentWidthSV = useSharedValue<number>(100);
     const [activeDataPointLocal, setActiveDataPointLocal] = useState<
         undefined | DataPoint
     >(undefined);
     const forceRerender = useForceReRender();
+
+    const calculateWidth = () => {
+        wrapperRef.current?.measureInWindow((_x, _y, width) => {
+            activeComponentWidthSV.value = width;
+        });
+    };
+
+    useLayoutEffect(() => {
+        calculateWidth();
+    }, [activePointComponent]);
 
     const componentPositionX = useDerivedValue(() => {
         const xPosition = activePointPositionX.value;
@@ -77,9 +88,17 @@ const ActivePointComponentWrapper = ({
             flexDirection: 'row',
             transform: [
                 {
-                    translateX: withTiming(componentPositionX.value, {
-                        duration: 100,
-                    }),
+                    translateX: withTiming(
+                        componentPositionX.value,
+                        {
+                            duration: 100,
+                        },
+                        finished => {
+                            if (finished) {
+                                runOnJS(calculateWidth)();
+                            }
+                        },
+                    ),
                 },
             ],
             opacity: pointOpacity.value,
@@ -107,12 +126,7 @@ const ActivePointComponentWrapper = ({
                 ...viewAnimatedStyle,
             }}
         >
-            <View
-                onLayout={event => {
-                    const {width: componentWidth} = event.nativeEvent.layout;
-                    activeComponentWidthSV.value = componentWidth;
-                }}
-            >
+            <View ref={wrapperRef}>
                 {activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue(activePointSharedValue)}
