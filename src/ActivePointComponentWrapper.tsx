@@ -100,11 +100,7 @@ const ActivePointComponentWrapper = ({
     );
 
     return (
-        <AnimatedView
-            style={{
-                ...viewAnimatedStyle,
-            }}
-        >
+        <AnimatedView style={viewAnimatedStyle}>
             <View
                 onLayout={event => {
                     const {width: componentWidth} = event.nativeEvent.layout;
