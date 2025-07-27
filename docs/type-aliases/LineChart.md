@@ -12,6 +12,18 @@ The props for the LineChart component
 
 ## Type declaration
 
+### activeLineIndex?
+
+> `optional` **activeLineIndex**: `number`
+
+The index of the line that will trigger point event callbacks when user interacts with the chart
+
+#### Default
+
+```ts
+0
+```
+
 ### activePointSharedValue?
 
 > `optional` **activePointSharedValue**: `DataPointSharedValue`
@@ -78,4 +90,4 @@ The width of the chart (default value is the width of the screen)
 
 ## Defined in
 
-[src/types.ts:9](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L9)
+[src/types.ts:9](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6e0215dbd194df10ddb3d5a2a472fbe3c71a004f/src/types.ts#L9)

@@ -42,6 +42,11 @@ export type LineChart = {
      * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
      */
     activePointSharedValue?: DataPointSharedValue;
+    /**
+     * The index of the line that will trigger point event callbacks when user interacts with the chart
+     * @default 0
+     */
+    activeLineIndex?: number;
 };
 
 /**

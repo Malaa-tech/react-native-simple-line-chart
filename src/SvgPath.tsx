@@ -36,6 +36,7 @@ const SvgPath = ({
     onPointChange,
     endSpacing,
     initialActivePoint,
+    activeLineIndex,
 }: {
     lines: Line[];
     svgHeight: number;
@@ -46,6 +47,7 @@ const SvgPath = ({
     endSpacing: number;
     initialActivePoint?: number;
     onPointChange: (point?: DataPoint) => void;
+    activeLineIndex: number;
 }) => {
     const allData = lines.reduce((acc, line) => {
         if (line.data !== undefined) {
@@ -85,7 +87,7 @@ const SvgPath = ({
             return initialActivePoint;
         }
 
-        const data = lines[0]?.data || [];
+        const data = lines[activeLineIndex]?.data || [];
         const dataLength = data.length;
 
         const minData = axisMinMax.minX;
@@ -110,7 +112,7 @@ const SvgPath = ({
         }
 
         return activeIndexLocal;
-    }, [activeTouchX, lines[0]?.data]);
+    }, [activeTouchX, lines[activeLineIndex]?.data]);
 
     return (
         <>
@@ -130,7 +132,7 @@ const SvgPath = ({
                                 identifier={`${index}`}
                                 extraConfig={extraConfig}
                                 onPointChange={
-                                    index === 0 ? onPointChange : undefined
+                                    index === activeLineIndex ? onPointChange : undefined
                                 }
                                 axisMinMax={axisMinMax}
                             />
