@@ -41,4 +41,5 @@ export const LINE_CHART = {
     onPointLoseFocus: () => false,
     activePointSharedValue: undefined,
     line2: undefined,
+    activeLineIndex: 0,
 };
