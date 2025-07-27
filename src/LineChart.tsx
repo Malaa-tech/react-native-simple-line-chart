@@ -217,12 +217,10 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
 export const MemoizedLineChart = React.memo(
     LineChart,
     (previousProps, nextProps) => {
-        // Check if activeLineIndex changed
         if (previousProps.activeLineIndex !== nextProps.activeLineIndex) {
             return false;
         }
 
-        // Check the active line data
         if (
             JSON.stringify(previousProps.lines[previousProps.activeLineIndex || 0]) !==
             JSON.stringify(nextProps.lines[nextProps.activeLineIndex || 0])
