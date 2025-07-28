@@ -252,9 +252,13 @@ export const useForceReRender = () => {
 /**
  * Fast deep equality comparison function
  * Based on fast-deep-equal library
+ * Note: Functions are treated as equal without deep comparison
  */
 export function isEqual(a: any, b: any): boolean {
     if (a === b) return true;
+
+    // Ignore function checks - return them as equal
+    if (typeof a === 'function' && typeof b === 'function') return true;
 
     if (a && b && typeof a === 'object' && typeof b === 'object') {
         if (a.constructor !== b.constructor) return false;
