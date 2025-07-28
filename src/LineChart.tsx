@@ -15,6 +15,7 @@ import {
     LineChart as LineChartProps,
     LineChartRef,
 } from './types';
+import { isEqual } from './utils';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -221,23 +222,13 @@ export const MemoizedLineChart = React.memo(
             return false;
         }
 
-        if (
-            JSON.stringify(previousProps.lines[previousProps.activeLineIndex || 0]) !==
-            JSON.stringify(nextProps.lines[nextProps.activeLineIndex || 0])
-        ) {
+        if (!isEqual(previousProps.lines, nextProps.lines)) {
             return false;
         }
 
         if (
-            JSON.stringify(previousProps.lines[1]?.data) !==
-            JSON.stringify(nextProps.lines[1]?.data)
-        ) {
-            return false;
-        }
-
-        if (
-            JSON.stringify(previousProps.backgroundColor) !==
-            JSON.stringify(nextProps.backgroundColor)
+            previousProps.backgroundColor !==
+            nextProps.backgroundColor
         ) {
             return false;
         }
