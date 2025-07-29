@@ -409,7 +409,7 @@ const Chart = ({
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
                         leadingOpacity: 0.5,
-                        opacityDirection: 'vertical',
+                        opacityDirection: 'vertical' as const,
                         isAreaChart,
                         curve: chartType,
                         endPointConfig: isEndPoint

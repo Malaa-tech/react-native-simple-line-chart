@@ -18,7 +18,7 @@ Weather the end point should be animated (pulse animation)
 
 #### Defined in
 
-[src/types.ts:159](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6e0215dbd194df10ddb3d5a2a472fbe3c71a004f/src/types.ts#L159)
+[src/types.ts:164](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L164)
 
 ***
 
@@ -30,7 +30,7 @@ The color of the end point
 
 #### Defined in
 
-[src/types.ts:151](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6e0215dbd194df10ddb3d5a2a472fbe3c71a004f/src/types.ts#L151)
+[src/types.ts:156](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L156)
 
 ***
 
@@ -42,4 +42,4 @@ The border radius of the end point
 
 #### Defined in
 
-[src/types.ts:155](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/6e0215dbd194df10ddb3d5a2a472fbe3c71a004f/src/types.ts#L155)
+[src/types.ts:160](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L160)
