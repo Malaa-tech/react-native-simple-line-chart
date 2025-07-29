@@ -408,7 +408,8 @@ const Chart = ({
                         lineColor: isLinearGradient
                             ? ['#f5dd4b', '#81b0ff']
                             : color,
-                        trailingOpacity: '0.3',
+                        leadingOpacity: 0.5,
+                        opacityDirection: 'vertical',
                         isAreaChart,
                         curve: chartType,
                         endPointConfig: isEndPoint

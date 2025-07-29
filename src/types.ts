@@ -82,6 +82,11 @@ export interface Line {
         | NumberProp
         | {trailingPercentage: number; opacity: number};
     /**
+     * The direction of the opacity (horizontal or vertical)
+     * @default 'horizontal'
+     */
+    opacityDirection?: 'horizontal' | 'vertical';
+    /**
      * specify the strokeDasharray for the line
      */
     strokeDasharray?: ComponentProps<typeof Path>['strokeDasharray'];

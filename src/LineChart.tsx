@@ -15,7 +15,7 @@ import {
     LineChart as LineChartProps,
     LineChartRef,
 } from './types';
-import { isEqual } from './utils';
+import {isEqual} from './utils';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -226,10 +226,7 @@ export const MemoizedLineChart = React.memo(
             return false;
         }
 
-        if (
-            previousProps.backgroundColor !==
-            nextProps.backgroundColor
-        ) {
+        if (previousProps.backgroundColor !== nextProps.backgroundColor) {
             return false;
         }
 

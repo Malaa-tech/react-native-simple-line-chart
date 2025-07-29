@@ -132,7 +132,9 @@ const SvgPath = ({
                                 identifier={`${index}`}
                                 extraConfig={extraConfig}
                                 onPointChange={
-                                    index === activeLineIndex ? onPointChange : undefined
+                                    index === activeLineIndex
+                                        ? onPointChange
+                                        : undefined
                                 }
                                 axisMinMax={axisMinMax}
                             />
@@ -316,7 +318,6 @@ const LineComponent = ({
 
                 return '1';
             };
-
             return (
                 <Stop
                     key={`${index}`}
@@ -341,6 +342,23 @@ const LineComponent = ({
         };
     }, []);
 
+    const getGradientPosition = () => {
+        if (line.opacityDirection === 'vertical') {
+            return {
+                y1: 0,
+                y2: svgHeight,
+                x1: 0,
+                x2: 0,
+            };
+        }
+        return {
+            y1: 0,
+            y2: 0,
+            x1: pathEndX,
+            x2: pathStartX,
+        };
+    };
+
     return (
         <>
             {isReadyToRenderBackground &&
@@ -350,10 +368,7 @@ const LineComponent = ({
                         <LinearGradient
                             id={getBackgroundIdentifier()}
                             gradientUnits="userSpaceOnUse"
-                            y1="0"
-                            y2="0"
-                            x1={pathEndX}
-                            x2={pathStartX}
+                            {...getGradientPosition()}
                         >
                             {
                                 getStopPoints() as ReactElement<

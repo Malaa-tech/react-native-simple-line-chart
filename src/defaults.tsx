@@ -42,4 +42,5 @@ export const LINE_CHART = {
     activePointSharedValue: undefined,
     line2: undefined,
     activeLineIndex: 0,
+    opacityDirection: 'horizontal' as const,
 };
