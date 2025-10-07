@@ -19,6 +19,7 @@ import {
     createNewPath,
     getChartMinMaxValue,
     getIndexOfTheNearestXPoint,
+    isEqual,
     PathObject,
 } from './utils';
 import {DataPoint, ExtraConfig, Line} from './types';
@@ -509,6 +510,7 @@ const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
         prev.line.curve === next.line.curve &&
         prev.line.lineColor === next.line.lineColor &&
         prev.line.key === next.line.key &&
+        isEqual(prev.line.activePointConfig, next.line.activePointConfig) &&
         prev.allData
             .map(item => {
                 if (item?.y2 !== undefined) {
