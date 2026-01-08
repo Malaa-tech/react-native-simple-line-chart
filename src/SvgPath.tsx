@@ -367,9 +367,7 @@ const LineComponent = ({
                 // @ts-ignore
                 style={
                     lineWrapperAnimatedStyle
-                        ? {
-                              ...lineWrapperAnimatedStyle,
-                          }
+                        ? lineWrapperAnimatedStyle
                         : undefined
                 }
             >

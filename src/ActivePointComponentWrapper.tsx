@@ -121,11 +121,7 @@ const ActivePointComponentWrapper = ({
     );
 
     return (
-        <AnimatedView
-            style={{
-                ...viewAnimatedStyle,
-            }}
-        >
+        <AnimatedView style={viewAnimatedStyle}>
             <View ref={wrapperRef}>
                 {activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue !== undefined &&
