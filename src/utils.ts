@@ -248,3 +248,102 @@ export const useForceReRender = () => {
 
     return forceUpdate;
 };
+
+/**
+ * Fast deep equality comparison function
+ * Based on fast-deep-equal library
+ * Note: Functions are treated as equal without deep comparison
+ */
+export function isEqual(a: any, b: any): boolean {
+    if (a === b) return true;
+
+    // Ignore function checks - return them as equal
+    if (typeof a === 'function' && typeof b === 'function') return true;
+
+    if (a && b && typeof a === 'object' && typeof b === 'object') {
+        if (a.constructor !== b.constructor) return false;
+
+        let length: number;
+        let i: any;
+        let keys: string[];
+
+        if (Array.isArray(a)) {
+            length = a.length;
+            if (length !== b.length) return false;
+            for (i = length; i-- !== 0; ) {
+                if (!isEqual(a[i], b[i])) return false;
+            }
+            return true;
+        }
+
+        if (a instanceof Map && b instanceof Map) {
+            if (a.size !== b.size) return false;
+            for (i of a.entries()) {
+                if (!b.has(i[0])) return false;
+            }
+            for (i of a.entries()) {
+                if (!isEqual(i[1], b.get(i[0]))) return false;
+            }
+            return true;
+        }
+
+        if (a instanceof Set && b instanceof Set) {
+            if (a.size !== b.size) return false;
+            for (i of a.entries()) {
+                if (!b.has(i[0])) return false;
+            }
+            return true;
+        }
+
+        if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
+            const aView = a as any;
+            const bView = b as any;
+            length = aView.length;
+            if (length !== bView.length) return false;
+            for (i = length; i-- !== 0; ) {
+                if (aView[i] !== bView[i]) return false;
+            }
+            return true;
+        }
+
+        if (a.constructor === RegExp) {
+            return a.source === b.source && a.flags === b.flags;
+        }
+
+        if (a.valueOf !== Object.prototype.valueOf) {
+            return a.valueOf() === b.valueOf();
+        }
+
+        if (a.toString !== Object.prototype.toString) {
+            return a.toString() === b.toString();
+        }
+
+        keys = Object.keys(a);
+        length = keys.length;
+        if (length !== Object.keys(b).length) return false;
+
+        for (i = length; i-- !== 0; ) {
+            const key = keys[i];
+            if (key !== undefined && !Object.prototype.hasOwnProperty.call(b, key)) return false;
+        }
+
+        for (i = length; i-- !== 0; ) {
+            const key = keys[i];
+            if (key === undefined) continue;
+
+            // React-specific: avoid traversing React elements' _owner
+            // _owner contains circular references and is not needed when comparing actual elements
+            if (key === '_owner' && a.$$typeof) {
+                continue;
+            }
+
+            if (!isEqual(a[key], b[key])) return false;
+        }
+
+        return true;
+    }
+
+    // true if both NaN, false otherwise
+    return a !== a && b !== b;
+}
+

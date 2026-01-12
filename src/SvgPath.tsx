@@ -19,6 +19,7 @@ import {
     createNewPath,
     getChartMinMaxValue,
     getIndexOfTheNearestXPoint,
+    isEqual,
     PathObject,
 } from './utils';
 import {DataPoint, ExtraConfig, Line} from './types';
@@ -36,6 +37,7 @@ const SvgPath = ({
     onPointChange,
     endSpacing,
     initialActivePoint,
+    activeLineIndex,
 }: {
     lines: Line[];
     svgHeight: number;
@@ -46,6 +48,7 @@ const SvgPath = ({
     endSpacing: number;
     initialActivePoint?: number;
     onPointChange: (point?: DataPoint) => void;
+    activeLineIndex: number;
 }) => {
     const allData = lines.reduce((acc, line) => {
         if (line.data !== undefined) {
@@ -85,7 +88,7 @@ const SvgPath = ({
             return initialActivePoint;
         }
 
-        const data = lines[0]?.data || [];
+        const data = lines[activeLineIndex]?.data || [];
         const dataLength = data.length;
 
         const minData = axisMinMax.minX;
@@ -110,7 +113,7 @@ const SvgPath = ({
         }
 
         return activeIndexLocal;
-    }, [activeTouchX, lines[0]?.data]);
+    }, [activeTouchX, lines[activeLineIndex]?.data]);
 
     return (
         <>
@@ -130,7 +133,9 @@ const SvgPath = ({
                                 identifier={`${index}`}
                                 extraConfig={extraConfig}
                                 onPointChange={
-                                    index === 0 ? onPointChange : undefined
+                                    index === activeLineIndex
+                                        ? onPointChange
+                                        : undefined
                                 }
                                 axisMinMax={axisMinMax}
                             />
@@ -314,7 +319,6 @@ const LineComponent = ({
 
                 return '1';
             };
-
             return (
                 <Stop
                     key={`${index}`}
@@ -339,6 +343,23 @@ const LineComponent = ({
         };
     }, []);
 
+    const getGradientPosition = () => {
+        if (line.opacityDirection === 'vertical') {
+            return {
+                y1: 0,
+                y2: svgHeight,
+                x1: 0,
+                x2: 0,
+            };
+        }
+        return {
+            y1: 0,
+            y2: 0,
+            x1: pathEndX,
+            x2: pathStartX,
+        };
+    };
+
     return (
         <>
             {isReadyToRenderBackground &&
@@ -348,10 +369,7 @@ const LineComponent = ({
                         <LinearGradient
                             id={getBackgroundIdentifier()}
                             gradientUnits="userSpaceOnUse"
-                            y1="0"
-                            y2="0"
-                            x1={pathEndX}
-                            x2={pathStartX}
+                            {...getGradientPosition()}
                         >
                             {
                                 getStopPoints() as ReactElement<
@@ -490,6 +508,7 @@ const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
         prev.line.curve === next.line.curve &&
         prev.line.lineColor === next.line.lineColor &&
         prev.line.key === next.line.key &&
+        isEqual(prev.line.activePointConfig, next.line.activePointConfig) &&
         prev.allData
             .map(item => {
                 if (item?.y2 !== undefined) {

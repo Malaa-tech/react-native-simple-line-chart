@@ -18,7 +18,7 @@ The component to render when the user taps on the chart
 
 #### Defined in
 
-[src/types.ts:86](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L86)
+[src/types.ts:96](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L96)
 
 ***
 
@@ -30,7 +30,7 @@ The same as (activePointComponent) but the component will receive the shared val
 
 #### Defined in
 
-[src/types.ts:90](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L90)
+[src/types.ts:100](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L100)
 
 ***
 
@@ -42,7 +42,7 @@ The configuration for the active point (the point that is shown when the user ta
 
 #### Defined in
 
-[src/types.ts:62](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L62)
+[src/types.ts:67](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L67)
 
 ***
 
@@ -60,7 +60,7 @@ The curve of the line
 
 #### Defined in
 
-[src/types.ts:103](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L103)
+[src/types.ts:113](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L113)
 
 ***
 
@@ -72,7 +72,7 @@ The data points for the line containing an array of objects with x and y values 
 
 #### Defined in
 
-[src/types.ts:58](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L58)
+[src/types.ts:63](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L63)
 
 ***
 
@@ -84,7 +84,7 @@ The end point configuration (the point appearing at the end of the line)
 
 #### Defined in
 
-[src/types.ts:98](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L98)
+[src/types.ts:108](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L108)
 
 ***
 
@@ -102,7 +102,7 @@ The fill opacity of the area chart
 
 #### Defined in
 
-[src/types.ts:113](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L113)
+[src/types.ts:123](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L123)
 
 ***
 
@@ -120,7 +120,7 @@ false
 
 #### Defined in
 
-[src/types.ts:108](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L108)
+[src/types.ts:118](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L118)
 
 ***
 
@@ -132,7 +132,7 @@ Optional key to indicate that the line has changed (helps with triggering animat
 
 #### Defined in
 
-[src/types.ts:54](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L54)
+[src/types.ts:59](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L59)
 
 ***
 
@@ -150,7 +150,7 @@ the opacity of the begging of the line (gives it gradient effect if you have col
 
 #### Defined in
 
-[src/types.ts:71](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L71)
+[src/types.ts:76](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L76)
 
 ***
 
@@ -162,7 +162,7 @@ The color of the line (supplying an array of colors will create a linear gradien
 
 #### Defined in
 
-[src/types.ts:66](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L66)
+[src/types.ts:71](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L71)
 
 ***
 
@@ -174,7 +174,25 @@ The width of the line
 
 #### Defined in
 
-[src/types.ts:94](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L94)
+[src/types.ts:104](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L104)
+
+***
+
+### opacityDirection?
+
+> `optional` **opacityDirection**: `"horizontal"` \| `"vertical"`
+
+The direction of the opacity (horizontal or vertical)
+
+#### Default
+
+```ts
+'horizontal'
+```
+
+#### Defined in
+
+[src/types.ts:88](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L88)
 
 ***
 
@@ -186,7 +204,7 @@ specify the strokeDasharray for the line
 
 #### Defined in
 
-[src/types.ts:82](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L82)
+[src/types.ts:92](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L92)
 
 ***
 
@@ -204,4 +222,4 @@ the opacity of the end of the line (gives it gradient effect if you have colored
 
 #### Defined in
 
-[src/types.ts:76](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/09edd766afceda200551558c41bf04eef4ec5b23/src/types.ts#L76)
+[src/types.ts:81](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L81)

@@ -42,6 +42,11 @@ export type LineChart = {
      * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
      */
     activePointSharedValue?: DataPointSharedValue;
+    /**
+     * The index of the line that will trigger point event callbacks when user interacts with the chart
+     * @default 0
+     */
+    activeLineIndex?: number;
 };
 
 /**
@@ -76,6 +81,11 @@ export interface Line {
     trailingOpacity?:
         | NumberProp
         | {trailingPercentage: number; opacity: number};
+    /**
+     * The direction of the opacity (horizontal or vertical)
+     * @default 'horizontal'
+     */
+    opacityDirection?: 'horizontal' | 'vertical';
     /**
      * specify the strokeDasharray for the line
      */

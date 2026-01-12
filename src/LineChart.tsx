@@ -15,6 +15,7 @@ import {
     LineChart as LineChartProps,
     LineChartRef,
 } from './types';
+import {isEqual} from './utils';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -62,6 +63,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
             backgroundColor = LINE_CHART.backgroundColor,
             onPointFocus = LINE_CHART.onPointFocus,
             onPointLoseFocus = LINE_CHART.onPointLoseFocus,
+            activeLineIndex = LINE_CHART.activeLineIndex,
             activePointSharedValue,
             lines = [],
         },
@@ -104,8 +106,8 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
             if (extraConfig?.initialActivePoint) {
                 activeTouch.value = true;
                 if (onPointFocus) {
-                    const point = lines[0]?.data
-                        ? lines[0]?.data[
+                    const point = lines[activeLineIndex]?.data
+                        ? lines[activeLineIndex]?.data[
                               extraConfig?.initialActivePoint as number
                           ]
                         : undefined;
@@ -116,7 +118,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
             } else {
                 onPointLoseFocusLocal();
             }
-        }, [lines[0]?.data]);
+        }, [lines[activeLineIndex]?.data]);
 
         const onPanUpdate = (e: PanGestureHandlerEventPayload) => {
             'worklet';
@@ -165,15 +167,16 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
 
         useImperativeHandle(ref, () => ({
             setActiveIndex(index) {
+                const activeLine = lines[activeLineIndex];
                 if (
                     index !== undefined &&
-                    lines[0] &&
-                    lines[0].data &&
-                    Array.isArray(lines[0].data)
+                    activeLine &&
+                    activeLine.data &&
+                    Array.isArray(activeLine.data)
                 ) {
                     activeTouch.value = true;
                     activeTouchX.value =
-                        index * (width / (lines[0].data.length - 1));
+                        index * (width / (activeLine.data.length - 1));
                 } else {
                     activeTouch.value = false;
                 }
@@ -202,6 +205,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                                     : extraConfig?.endSpacing
                             }
                             onPointChange={onPointChange}
+                            activeLineIndex={activeLineIndex}
                         />
                     </Svg>
                 </AnimatedView>
@@ -214,24 +218,15 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
 export const MemoizedLineChart = React.memo(
     LineChart,
     (previousProps, nextProps) => {
-        if (
-            JSON.stringify(previousProps.lines[0]) !==
-            JSON.stringify(nextProps.lines[0])
-        ) {
+        if (previousProps.activeLineIndex !== nextProps.activeLineIndex) {
             return false;
         }
 
-        if (
-            JSON.stringify(previousProps.lines[1]?.data) !==
-            JSON.stringify(nextProps.lines[1]?.data)
-        ) {
+        if (!isEqual(previousProps.lines, nextProps.lines)) {
             return false;
         }
 
-        if (
-            JSON.stringify(previousProps.backgroundColor) !==
-            JSON.stringify(nextProps.backgroundColor)
-        ) {
+        if (previousProps.backgroundColor !== nextProps.backgroundColor) {
             return false;
         }
 

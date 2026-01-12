@@ -122,7 +122,13 @@ const ActivePointComponentWrapper = ({
 
     return (
         <AnimatedView style={viewAnimatedStyle}>
-            <View ref={wrapperRef}>
+            <View
+                ref={wrapperRef}
+                onLayout={event => {
+                    const {width: componentWidth} = event.nativeEvent.layout;
+                    activeComponentWidthSV.value = componentWidth;
+                }}
+            >
                 {activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue(activePointSharedValue)}

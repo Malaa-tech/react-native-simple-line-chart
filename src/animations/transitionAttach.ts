@@ -37,12 +37,22 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
         const newPathYArray = getPathYArrayFromPath(path?.d || '');
 
         if (path?.data.length && pathXSV.value.length < path?.data.length) {
-            pathXSV.value = new Array(path?.data.length - pathXSV.value.length)
+            let paddedXArray = new Array(path?.data.length - pathXSV.value.length)
                 .fill(0)
                 .concat(pathXSV.value);
-            pathYSV.value = new Array(path?.data.length - pathYSV.value.length)
+            let paddedYArray = new Array(path?.data.length - pathYSV.value.length)
                 .fill(0)
                 .concat(pathYSV.value);
+
+            // reanimated handles arrays with 16 elements as a matrix
+            // so we double the latest elements in the padded arrays too
+            if (paddedXArray.length === 16) {
+                paddedXArray.push(paddedXArray[15]);
+                paddedYArray.push(paddedYArray[15]);
+            }
+
+            pathXSV.value = paddedXArray;
+            pathYSV.value = paddedYArray;
 
             const isInitial = pathXSV.value.length === 0;
 
