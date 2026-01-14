@@ -65,7 +65,8 @@ function EndPoint({
                 fill={color}
                 animatedProps={innerCircleAnimatedProps}
             />
-            {animated && (
+            {/* on android this has a huge performance impact, its not important so we might turn it back on later */}
+            {false && (
                 <AnimatedCircle
                     cx={x}
                     fill={color}
