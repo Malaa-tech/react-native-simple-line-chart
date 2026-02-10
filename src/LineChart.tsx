@@ -6,6 +6,7 @@ import {
 } from 'react-native-gesture-handler';
 import {runOnJS, useSharedValue} from 'react-native-reanimated';
 import {EXTRA_CONFIG, LINE_CHART} from './defaults';
+import SvgPath from './SvgPath';
 import {
     DataPoint,
     ExtraConfig,
@@ -14,7 +15,6 @@ import {
 } from './types';
 import {isEqual} from './utils';
 import {View} from 'react-native';
-import ChartWrapper from './ChartWrapper';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -191,7 +191,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                         height: svgHeight,
                     }}
                 >
-                    <ChartWrapper
+                    <SvgPath
                         lines={lines}
                         svgHeight={svgHeight}
                         svgWidth={svgWidth}
