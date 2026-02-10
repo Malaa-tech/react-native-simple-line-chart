@@ -82,8 +82,8 @@
     "react-native-builder-bob": "^0.20.0",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-reanimated": "~4.1.1",
+    "@shopify/react-native-skia": "2.4.19",
     "react-native-worklets": "0.5.1",
-    "react-native-svg": "15.12.1",
     "release-it": "^15.0.0",
     "typedoc": "^0.26.6",
     "typedoc-plugin-markdown": "^4.2.6",
@@ -95,7 +95,6 @@
     "react-native-gesture-handler": ">=2.8.0",
     "react-native-reanimated": ">=4",
     "react-native-worklets": ">=0.5",
-    "react-native-svg": ">=15",
     "@shopify/react-native-skia": ">-2"
   },
   "engines": {

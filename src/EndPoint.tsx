@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react';
-import {ColorValue} from 'react-native';
-import {
-    useAnimatedProps,
+import {ColorValue, I18nManager} from 'react-native';
+import Animated, {
+    useAnimatedStyle,
     useSharedValue,
     withRepeat,
     withTiming,
 } from 'react-native-reanimated';
-import {AnimatedCircle} from './AnimatedComponents';
 import {endPointAnimationFunction} from './animations/animations';
 
 function EndPoint({
@@ -45,36 +44,24 @@ function EndPoint({
         });
     }, [y]);
 
-    const outerCircleAnimatedProps = useAnimatedProps(() => {
+    const innerCircleStyle = useAnimatedStyle(() => {
         return {
-            r: radiusSV.value,
-            cy: ySV.value,
-        };
-    });
-    const innerCircleAnimatedProps = useAnimatedProps(() => {
-        return {
-            cy: ySV.value,
+            position: 'absolute' as const,
+            left: !I18nManager.isRTL ? x - radius : undefined,
+            right: !I18nManager.isRTL ? undefined : x - radius,
+            top: ySV.value - radius,
+            width: radius * 2,
+            height: radius * 2,
+            borderRadius: radius,
+            backgroundColor: color as string,
         };
     });
 
     return (
-        <>
-            <AnimatedCircle
-                cx={x}
-                r={radius}
-                fill={color}
-                animatedProps={innerCircleAnimatedProps}
-            />
-            {/* on android this has a huge performance impact, its not important so we might turn it back on later */}
-            {false && (
-                <AnimatedCircle
-                    cx={x}
-                    fill={color}
-                    opacity={0.5}
-                    animatedProps={outerCircleAnimatedProps}
-                />
-            )}
-        </>
+        <Animated.View
+            style={innerCircleStyle}
+            pointerEvents="none"
+        />
     );
 }
 

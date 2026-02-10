@@ -1,21 +1,20 @@
 import React, {useEffect} from 'react';
-import {ColorValue} from 'react-native';
-import {
-    runOnJS,
+import {ColorValue, I18nManager} from 'react-native';
+import Animated, {
     SharedValue,
-    useAnimatedProps,
     useAnimatedReaction,
+    useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
 import ActivePointComponentWrapper from './ActivePointComponentWrapper';
-import {AnimatedCircle, AnimatedPath} from './AnimatedComponents';
 import {
     ActivePointComponent,
     ActivePointComponentSharedValue,
     DataPoint,
 } from './types';
 import {PathObject, useForceReRender} from './utils';
+import {runOnJS} from 'react-native-worklets';
 
 type PositionSharedValue = {x: number; y: number; y2?: number};
 
@@ -123,7 +122,7 @@ const ActivePoint = ({
                         if (onPointChange) {
                             runOnJS(onPointChange)(currentIndexData);
                         }
-                    } catch (e) {
+                    } catch (_) {
                         // error
                     }
                 }
@@ -138,13 +137,17 @@ const ActivePoint = ({
                     const x = point?.x;
 
                     if (x !== undefined && y !== undefined) {
-                        activePointPositionX.value = withTiming(x, {
-                            duration: animateTransition ? 200 : 0,
-                        });
-                        activePointPositionY.value = withTiming(y, {
-                            duration: animateTransition ? 200 : 0,
-                        });
-                    } else {
+                        if (
+                            activePointPositionX.value !== x ||
+                            activePointPositionY.value !== y
+                        ) {
+                            activePointPositionX.value = x;
+                            activePointPositionY.value = y;
+                        }
+                    } else if (
+                        activePointPositionX.value !== -radius ||
+                        activePointPositionY.value !== -radius
+                    ) {
                         activePointPositionX.value = -radius;
                         activePointPositionY.value = -radius;
                     }
@@ -194,38 +197,85 @@ const ActivePoint = ({
         [activeIndex, data, activeTouch],
     );
 
-    const activePointProps = useAnimatedProps(() => {
-        return {
-            cx: activePointPositionX.value,
-            cy: activePointPositionY.value,
-            opacity: pointOpacity.value,
-        };
-    });
-
     const verticalLineActivePosition = useSharedValue(
         activePointPositionX.value || 0,
     );
-    const horizontalLineProps = useAnimatedProps(() => {
+
+    const verticalLineStyle = useAnimatedStyle(() => {
         verticalLineActivePosition.value = withTiming(
             activePointPositionX.value || 0,
             {duration: animateTransition ? 200 : 0},
         );
 
         return {
-            d: `M ${verticalLineActivePosition.value} ${height} v ${-height}`,
+            position: 'absolute' as const,
+            left: !I18nManager.isRTL
+                ? verticalLineActivePosition.value - verticalLineWidth / 2
+                : undefined,
+            right: !I18nManager.isRTL
+                ? undefined
+                : verticalLineActivePosition.value - verticalLineWidth / 2,
+            top: 0,
+            width: verticalLineWidth,
+            height,
             opacity: lineOpacitySV.value,
         };
     });
 
+    const activePointStyle = useAnimatedStyle(() => {
+        return {
+            position: 'absolute' as const,
+            left: I18nManager.isRTL
+                ? undefined
+                : activePointPositionX.value - (radius + borderWidth),
+            right: I18nManager.isRTL
+                ? activePointPositionX.value - (radius + borderWidth)
+                : undefined,
+            top: activePointPositionY.value - (radius + borderWidth),
+            width: (radius + borderWidth) * 2,
+            height: (radius + borderWidth) * 2,
+            borderRadius: radius + borderWidth,
+            opacity: pointOpacity.value,
+        };
+    });
+
+    const dashGap =
+        verticalLineDashArray.length >= 2 ? verticalLineDashArray[1] : 0;
+    const dashLength =
+        verticalLineDashArray.length >= 1 ? verticalLineDashArray[0] : 0;
+    const isDashed = dashLength && dashGap && dashLength > 0 && dashGap > 0;
+
     return (
         <>
             {showVerticalLine && (
-                <AnimatedPath
-                    stroke={verticalLineColor}
-                    strokeWidth={verticalLineWidth}
-                    strokeLinejoin="round"
-                    strokeDasharray={verticalLineDashArray}
-                    animatedProps={horizontalLineProps}
+                <Animated.View
+                    style={[
+                        verticalLineStyle,
+                        {
+                            backgroundColor: isDashed
+                                ? 'transparent'
+                                : (verticalLineColor as string),
+                            borderLeftWidth: isDashed ? verticalLineWidth : 0,
+                            borderLeftColor: isDashed
+                                ? (verticalLineColor as string)
+                                : undefined,
+                            borderStyle: isDashed ? 'dashed' : undefined,
+                        },
+                    ]}
+                    pointerEvents="none"
+                />
+            )}
+            {showActivePointCircle && (
+                <Animated.View
+                    style={[
+                        activePointStyle,
+                        {
+                            backgroundColor: color as string,
+                            borderWidth,
+                            borderColor: borderColor as string,
+                        },
+                    ]}
+                    pointerEvents="none"
                 />
             )}
             {(activePointComponent || activePointComponentWithSharedValue) && (
@@ -240,20 +290,6 @@ const ActivePoint = ({
                         activePointComponentWithSharedValue
                     }
                 />
-            )}
-            {showActivePointCircle && (
-                <>
-                    <AnimatedCircle
-                        fill={borderColor}
-                        animatedProps={activePointProps}
-                        r={radius + borderWidth}
-                    />
-                    <AnimatedCircle
-                        fill={color}
-                        animatedProps={activePointProps}
-                        r={radius}
-                    />
-                </>
             )}
         </>
     );

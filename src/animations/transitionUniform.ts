@@ -2,8 +2,6 @@
 import {
     useSharedValue,
     withTiming,
-    useAnimatedStyle,
-    useAnimatedProps,
     useDerivedValue,
 } from 'react-native-reanimated';
 import {useEffect} from 'react';
@@ -23,10 +21,9 @@ import {
 const useTransitionUniform: animationHook = ({path, duration, enabled}) => {
     if (!enabled) {
         return {
-            endPointAnimation: undefined,
-            lineAnimatedProps: undefined,
-            lineWrapperAnimatedStyle: undefined,
+            derivedPathString: undefined,
             startAnimation: undefined,
+            endPointAnimation: undefined,
         };
     }
     const DURATION = duration || 0;
@@ -103,13 +100,7 @@ const useTransitionUniform: animationHook = ({path, duration, enabled}) => {
         action();
     };
 
-    const lineWrapperAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            opacity: 1,
-        };
-    });
-
-    const derivedPath = useDerivedValue(() => {
+    const derivedPathString = useDerivedValue(() => {
         const points = new Array(pathXSV.value.length)
             .fill(0)
             .map((_value, i) => {
@@ -118,16 +109,8 @@ const useTransitionUniform: animationHook = ({path, duration, enabled}) => {
                     y: pathYSV.value[i],
                 };
             });
-        const complexPath = svgBezierPath(points, 0.03, 'complex');
-
-        return complexPath;
+        return svgBezierPath(points, 0.03, 'complex');
     }, [path?.d]);
-
-    const lineAnimatedProps = useAnimatedProps(() => {
-        return {
-            d: derivedPath.value,
-        };
-    });
 
     const endPointAnimation: endPointAnimationFunction = ({
         currentYPosition,
@@ -138,14 +121,11 @@ const useTransitionUniform: animationHook = ({path, duration, enabled}) => {
         });
     };
 
-    const result = {
-        lineWrapperAnimatedStyle,
-        lineAnimatedProps,
+    return {
+        derivedPathString,
         startAnimation,
         endPointAnimation,
     };
-
-    return result;
 };
 
 export default useTransitionUniform;

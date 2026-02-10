@@ -1,7 +1,5 @@
-import {ComponentProps} from 'react';
 import {ColorValue} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
-import {NumberProp, Path} from 'react-native-svg';
 
 /**
  * The props for the LineChart component
@@ -73,14 +71,12 @@ export interface Line {
      * the opacity of the begging of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
      * @default "1"
      */
-    leadingOpacity?: NumberProp | {leadingPercentage: number; opacity: number};
+    leadingOpacity?: number | {leadingPercentage: number; opacity: number};
     /**
      * the opacity of the end of the line (gives it gradient effect if you have colored background) (a percentage between 0 - 1)
      * @default "1"
      */
-    trailingOpacity?:
-        | NumberProp
-        | {trailingPercentage: number; opacity: number};
+    trailingOpacity?: number | {trailingPercentage: number; opacity: number};
     /**
      * The direction of the opacity (horizontal or vertical)
      * @default 'horizontal'
@@ -89,7 +85,7 @@ export interface Line {
     /**
      * specify the strokeDasharray for the line
      */
-    strokeDasharray?: ComponentProps<typeof Path>['strokeDasharray'];
+    strokeDasharray?: number[];
     /**
      * The component to render when the user taps on the chart
      */

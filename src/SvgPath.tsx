@@ -1,18 +1,25 @@
 /* eslint-disable react/no-array-index-key */
-import React, {
-    JSXElementConstructor,
-    ReactElement,
-    useCallback,
-    useEffect,
-    useMemo,
-} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
     interpolate,
     SharedValue,
     useDerivedValue,
+    useSharedValue,
+    useAnimatedReaction,
 } from 'react-native-reanimated';
-import {Platform, View} from 'react-native';
-import {Defs, LinearGradient, Stop} from 'react-native-svg';
+import {PixelRatio, View} from 'react-native';
+import {
+    Canvas,
+    Path as SkiaPath,
+    Skia,
+    LinearGradient as SkiaLinearGradient,
+    vec,
+    DashPathEffect,
+    Group,
+    PathDef,
+    AnimatedProp,
+    SkPoint,
+} from '@shopify/react-native-skia';
 import ActivePoint from './ActivePoint';
 import EndPoint from './EndPoint';
 import {
@@ -24,7 +31,6 @@ import {
 } from './utils';
 import {DataPoint, ExtraConfig, Line} from './types';
 import {ACTIVE_POINT_CONFIG, END_POINT, EXTRA_CONFIG} from './defaults';
-import {AnimatedG, AnimatedPath} from './AnimatedComponents';
 import useChartAnimation from './animations/animations';
 
 const SvgPath = ({
@@ -130,7 +136,6 @@ const SvgPath = ({
                                 svgWidth={svgWidth}
                                 activeIndex={activeIndex}
                                 activeTouch={activeTouch}
-                                identifier={`${index}`}
                                 extraConfig={extraConfig}
                                 onPointChange={
                                     index === activeLineIndex
@@ -155,7 +160,6 @@ const LineComponent = ({
     svgWidth,
     activeTouch,
     activeIndex,
-    identifier,
     extraConfig,
     onPointChange,
     axisMinMax,
@@ -166,7 +170,6 @@ const LineComponent = ({
     svgWidth: number;
     activeTouch: SharedValue<boolean>;
     activeIndex: SharedValue<number>;
-    identifier: string;
     extraConfig: ExtraConfig;
     onPointChange?: (point?: DataPoint) => void;
     axisMinMax: ReturnType<typeof getChartMinMaxValue>;
@@ -199,22 +202,16 @@ const LineComponent = ({
         });
     };
 
-    const [isReadyToRenderBackground, setIsReadyToRenderBackground] =
-        React.useState(Platform.OS === 'android');
     const [localPath, setLocalPath] = React.useState<PathObject>(
         localCreateNewPath(),
     );
 
-    const {
-        startAnimation,
-        lineWrapperAnimatedStyle,
-        lineAnimatedProps,
-        endPointAnimation,
-    } = useChartAnimation({
-        duration: extraConfig.animationConfig?.duration || 0,
-        animationType: extraConfig.animationConfig?.animationType || 'fade',
-        path: localPath,
-    });
+    const {startAnimation, derivedPathString, endPointAnimation} =
+        useChartAnimation({
+            duration: extraConfig.animationConfig?.duration || 0,
+            animationType: extraConfig.animationConfig?.animationType || 'fade',
+            path: localPath,
+        });
 
     useEffect(() => {
         const path = localCreateNewPath();
@@ -242,93 +239,67 @@ const LineComponent = ({
         allData,
     ]);
 
-    const getBackgroundIdentifier = () => {
-        return `${identifier}`;
-    };
+    // Static Skia path (used when no transition animation)
+    const staticSkiaPath = useMemo(() => {
+        if (localPath?.d) {
+            return Skia.Path.MakeFromSVGString(localPath.d);
+        }
+        return null;
+    }, [localPath?.d]);
 
-    const getStopPoints = useCallback(() => {
-        const getColors = () => {
-            if (isLineColorGradient) {
-                return line.lineColor as string[];
+    // Animated Skia path (used during transition animations)
+    const animatedSkiaPathSV = useSharedValue<ReturnType<
+        typeof Skia.Path.MakeFromSVGString
+    > | null>(staticSkiaPath);
+
+    // Sync animated path from derivedPathString on the UI thread
+    useAnimatedReaction(
+        () => derivedPathString?.value,
+        currentPathStr => {
+            if (currentPathStr) {
+                const p = Skia.Path.MakeFromSVGString(currentPathStr);
+                if (p) {
+                    animatedSkiaPathSV.value = p;
+                }
             }
-            return [
-                line.lineColor as string, // leading opacity
-                line.lineColor as string, // controlling position of the leading opacity
-                line.lineColor as string, // controlling position of the trailing opacity
-                line.lineColor as string, // trailing opacity
-            ];
-        };
+        },
+        [derivedPathString],
+    );
 
-        const colors = getColors();
+    // When no animation, keep the shared value in sync with static path
+    React.useEffect(() => {
+        if (!derivedPathString && staticSkiaPath) {
+            animatedSkiaPathSV.value = staticSkiaPath;
+        }
+    }, [staticSkiaPath, derivedPathString]);
 
-        return colors.map((color, index) => {
-            const defaultOffset = 100 - (index / (colors.length - 1)) * 100;
+    // Use animated path when transitions are active, static otherwise
+    const skiaPath = derivedPathString ? animatedSkiaPathSV : staticSkiaPath;
 
-            const getOffset = () => {
+    const applyOpacityToColor = useCallback(
+        (color: string, opacity: number): string => {
+            try {
+                const c = Skia.Color(color);
                 if (
-                    isLineColorGradient ||
-                    index === 0 ||
-                    index === colors?.length - 1
+                    !c ||
+                    c[0] === undefined ||
+                    c[1] === undefined ||
+                    c[2] === undefined ||
+                    c[3] === undefined
                 ) {
-                    return defaultOffset;
+                    return color;
                 }
-
-                if (index === 1) {
-                    if (
-                        typeof line?.leadingOpacity === 'object' &&
-                        line?.leadingOpacity?.leadingPercentage
-                    ) {
-                        return (
-                            100 - line?.leadingOpacity?.leadingPercentage / 2
-                        );
-                    } else {
-                        return 50;
-                    }
-                }
-                if (index === colors.length - 2) {
-                    if (
-                        typeof line?.trailingOpacity === 'object' &&
-                        line?.trailingOpacity?.trailingPercentage
-                    ) {
-                        return line?.trailingOpacity?.trailingPercentage / 2;
-                    } else {
-                        return 50;
-                    }
-                }
-
-                return defaultOffset;
-            };
-
-            const getStopOpacity = () => {
-                if (index === 0 && line.leadingOpacity !== undefined) {
-                    if (typeof line.leadingOpacity === 'object') {
-                        return `${line.leadingOpacity.opacity}`;
-                    }
-                    return `${line.leadingOpacity}`;
-                }
-
-                if (
-                    index === colors.length - 1 &&
-                    line.trailingOpacity !== undefined
-                ) {
-                    if (typeof line.trailingOpacity === 'object') {
-                        return `${line.trailingOpacity.opacity}`;
-                    }
-                    return `${line.trailingOpacity}`;
-                }
-
-                return '1';
-            };
-            return (
-                <Stop
-                    key={`${index}`}
-                    offset={`${getOffset()}%`}
-                    stopColor={color}
-                    stopOpacity={getStopOpacity()}
-                />
-            );
-        });
-    }, [line.lineColor, line.trailingOpacity]);
+                const r = Math.round(c[0] * 255);
+                const g = Math.round(c[1] * 255);
+                const b = Math.round(c[2] * 255);
+                const a = opacity * c[3];
+                return `rgba(${r}, ${g}, ${b}, ${a})`;
+            } catch {
+                return color;
+            }
+        },
+        [],
+    );
 
     const {pathStartX, pathEndX} = useMemo(() => {
         const pathStartX = line?.data[0]?.x
@@ -343,98 +314,225 @@ const LineComponent = ({
         };
     }, []);
 
-    const getGradientPosition = () => {
-        if (line.opacityDirection === 'vertical') {
-            return {
-                y1: 0,
-                y2: svgHeight,
-                x1: 0,
-                x2: 0,
-            };
-        }
-        return {
-            y1: 0,
-            y2: 0,
-            x1: pathEndX,
-            x2: pathStartX,
+    const skiaGradient = useMemo(() => {
+        const getLeadingOpacity = () => {
+            if (line.leadingOpacity === undefined) return 1;
+            if (typeof line.leadingOpacity === 'object')
+                return line.leadingOpacity.opacity;
+            return Number(line.leadingOpacity);
         };
-    };
+
+        const getTrailingOpacity = () => {
+            if (line.trailingOpacity === undefined) return 1;
+            if (typeof line.trailingOpacity === 'object')
+                return line.trailingOpacity.opacity;
+            return Number(line.trailingOpacity);
+        };
+
+        let colors: string[];
+        let positions: number[];
+
+        if (isLineColorGradient) {
+            const gradientColors = line.lineColor as string[];
+            const n = gradientColors.length;
+            colors = gradientColors.map((color, index) => {
+                if (index === 0)
+                    return applyOpacityToColor(color, getLeadingOpacity());
+                if (index === n - 1)
+                    return applyOpacityToColor(color, getTrailingOpacity());
+                return color;
+            });
+            positions = gradientColors.map((_, index) => index / (n - 1));
+        } else {
+            const color = (line.lineColor as string) || 'black';
+            const leadingOp = getLeadingOpacity();
+            const trailingOp = getTrailingOpacity();
+
+            let pos1 = 0.5;
+            if (
+                typeof line.leadingOpacity === 'object' &&
+                line.leadingOpacity.leadingPercentage
+            ) {
+                pos1 = line.leadingOpacity.leadingPercentage / 200;
+            }
+
+            let pos2 = 0.5;
+            if (
+                typeof line.trailingOpacity === 'object' &&
+                line.trailingOpacity.trailingPercentage
+            ) {
+                pos2 = 1 - line.trailingOpacity.trailingPercentage / 200;
+            }
+
+            colors = [
+                applyOpacityToColor(color, leadingOp),
+                color,
+                color,
+                applyOpacityToColor(color, trailingOp),
+            ];
+            positions = [0, pos1, pos2, 1];
+        }
+
+        // Gradient direction
+        let start: typeof vec;
+        let end: typeof vec | null;
+        if (line.opacityDirection === 'vertical') {
+            start = vec(0, svgHeight) as unknown as typeof vec;
+            end = vec(0, 0) as unknown as typeof vec;
+        } else {
+            start = vec(pathStartX, 0) as unknown as typeof vec;
+            end = vec(pathEndX, 0) as unknown as typeof vec;
+        }
+
+        return {colors, positions, start, end};
+    }, [
+        line.lineColor,
+        line.leadingOpacity,
+        line.trailingOpacity,
+        line.opacityDirection,
+        pathStartX,
+        pathEndX,
+        svgHeight,
+        isLineColorGradient,
+        applyOpacityToColor,
+    ]);
+
+    const {canvasWidth, canvasHeight, scaleFactor} = useMemo(() => {
+        const MAX_TEXTURE_SIZE = 4096;
+        const pr = PixelRatio.get();
+        const sf = Math.min(
+            1,
+            MAX_TEXTURE_SIZE / (svgWidth * pr),
+            MAX_TEXTURE_SIZE / (svgHeight * pr),
+        );
+        return {
+            canvasWidth: Math.floor(svgWidth * sf),
+            canvasHeight: Math.floor(svgHeight * sf),
+            scaleFactor: sf,
+        };
+    }, [svgWidth, svgHeight]);
+
+    const parseDashArray = useCallback((dashArray: any): number[] => {
+        if (Array.isArray(dashArray)) return dashArray.map(Number);
+        if (typeof dashArray === 'string')
+            return dashArray.split(/[\s,]+/).map(Number);
+        if (typeof dashArray === 'number') return [dashArray, dashArray];
+        return [];
+    }, []);
 
     return (
         <>
-            {isReadyToRenderBackground &&
-                pathStartX !== undefined &&
-                pathEndX !== undefined && (
-                    <Defs>
-                        <LinearGradient
-                            id={getBackgroundIdentifier()}
-                            gradientUnits="userSpaceOnUse"
-                            {...getGradientPosition()}
-                        >
-                            {
-                                getStopPoints() as ReactElement<
-                                    any,
-                                    string | JSXElementConstructor<any>
-                                >[]
-                            }
-                        </LinearGradient>
-                    </Defs>
-                )}
-
-            <AnimatedG
-                // @ts-ignore
-                style={
-                    lineWrapperAnimatedStyle
-                        ? lineWrapperAnimatedStyle
-                        : undefined
-                }
-            >
-                <AnimatedPath
-                    onLayout={e => {
-                        // this is a hack to fix the ios flashes white on mount
-                        if (
-                            Number.isFinite(e.nativeEvent.layout.width) &&
-                            Platform.OS === 'ios'
-                        ) {
-                            setTimeout(() => {
-                                setIsReadyToRenderBackground(true);
-                            }, 20);
-                        }
+            {skiaPath && (
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: svgWidth,
+                        height: svgHeight,
                     }}
-                    strokeLinecap="round"
-                    stroke={`url(#${getBackgroundIdentifier()})`}
-                    strokeWidth={
-                        line.lineWidth === undefined ? 2 : line.lineWidth
-                    }
-                    fill={
-                        (line.isAreaChart !== undefined &&
-                            line.isAreaChart === true) ||
-                        isRangedLineChart
-                            ? `url(#${getBackgroundIdentifier()})`
-                            : 'transparent'
-                    }
-                    fillOpacity={line?.fillOpacity}
-                    animatedProps={lineAnimatedProps}
-                    strokeDasharray={line.strokeDasharray}
-                />
+                    pointerEvents="none"
+                >
+                    <Canvas
+                        style={{
+                            position: 'absolute',
+                            left: (svgWidth - canvasWidth) / 2,
+                            top: (svgHeight - canvasHeight) / 2,
+                            width: canvasWidth,
+                            height: canvasHeight,
+                            transform: [
+                                {
+                                    scaleX:
+                                        scaleFactor < 1 ? 1 / scaleFactor : 1,
+                                },
+                                {
+                                    scaleY:
+                                        scaleFactor < 1 ? 1 / scaleFactor : 1,
+                                },
+                            ],
+                        }}
+                    >
+                        <Group
+                            transform={
+                                scaleFactor < 1
+                                    ? [
+                                          {scaleX: scaleFactor},
+                                          {scaleY: scaleFactor},
+                                      ]
+                                    : []
+                            }
+                        >
+                            <SkiaPath
+                                path={skiaPath as PathDef}
+                                style="stroke"
+                                strokeWidth={
+                                    line.lineWidth === 0
+                                        ? 0.01
+                                        : (line.lineWidth ?? 2)
+                                } // for some reason it doesn't accept zero
+                                strokeCap="round"
+                            >
+                                <SkiaLinearGradient
+                                    start={
+                                        skiaGradient.start as unknown as AnimatedProp<SkPoint>
+                                    }
+                                    end={
+                                        skiaGradient.end as unknown as AnimatedProp<SkPoint>
+                                    }
+                                    colors={skiaGradient.colors}
+                                    positions={skiaGradient.positions}
+                                />
+                                {line.strokeDasharray &&
+                                    parseDashArray(line.strokeDasharray)
+                                        .length >= 2 && (
+                                        <DashPathEffect
+                                            intervals={parseDashArray(
+                                                line.strokeDasharray,
+                                            )}
+                                        />
+                                    )}
+                            </SkiaPath>
+                            {((line.isAreaChart !== undefined &&
+                                line.isAreaChart === true) ||
+                                isRangedLineChart) && (
+                                <SkiaPath
+                                    path={skiaPath as PathDef}
+                                    style="fill"
+                                    opacity={line?.fillOpacity ?? 1}
+                                >
+                                    <SkiaLinearGradient
+                                        start={
+                                            skiaGradient.start as unknown as AnimatedProp<SkPoint>
+                                        }
+                                        end={
+                                            skiaGradient.end as unknown as AnimatedProp<SkPoint>
+                                        }
+                                        colors={skiaGradient.colors}
+                                        positions={skiaGradient.positions}
+                                    />
+                                </SkiaPath>
+                            )}
+                        </Group>
+                    </Canvas>
+                </View>
+            )}
 
-                {line.endPointConfig && endPointAnimation && (
-                    <EndPoint
-                        x={localPath?.x(
-                            localPath?.data[localPath.data.length - 1]?.x || 0,
-                        )}
-                        y={localPath?.y(
-                            localPath?.data[localPath.data.length - 1]?.y || 0,
-                        )}
-                        color={line.endPointConfig?.color || END_POINT.color}
-                        animated={
-                            line.endPointConfig?.animated || END_POINT.animated
-                        }
-                        radius={line.endPointConfig?.radius || END_POINT.radius}
-                        endPointAnimation={endPointAnimation}
-                    />
-                )}
-            </AnimatedG>
+            {line.endPointConfig && endPointAnimation && (
+                <EndPoint
+                    x={localPath?.x(
+                        localPath?.data[localPath.data.length - 1]?.x || 0,
+                    )}
+                    y={localPath?.y(
+                        localPath?.data[localPath.data.length - 1]?.y || 0,
+                    )}
+                    color={line.endPointConfig?.color || END_POINT.color}
+                    animated={
+                        line.endPointConfig?.animated || END_POINT.animated
+                    }
+                    radius={line.endPointConfig?.radius || END_POINT.radius}
+                    endPointAnimation={endPointAnimation}
+                />
+            )}
 
             {line !== undefined && line.activePointConfig !== undefined && (
                 <ActivePoint

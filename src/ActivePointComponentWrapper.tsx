@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {I18nManager, View} from 'react-native';
-import {
+import Animated, {
     runOnJS,
     SharedValue,
     useAnimatedReaction,
@@ -10,7 +10,7 @@ import {
     withTiming,
 } from 'react-native-reanimated';
 import {useForceReRender} from './utils';
-import {AnimatedView} from './AnimatedComponents';
+
 import {
     ActivePointComponent,
     ActivePointComponentSharedValue,
@@ -121,7 +121,7 @@ const ActivePointComponentWrapper = ({
     );
 
     return (
-        <AnimatedView style={viewAnimatedStyle}>
+        <Animated.View style={viewAnimatedStyle}>
             <View
                 ref={wrapperRef}
                 onLayout={event => {
@@ -131,14 +131,18 @@ const ActivePointComponentWrapper = ({
             >
                 {activePointComponentWithSharedValue !== undefined &&
                     activePointComponentWithSharedValue !== undefined &&
-                    activePointComponentWithSharedValue(activePointSharedValue)}
+                    (activePointComponentWithSharedValue(
+                        activePointSharedValue,
+                    ) as React.ReactNode)}
 
                 {activePointComponentWithSharedValue === undefined &&
                     activeDataPointLocal &&
                     activePointComponent !== undefined &&
-                    activePointComponent(activeDataPointLocal)}
+                    (activePointComponent(
+                        activeDataPointLocal,
+                    ) as React.ReactNode)}
             </View>
-        </AnimatedView>
+        </Animated.View>
     );
 };
 

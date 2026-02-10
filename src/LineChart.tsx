@@ -5,8 +5,6 @@ import {
     PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
 import {runOnJS, useSharedValue} from 'react-native-reanimated';
-import Svg from 'react-native-svg';
-import {AnimatedView} from './AnimatedComponents';
 import {EXTRA_CONFIG, LINE_CHART} from './defaults';
 import SvgPath from './SvgPath';
 import {
@@ -16,6 +14,7 @@ import {
     LineChartRef,
 } from './types';
 import {isEqual} from './utils';
+import {View} from 'react-native';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -185,30 +184,30 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
 
         return (
             <GestureDetector gesture={panGesture}>
-                <AnimatedView style={{backgroundColor}}>
-                    <Svg
-                        width={svgWidth}
-                        height={svgHeight}
-                        fill="transparent"
-                    >
-                        <SvgPath
-                            lines={lines}
-                            svgHeight={svgHeight}
-                            svgWidth={svgWidth}
-                            activeTouch={activeTouch}
-                            activeTouchX={activeTouchX}
-                            extraConfig={extraConfig}
-                            initialActivePoint={extraConfig?.initialActivePoint}
-                            endSpacing={
-                                extraConfig?.endSpacing === undefined
-                                    ? EXTRA_CONFIG.endSpacing
-                                    : extraConfig?.endSpacing
-                            }
-                            onPointChange={onPointChange}
-                            activeLineIndex={activeLineIndex}
-                        />
-                    </Svg>
-                </AnimatedView>
+                <View
+                    style={{
+                        backgroundColor,
+                        width: svgWidth,
+                        height: svgHeight,
+                    }}
+                >
+                    <SvgPath
+                        lines={lines}
+                        svgHeight={svgHeight}
+                        svgWidth={svgWidth}
+                        activeTouch={activeTouch}
+                        activeTouchX={activeTouchX}
+                        extraConfig={extraConfig}
+                        initialActivePoint={extraConfig?.initialActivePoint}
+                        endSpacing={
+                            extraConfig?.endSpacing === undefined
+                                ? EXTRA_CONFIG.endSpacing
+                                : extraConfig?.endSpacing
+                        }
+                        onPointChange={onPointChange}
+                        activeLineIndex={activeLineIndex}
+                    />
+                </View>
             </GestureDetector>
         );
     },

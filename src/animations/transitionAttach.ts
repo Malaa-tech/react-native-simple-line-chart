@@ -2,8 +2,6 @@
 import {
     useSharedValue,
     withTiming,
-    useAnimatedStyle,
-    useAnimatedProps,
     useDerivedValue,
 } from 'react-native-reanimated';
 import {useEffect} from 'react';
@@ -22,8 +20,7 @@ import {
 const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
     if (!enabled) {
         return {
-            lineAnimatedProps: undefined,
-            lineWrapperAnimatedStyle: undefined,
+            derivedPathString: undefined,
             startAnimation: undefined,
             endPointAnimation: undefined,
         };
@@ -37,10 +34,14 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
         const newPathYArray = getPathYArrayFromPath(path?.d || '');
 
         if (path?.data.length && pathXSV.value.length < path?.data.length) {
-            let paddedXArray = new Array(path?.data.length - pathXSV.value.length)
+            const paddedXArray = new Array(
+                path?.data.length - pathXSV.value.length,
+            )
                 .fill(0)
                 .concat(pathXSV.value);
-            let paddedYArray = new Array(path?.data.length - pathYSV.value.length)
+            const paddedYArray = new Array(
+                path?.data.length - pathYSV.value.length,
+            )
                 .fill(0)
                 .concat(pathYSV.value);
 
@@ -121,8 +122,6 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
                 duration: DURATION / 2,
             });
         }
-
-        // }
     }, [path?.d]);
 
     const startAnimation: startAnimationFunction = ({
@@ -132,12 +131,6 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
     }) => {
         action();
     };
-
-    const lineWrapperAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            opacity: 1,
-        };
-    });
 
     const generatePointsFromXAndY = (x: number[], y: number[]) => {
         'worklet';
@@ -157,7 +150,7 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
         return points;
     };
 
-    const derivedPath = useDerivedValue(() => {
+    const derivedPathString = useDerivedValue(() => {
         if (pathXSV.value !== undefined && pathYSV.value !== undefined) {
             const points = generatePointsFromXAndY(
                 pathXSV.value,
@@ -169,12 +162,6 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
         return '';
     }, [path?.d]);
 
-    const lineAnimatedProps = useAnimatedProps(() => {
-        return {
-            d: derivedPath.value,
-        };
-    });
-
     const endPointAnimation: endPointAnimationFunction = ({
         currentYPosition,
         newYPosition,
@@ -184,14 +171,11 @@ const useTransitionAttach: animationHook = ({path, duration, enabled}) => {
         });
     };
 
-    const result = {
-        lineWrapperAnimatedStyle,
-        lineAnimatedProps,
+    return {
+        derivedPathString,
         startAnimation,
         endPointAnimation,
     };
-
-    return result;
 };
 
 export default useTransitionAttach;

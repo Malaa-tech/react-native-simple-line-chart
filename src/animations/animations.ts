@@ -1,8 +1,4 @@
-import {
-    SharedValue,
-    useAnimatedProps,
-    useAnimatedStyle,
-} from 'react-native-reanimated';
+import {SharedValue} from 'react-native-reanimated';
 import {PathObject} from '../utils';
 import useTransitionAttach from './transitionAttach';
 import {AnimationType} from '../types';
@@ -23,23 +19,17 @@ export type startAnimationFunction = ({
     action: () => void;
 }) => void;
 
+export type animationHookResult = {
+    derivedPathString?: SharedValue<string>;
+    startAnimation?: startAnimationFunction;
+    endPointAnimation?: endPointAnimationFunction;
+};
+
 export type animationHook = (props: {
     path?: PathObject;
     duration?: number;
     enabled?: boolean;
-}) =>
-    | {
-          lineAnimatedProps: ReturnType<typeof useAnimatedProps>;
-          lineWrapperAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
-          startAnimation: startAnimationFunction;
-          endPointAnimation: endPointAnimationFunction;
-      }
-    | {
-          lineAnimatedProps: undefined;
-          lineWrapperAnimatedStyle: undefined;
-          startAnimation: undefined;
-          endPointAnimation: undefined;
-      };
+}) => animationHookResult;
 
 const useChartAnimation = ({
     duration,
@@ -49,62 +39,32 @@ const useChartAnimation = ({
     duration?: number;
     animationType?: AnimationType;
     path?: PathObject;
-}) => {
-    const {
-        lineAnimatedProps: transitionAttachLineAnimatedProps,
-        lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
-        startAnimation: transitionAttachStartAnimation,
-        endPointAnimation: transitionAttachEndPointAnimation,
-    } = useTransitionAttach({
+}): animationHookResult => {
+    const transitionAttachResult = useTransitionAttach({
         path,
         duration,
         enabled: animationType === 'transitionAttach',
     });
 
-    const {
-        lineAnimatedProps: transitionUniformLineAnimatedProps,
-        lineWrapperAnimatedStyle: transitionUniformLineWrapperAnimatedStyle,
-        startAnimation: transitionUniformStartAnimation,
-        endPointAnimation: transitionUniformEndPointAnimation,
-    } = useTransitionUniform({
+    const transitionUniformResult = useTransitionUniform({
         path,
         duration,
         enabled: animationType === 'transitionUniform',
     });
 
-    const {
-        lineAnimatedProps: defaultLineAnimatedProps,
-        lineWrapperAnimatedStyle: defaultLineWrapperAnimatedStyle,
-        startAnimation: defaultStartAnimation,
-        endPointAnimation: defaultEndPointAnimation,
-    } = useNoAnimation({
+    const noAnimResult = useNoAnimation({
         path,
     });
 
     if (animationType === 'transitionUniform') {
-        return {
-            lineAnimatedProps: transitionUniformLineAnimatedProps,
-            lineWrapperAnimatedStyle: transitionUniformLineWrapperAnimatedStyle,
-            startAnimation: transitionUniformStartAnimation,
-            endPointAnimation: transitionUniformEndPointAnimation,
-        };
+        return transitionUniformResult;
     }
 
     if (animationType === 'transitionAttach') {
-        return {
-            lineAnimatedProps: transitionAttachLineAnimatedProps,
-            lineWrapperAnimatedStyle: transitionAttachLineWrapperAnimatedStyle,
-            startAnimation: transitionAttachStartAnimation,
-            endPointAnimation: transitionAttachEndPointAnimation,
-        };
+        return transitionAttachResult;
     }
 
-    return {
-        lineAnimatedProps: defaultLineAnimatedProps,
-        lineWrapperProps: defaultLineWrapperAnimatedStyle,
-        endPointAnimation: defaultEndPointAnimation,
-        startAnimation: defaultStartAnimation,
-    };
+    return noAnimResult;
 };
 
 export default useChartAnimation;
