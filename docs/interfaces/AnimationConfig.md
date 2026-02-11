@@ -27,7 +27,7 @@ Animation presets
 
 #### Defined in
 
-[src/types.ts:293](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L293)
+[src/types.ts:289](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L289)
 
 ***
 
@@ -45,4 +45,4 @@ Animation Duration
 
 #### Defined in
 
-[src/types.ts:288](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L288)
+[src/types.ts:284](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L284)

@@ -24,7 +24,7 @@ false
 
 #### Defined in
 
-[src/types.ts:225](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L225)
+[src/types.ts:221](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L221)
 
 ***
 
@@ -42,7 +42,7 @@ the border color for the active point circle
 
 #### Defined in
 
-[src/types.ts:180](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L180)
+[src/types.ts:176](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L176)
 
 ***
 
@@ -60,7 +60,7 @@ the border width for the active point circle
 
 #### Defined in
 
-[src/types.ts:185](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L185)
+[src/types.ts:181](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L181)
 
 ***
 
@@ -78,7 +78,7 @@ The color of the active point circle
 
 #### Defined in
 
-[src/types.ts:175](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L175)
+[src/types.ts:171](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L171)
 
 ***
 
@@ -96,7 +96,7 @@ the border radius for the active point circle
 
 #### Defined in
 
-[src/types.ts:190](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L190)
+[src/types.ts:186](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L186)
 
 ***
 
@@ -114,7 +114,7 @@ true
 
 #### Defined in
 
-[src/types.ts:200](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L200)
+[src/types.ts:196](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L196)
 
 ***
 
@@ -132,7 +132,7 @@ false
 
 #### Defined in
 
-[src/types.ts:195](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L195)
+[src/types.ts:191](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L191)
 
 ***
 
@@ -150,7 +150,7 @@ The color of the vertical line
 
 #### Defined in
 
-[src/types.ts:205](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L205)
+[src/types.ts:201](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L201)
 
 ***
 
@@ -168,7 +168,7 @@ The dash array for the vertical line (this will create a dashed line)
 
 #### Defined in
 
-[src/types.ts:220](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L220)
+[src/types.ts:216](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L216)
 
 ***
 
@@ -186,7 +186,7 @@ The opacity of the vertical line (number between 0 and 1)
 
 #### Defined in
 
-[src/types.ts:210](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L210)
+[src/types.ts:206](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L206)
 
 ***
 
@@ -204,4 +204,4 @@ The width of the vertical line
 
 #### Defined in
 
-[src/types.ts:215](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/638977e1064b855904c85112815974f31c2777e9/src/types.ts#L215)
+[src/types.ts:211](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/7d5d9175272964df8702211007e0f5c59362db38/src/types.ts#L211)
