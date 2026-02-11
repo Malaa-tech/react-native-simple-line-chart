@@ -1,7 +1,12 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import {useCallback, useState} from 'react';
 import * as d3 from 'd3';
-import {calculateChartAxisMinMax, DataPoint, LineCurve} from './types';
+import {calculateChartAxisMinMax, DataPoint, Line, LineCurve} from './types';
+import {
+    interpolate,
+    SharedValue,
+    useDerivedValue,
+} from 'react-native-reanimated';
 
 export type PathObject = {
     d: string | null;
@@ -324,7 +329,11 @@ export function isEqual(a: any, b: any): boolean {
 
         for (i = length; i-- !== 0; ) {
             const key = keys[i];
-            if (key !== undefined && !Object.prototype.hasOwnProperty.call(b, key)) return false;
+            if (
+                key !== undefined &&
+                !Object.prototype.hasOwnProperty.call(b, key)
+            )
+                return false;
         }
 
         for (i = length; i-- !== 0; ) {
@@ -344,6 +353,58 @@ export function isEqual(a: any, b: any): boolean {
     }
 
     // true if both NaN, false otherwise
-    return a !== a && b !== b;
+    return Number.isNaN(a) && Number.isNaN(b);
 }
 
+export const useActiveIndex = ({
+    activeTouchX,
+    lines,
+    activeLineIndex,
+    axisMinMax,
+    svgWidth,
+    endSpacing,
+    initialActivePoint,
+}: {
+    activeTouchX: SharedValue<number>;
+    lines: Line[];
+    activeLineIndex: number;
+    axisMinMax: {minX: number; maxX: number; minY: number; maxY: number};
+    svgWidth: number;
+    endSpacing: number;
+    initialActivePoint?: number;
+}) => {
+    return useDerivedValue(() => {
+        // eslint-disable-next-line no-bitwise
+        const activeTouchWithoutDecimals = ~~activeTouchX.value;
+
+        if (activeTouchWithoutDecimals === 0 && initialActivePoint) {
+            return initialActivePoint;
+        }
+
+        const data = lines[activeLineIndex]?.data || [];
+        const dataLength = data.length;
+
+        const minData = axisMinMax.minX;
+        const maxData = axisMinMax.maxX;
+
+        const denominator = svgWidth - endSpacing;
+        const percentage = (activeTouchWithoutDecimals / denominator) * 100;
+
+        const percentageToTimestampValue = interpolate(
+            percentage,
+            [0, 100],
+            [minData, maxData],
+        );
+
+        let activeIndexLocal = getIndexOfTheNearestXPoint(
+            data,
+            percentageToTimestampValue,
+        );
+
+        if (activeIndexLocal >= dataLength) {
+            activeIndexLocal = dataLength - 1;
+        }
+
+        return activeIndexLocal;
+    }, [activeTouchX, lines[activeLineIndex]?.data]);
+};
