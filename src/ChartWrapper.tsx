@@ -2,7 +2,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {SharedValue} from 'react-native-reanimated';
 import {View} from 'react-native';
-import ActivePoint from './ActivePoint';
+import ActivePoint from './activePoint/ActivePoint';
 import EndPoint from './EndPoint';
 import {
     createNewPath,

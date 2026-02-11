@@ -8,14 +8,14 @@ import Animated, {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import {useForceReRender} from './utils';
+import {useForceReRender} from '../utils';
 
 import {
     ActivePointComponent,
     ActivePointComponentSharedValue,
     DataPoint,
     DataPointSharedValue,
-} from './types';
+} from '../types';
 import {scheduleOnRN} from 'react-native-worklets';
 
 const ActivePointComponentWrapper = ({

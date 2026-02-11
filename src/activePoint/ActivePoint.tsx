@@ -12,8 +12,8 @@ import {
     ActivePointComponent,
     ActivePointComponentSharedValue,
     DataPoint,
-} from './types';
-import {PathObject, useForceReRender} from './utils';
+} from '../types';
+import {PathObject, useForceReRender} from '../utils';
 import {scheduleOnRN} from 'react-native-worklets';
 
 type PositionSharedValue = {x: number; y: number; y2?: number};
