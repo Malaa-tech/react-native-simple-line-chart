@@ -4,14 +4,14 @@
 A simple, interactive, animated, and fast Line Chart component for React Native.
 
 ### 🦄 Features
-- ✅  Supports RTL languages   
-- ✅  Customizable active point component  
-- ✅  Linear gradient line color  
-- ✅  Supports different curve types  
-- ✅  Full utilization of reanimated and shared values  
+- ✅  Supports RTL languages
+- ✅  Customizable active point component
+- ✅  Linear gradient line color
+- ✅  Supports different curve types
+- ✅  Full utilization of reanimated and shared values
 - ✅  Supports area chart presentation
 - ✅  Supports transition animations
- 
+
 ### How we use it in Malaa App
 <p align="center">
 <img src="https://github.com/Malaa-tech/react-native-simple-line-chart/assets/24798045/c48c7ace-8230-4363-843c-1d250fc22110" width="300"/>
@@ -31,7 +31,7 @@ or
 ```bash | pure
 yarn add react-native-simple-line-chart
 ```
-⚠️ Make sure you have [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) + [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/) + [react-native-svg](https://github.com/software-mansion/react-native-svg) installed in your project.
+⚠️ Make sure you have [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) + [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/) + [@shopify/react-native-skia](https://github.com/shopify/react-native-skia) installed in your project.
 
 
 ## ⚒️ Usage
@@ -132,7 +132,5 @@ export default function App() {
 }
 ```
 
-## 📖 Docs 
+## 📖 Docs
 [Click here for docs and type defs](https://github.com/Malaa-tech/react-native-simple-line-chart/blob/main/docs/globals.md)
-
-
