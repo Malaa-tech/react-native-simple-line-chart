@@ -14,7 +14,7 @@ import {
     DataPoint,
 } from './types';
 import {PathObject, useForceReRender} from './utils';
-import {runOnJS} from 'react-native-worklets';
+import {scheduleOnRN} from 'react-native-worklets';
 
 type PositionSharedValue = {x: number; y: number; y2?: number};
 
@@ -120,7 +120,7 @@ const ActivePoint = ({
                 ) {
                     try {
                         if (onPointChange) {
-                            runOnJS(onPointChange)(currentIndexData);
+                            scheduleOnRN(onPointChange, currentIndexData);
                         }
                     } catch (_) {
                         // error

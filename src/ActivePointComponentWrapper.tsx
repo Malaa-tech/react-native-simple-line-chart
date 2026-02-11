@@ -1,7 +1,6 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {I18nManager, View} from 'react-native';
 import Animated, {
-    runOnJS,
     SharedValue,
     useAnimatedReaction,
     useAnimatedStyle,
@@ -17,6 +16,7 @@ import {
     DataPoint,
     DataPointSharedValue,
 } from './types';
+import {scheduleOnRN} from 'react-native-worklets';
 
 const ActivePointComponentWrapper = ({
     activePointPositionX,
@@ -95,7 +95,7 @@ const ActivePointComponentWrapper = ({
                         },
                         finished => {
                             if (finished) {
-                                runOnJS(calculateWidth)();
+                                scheduleOnRN(calculateWidth);
                             }
                         },
                     ),
@@ -111,10 +111,10 @@ const ActivePointComponentWrapper = ({
         },
         (current, previous) => {
             if (current !== undefined && previous === undefined) {
-                runOnJS(forceRerender)();
+                scheduleOnRN(forceRerender);
             }
             if (activePointComponent !== undefined) {
-                runOnJS(setActiveDataPointLocal)(current);
+                scheduleOnRN(setActiveDataPointLocal, current);
             }
         },
         [activePointSharedValue],

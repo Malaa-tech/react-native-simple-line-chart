@@ -4,7 +4,7 @@ import {
     GestureDetector,
     PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
-import {runOnJS, useSharedValue} from 'react-native-reanimated';
+import {useSharedValue} from 'react-native-reanimated';
 import {EXTRA_CONFIG, LINE_CHART} from './defaults';
 import {
     DataPoint,
@@ -15,6 +15,7 @@ import {
 import {isEqual} from './utils';
 import {View} from 'react-native';
 import ChartWrapper from './ChartWrapper';
+import {scheduleOnRN} from 'react-native-worklets';
 
 const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
     return {
@@ -82,7 +83,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
         const onPointChange = (point?: DataPoint) => {
             if (point) {
                 if (onPointFocus) {
-                    runOnJS(onPointFocus)(point);
+                    onPointFocus(point);
                 }
                 if (activePointSharedValue) {
                     activePointSharedValue.value = point;
@@ -123,7 +124,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
             'worklet';
 
             if (isSimultaneousHandlersEnabled === true) {
-                runOnJS(setIsSimultaneousHandlersEnabled)(false);
+                scheduleOnRN(setIsSimultaneousHandlersEnabled, false);
             }
             activeTouch.value = true;
             activeTouchX.value = e.x;
@@ -132,14 +133,14 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
         const onPanEnd = () => {
             'worklet';
 
-            runOnJS(setIsSimultaneousHandlersEnabled)(true);
+            scheduleOnRN(setIsSimultaneousHandlersEnabled, true);
             if (
                 alwaysShowActivePoint === false ||
                 hideActivePointOnBlur === true
             ) {
                 activeTouch.value = false;
             }
-            runOnJS(onPointLoseFocusLocal)();
+            scheduleOnRN(onPointLoseFocusLocal);
         };
 
         const panGesture =
