@@ -155,7 +155,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                       )
                       .onBegin(onPanUpdate)
                       .onUpdate(onPanUpdate)
-                      .onFinalize(onPanEnd)
+                      .onTouchesUp(onPanEnd)
                 : Gesture.Pan()
                       .activeOffsetX(
                           extraConfig?.activeOffsetX ||
@@ -163,7 +163,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                       )
                       .onBegin(onPanUpdate)
                       .onUpdate(onPanUpdate)
-                      .onFinalize(onPanEnd);
+                      .onTouchesUp(onPanEnd);
 
         useImperativeHandle(ref, () => ({
             setActiveIndex(index) {
