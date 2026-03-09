@@ -133,6 +133,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
         const onPanEnd = () => {
             'worklet';
 
+            if (!activeTouch.value) return;
             scheduleOnRN(setIsSimultaneousHandlersEnabled, true);
             if (
                 alwaysShowActivePoint === false ||
@@ -156,6 +157,7 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                       .onBegin(onPanUpdate)
                       .onUpdate(onPanUpdate)
                       .onTouchesUp(onPanEnd)
+                      .onTouchesCancelled(onPanEnd)
                 : Gesture.Pan()
                       .activeOffsetX(
                           extraConfig?.activeOffsetX ||
@@ -163,7 +165,8 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                       )
                       .onBegin(onPanUpdate)
                       .onUpdate(onPanUpdate)
-                      .onTouchesUp(onPanEnd);
+                      .onTouchesUp(onPanEnd)
+                      .onTouchesCancelled(onPanEnd);
 
         useImperativeHandle(ref, () => ({
             setActiveIndex(index) {
