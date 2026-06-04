@@ -85,6 +85,7 @@ const ActivePointComponentWrapper = ({
 
     const viewAnimatedStyle = useAnimatedStyle(() => {
         return {
+            zIndex: 2,
             flexDirection: 'row',
             transform: [
                 {
