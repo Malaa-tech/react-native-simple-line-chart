@@ -232,6 +232,7 @@ const LineComponent = ({
                 svgHeight={svgHeight}
                 skiaGradient={skiaGradient}
                 isRangedLineChart={isRangedLineChart}
+                maxTextureSize={extraConfig.maxTextureSize}
             />
 
             {line.endPointConfig && endPointAnimation && (

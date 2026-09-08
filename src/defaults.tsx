@@ -27,6 +27,7 @@ export const EXTRA_CONFIG = {
     initialActivePoint: 0,
     simultaneousHandlers: undefined,
     endSpacing: 20,
+    maxTextureSize: 4096,
     calculateChartYAxisMinMax: undefined,
     calculateChartXAxisMinMax: undefined,
     activeOffsetX: [0, 0] as [number, number],

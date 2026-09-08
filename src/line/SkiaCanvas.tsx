@@ -25,6 +25,7 @@ interface SkiaCanvasProps {
         end: any;
     };
     isRangedLineChart: boolean;
+    maxTextureSize?: number;
 }
 
 export const SkiaCanvas: React.FC<SkiaCanvasProps> = ({
@@ -34,21 +35,21 @@ export const SkiaCanvas: React.FC<SkiaCanvasProps> = ({
     svgHeight,
     skiaGradient,
     isRangedLineChart,
+    maxTextureSize = 4096,
 }) => {
     const {canvasWidth, canvasHeight, scaleFactor} = React.useMemo(() => {
-        const MAX_TEXTURE_SIZE = 4096;
         const pr = PixelRatio.get();
         const sf = Math.min(
             1,
-            MAX_TEXTURE_SIZE / (svgWidth * pr),
-            MAX_TEXTURE_SIZE / (svgHeight * pr),
+            maxTextureSize / (svgWidth * pr),
+            maxTextureSize / (svgHeight * pr),
         );
         return {
             canvasWidth: Math.floor(svgWidth * sf),
             canvasHeight: Math.floor(svgHeight * sf),
             scaleFactor: sf,
         };
-    }, [svgWidth, svgHeight]);
+    }, [svgWidth, svgHeight, maxTextureSize]);
 
     if (!skiaPath) return null;
 

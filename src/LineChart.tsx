@@ -43,6 +43,10 @@ const getExtraConfig = (extraConfig: ExtraConfig): ExtraConfig => {
             extraConfig.endSpacing !== undefined
                 ? extraConfig.endSpacing
                 : EXTRA_CONFIG.endSpacing,
+        maxTextureSize:
+            extraConfig.maxTextureSize !== undefined
+                ? extraConfig.maxTextureSize
+                : EXTRA_CONFIG.maxTextureSize,
         calculateChartYAxisMinMax:
             extraConfig.calculateChartYAxisMinMax ||
             EXTRA_CONFIG.calculateChartYAxisMinMax,

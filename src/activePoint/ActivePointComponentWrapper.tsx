@@ -4,7 +4,6 @@ import Animated, {
     SharedValue,
     useAnimatedReaction,
     useAnimatedStyle,
-    useDerivedValue,
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
@@ -20,7 +19,6 @@ import {scheduleOnRN} from 'react-native-worklets';
 
 const ActivePointComponentWrapper = ({
     activePointPositionX,
-    activePointPositionY,
     pointOpacity,
     width,
     activePointSharedValue,
@@ -36,16 +34,21 @@ const ActivePointComponentWrapper = ({
     activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
 }) => {
     const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
+    const SIDE_SWITCH_HYSTERESIS = 24;
     const wrapperRef = React.useRef<View>(null);
-    const activeComponentWidthSV = useSharedValue<number>(100);
+    const activeComponentWidthSV = useSharedValue<number>(0);
+    const isFlippedSV = useSharedValue<number>(-1);
+    const translateXSV = useSharedValue<number>(0);
     const [activeDataPointLocal, setActiveDataPointLocal] = useState<
         undefined | DataPoint
     >(undefined);
     const forceRerender = useForceReRender();
 
     const calculateWidth = () => {
-        wrapperRef.current?.measureInWindow((_x, _y, width) => {
-            activeComponentWidthSV.value = width;
+        wrapperRef.current?.measureInWindow((_x, _y, componentWidth) => {
+            if (componentWidth > 0) {
+                activeComponentWidthSV.value = componentWidth;
+            }
         });
     };
 
@@ -53,56 +56,64 @@ const ActivePointComponentWrapper = ({
         calculateWidth();
     }, [activePointComponent]);
 
-    const componentPositionX = useDerivedValue(() => {
-        const xPosition = activePointPositionX.value;
-
-        if (I18nManager.isRTL) {
-            if (
-                xPosition <
-                activeComponentWidthSV.value + SPACE_BETWEEN_COMPONENT_AND_LINE
-            ) {
-                return (
-                    xPosition -
-                    width +
-                    (activeComponentWidthSV.value +
-                        SPACE_BETWEEN_COMPONENT_AND_LINE)
-                );
+    useAnimatedReaction(
+        () => ({
+            componentWidth: activeComponentWidthSV.value,
+            xPosition: activePointPositionX.value,
+        }),
+        ({componentWidth, xPosition}) => {
+            if (componentWidth === 0) {
+                return;
             }
-            return xPosition - width - SPACE_BETWEEN_COMPONENT_AND_LINE;
-        }
-        if (
-            width - xPosition <
-            activeComponentWidthSV.value + SPACE_BETWEEN_COMPONENT_AND_LINE
-        ) {
-            return (
-                xPosition -
-                activeComponentWidthSV.value -
-                SPACE_BETWEEN_COMPONENT_AND_LINE
+            const requiredSpace =
+                componentWidth + SPACE_BETWEEN_COMPONENT_AND_LINE;
+            const availableSpace = I18nManager.isRTL
+                ? xPosition
+                : width - xPosition;
+
+            if (isFlippedSV.value === -1) {
+                isFlippedSV.value = availableSpace < requiredSpace ? 1 : 0;
+            } else if (
+                isFlippedSV.value === 0 &&
+                availableSpace < requiredSpace
+            ) {
+                isFlippedSV.value = 1;
+            } else if (
+                isFlippedSV.value === 1 &&
+                availableSpace > requiredSpace + SIDE_SWITCH_HYSTERESIS
+            ) {
+                isFlippedSV.value = 0;
+            }
+
+            const targetX = I18nManager.isRTL
+                ? isFlippedSV.value === 1
+                    ? xPosition - width + requiredSpace
+                    : xPosition - width - SPACE_BETWEEN_COMPONENT_AND_LINE
+                : isFlippedSV.value === 1
+                  ? xPosition - requiredSpace
+                  : xPosition + SPACE_BETWEEN_COMPONENT_AND_LINE;
+
+            translateXSV.value = withTiming(
+                targetX,
+                {duration: 100},
+                finished => {
+                    'worklet';
+                    if (finished) {
+                        scheduleOnRN(calculateWidth);
+                    }
+                },
             );
-        }
-        return xPosition + SPACE_BETWEEN_COMPONENT_AND_LINE;
-    }, [activePointPositionX, activePointPositionY, activeComponentWidthSV]);
+        },
+        [width],
+    );
 
     const viewAnimatedStyle = useAnimatedStyle(() => {
         return {
             zIndex: 2,
             flexDirection: 'row',
-            transform: [
-                {
-                    translateX: withTiming(
-                        componentPositionX.value,
-                        {
-                            duration: 100,
-                        },
-                        finished => {
-                            if (finished) {
-                                scheduleOnRN(calculateWidth);
-                            }
-                        },
-                    ),
-                },
-            ],
-            opacity: pointOpacity.value,
+            transform: [{translateX: translateXSV.value}],
+            opacity:
+                activeComponentWidthSV.value === 0 ? 0 : pointOpacity.value,
         };
     });
 
@@ -127,7 +138,10 @@ const ActivePointComponentWrapper = ({
                 ref={wrapperRef}
                 onLayout={event => {
                     const {width: componentWidth} = event.nativeEvent.layout;
-                    activeComponentWidthSV.value = componentWidth;
+                    if (componentWidth > activeComponentWidthSV.value) {
+                        activeComponentWidthSV.value = componentWidth;
+                    }
+                    calculateWidth();
                 }}
             >
                 {activePointComponentWithSharedValue !== undefined &&

@@ -257,6 +257,14 @@ export interface ExtraConfig {
      */
     endSpacing?: number;
     /**
+     * Maximum Skia canvas texture size in physical pixels. Charts wider than
+     * this (after PixelRatio scaling) are rasterized smaller and scaled up,
+     * which reduces sharpness. Raise only for charts that need it — must not
+     * exceed the device GPU's max texture size.
+     * @default 4096
+     */
+    maxTextureSize?: number;
+    /**
      * supplying this function will allow you to customize the y axis min and max values
      */
     calculateChartYAxisMinMax?: calculateChartAxisMinMax;
