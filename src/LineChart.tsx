@@ -7,7 +7,6 @@ import {
 import {useSharedValue} from 'react-native-reanimated';
 import {EXTRA_CONFIG, LINE_CHART} from './defaults';
 import {
-    DataPoint,
     ExtraConfig,
     LineChart as LineChartProps,
     LineChartRef,
@@ -83,17 +82,6 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
         ] = React.useState(true);
         extraConfig = getExtraConfig(extraConfig || {});
         const {alwaysShowActivePoint, hideActivePointOnBlur} = extraConfig;
-
-        const onPointChange = (point?: DataPoint) => {
-            if (point) {
-                if (onPointFocus) {
-                    onPointFocus(point);
-                }
-                if (activePointSharedValue) {
-                    activePointSharedValue.value = point;
-                }
-            }
-        };
 
         const onPointLoseFocusLocal = () => {
             if (onPointLoseFocus) {
@@ -212,7 +200,8 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
                                 ? EXTRA_CONFIG.endSpacing
                                 : extraConfig?.endSpacing
                         }
-                        onPointChange={onPointChange}
+                        onPointChange={onPointFocus}
+                        activePointSharedValue={activePointSharedValue}
                         activeLineIndex={activeLineIndex}
                     />
                 </View>
@@ -225,6 +214,15 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
 export const MemoizedLineChart = React.memo(
     LineChart,
     (previousProps, nextProps) => {
+        if (
+            previousProps.activePointSharedValue !==
+                nextProps.activePointSharedValue ||
+            previousProps.onPointFocus !== nextProps.onPointFocus ||
+            previousProps.onPointLoseFocus !== nextProps.onPointLoseFocus
+        ) {
+            return false;
+        }
+
         if (previousProps.activeLineIndex !== nextProps.activeLineIndex) {
             return false;
         }
