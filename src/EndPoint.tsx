@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {ColorValue, I18nManager} from 'react-native';
+import {ColorValue, I18nManager, Platform} from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
@@ -23,7 +23,8 @@ function EndPoint({
     animated: boolean;
     endPointAnimation: endPointAnimationFunction;
 }) {
-    const isRTL = I18nManager.isRTL;
+    // Web lays the chart out LTR (see LineChart); only native mirrors left/right in RTL.
+    const isRTL = I18nManager.isRTL && Platform.OS !== 'web';
     const radiusSV = useSharedValue(radius * 1.7);
     const ySV = useSharedValue(y);
     const animationDuration = 1000;

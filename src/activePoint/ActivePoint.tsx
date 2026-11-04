@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {ColorValue, I18nManager} from 'react-native';
+import {ColorValue, I18nManager, Platform} from 'react-native';
 import Animated, {
     SharedValue,
     startMapper,
@@ -67,7 +67,8 @@ const ActivePoint = ({
     verticalLineDashArray: number[];
     animateTransition: boolean;
 }) => {
-    const isRTL = I18nManager.isRTL;
+    // Web lays the chart out LTR (see LineChart); only native mirrors left/right in RTL.
+    const isRTL = I18nManager.isRTL && Platform.OS !== 'web';
     const positions = useSharedValue<PositionSharedValue[]>([]);
     const activePointSV = useSharedValue<DataPoint | undefined>({
         x: 0,

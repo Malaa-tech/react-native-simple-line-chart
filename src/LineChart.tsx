@@ -12,7 +12,7 @@ import {
     LineChartRef,
 } from './types';
 import {isEqual} from './utils';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import ChartWrapper from './ChartWrapper';
 import {scheduleOnRN} from 'react-native-worklets';
 
@@ -181,6 +181,8 @@ const LineChart = forwardRef<LineChartRef, LineChartProps>(
         return (
             <GestureDetector gesture={panGesture}>
                 <View
+                    // @ts-expect-error `dir` is a react-native-web prop
+                    dir={Platform.OS === 'web' ? 'ltr' : undefined}
                     style={{
                         backgroundColor,
                         width: svgWidth,

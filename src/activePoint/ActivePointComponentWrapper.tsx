@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {I18nManager, View} from 'react-native';
+import {I18nManager, Platform, View} from 'react-native';
 import Animated, {
     SharedValue,
     useAnimatedReaction,
@@ -34,6 +34,8 @@ const ActivePointComponentWrapper = ({
     activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
 }) => {
     const isRTL = I18nManager.isRTL;
+    // Web lays the chart out LTR (see LineChart), so its tooltip anchors RTL by hand.
+    const isWebRTL = isRTL && Platform.OS === 'web';
     const SPACE_BETWEEN_COMPONENT_AND_LINE = 15;
     const SIDE_SWITCH_HYSTERESIS = 24;
     const activeComponentWidthSV = useSharedValue<number>(0);
@@ -83,9 +85,14 @@ const ActivePointComponentWrapper = ({
                 ? Math.min(0, Math.max(componentWidth - width, targetX))
                 : Math.max(0, Math.min(width - componentWidth, targetX));
 
-            translateXSV.value = withTiming(clampedX, {duration: 100});
+            // RTL math measures from the right edge; web anchors the tooltip on the left.
+            const anchoredX = isWebRTL
+                ? clampedX + width - componentWidth
+                : clampedX;
+
+            translateXSV.value = withTiming(anchoredX, {duration: 100});
         },
-        [width, isRTL],
+        [width, isRTL, isWebRTL],
     );
 
     const viewAnimatedStyle = useAnimatedStyle(() => {
@@ -116,6 +123,8 @@ const ActivePointComponentWrapper = ({
             style={[{zIndex: 2, flexDirection: 'row'}, viewAnimatedStyle]}
         >
             <View
+                // @ts-expect-error `dir` is a react-native-web prop
+                dir={isWebRTL ? 'rtl' : undefined}
                 onLayout={event => {
                     const {width: componentWidth} = event.nativeEvent.layout;
                     if (componentWidth > 0) {
