@@ -2,7 +2,8 @@ import React, {useEffect} from 'react';
 import {ColorValue, I18nManager} from 'react-native';
 import Animated, {
     SharedValue,
-    useAnimatedReaction,
+    startMapper,
+    stopMapper,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
@@ -12,11 +13,14 @@ import {
     ActivePointComponent,
     ActivePointComponentSharedValue,
     DataPoint,
+    DataPointSharedValue,
 } from '../types';
 import {PathObject, useForceReRender} from '../utils';
 import {scheduleOnRN} from 'react-native-worklets';
 
 type PositionSharedValue = {x: number; y: number; y2?: number};
+
+type ActiveState = {activeIndex: number; activeTouch: boolean};
 
 const ActivePoint = ({
     data,
@@ -28,6 +32,7 @@ const ActivePoint = ({
     activeIndex,
     path,
     onPointChange,
+    externalActivePointSharedValue,
     color,
     borderColor,
     borderWidth,
@@ -48,7 +53,8 @@ const ActivePoint = ({
     activePointComponentWithSharedValue?: ActivePointComponentSharedValue;
     activeIndex: SharedValue<number>;
     path: PathObject;
-    onPointChange?: (point?: DataPoint) => void;
+    onPointChange?: (point: DataPoint) => void;
+    externalActivePointSharedValue?: DataPointSharedValue;
     color: ColorValue;
     borderColor: ColorValue;
     borderWidth: number;
@@ -61,6 +67,7 @@ const ActivePoint = ({
     verticalLineDashArray: number[];
     animateTransition: boolean;
 }) => {
+    const isRTL = I18nManager.isRTL;
     const positions = useSharedValue<PositionSharedValue[]>([]);
     const activePointSV = useSharedValue<DataPoint | undefined>({
         x: 0,
@@ -103,21 +110,22 @@ const ActivePoint = ({
         positions.value = newPositions;
     }, [data]);
 
-    useAnimatedReaction(
-        () => {
-            return {
-                activeIndex: activeIndex.value,
-                activeTouch: activeTouch.value,
-            };
-        },
-        (current, previous) => {
+    const previousActiveState = useSharedValue<ActiveState | null>(null);
+
+    useEffect(() => {
+        const react = (current: ActiveState, previous: ActiveState | null) => {
+            'worklet';
             const currentIndexData = data[current.activeIndex];
 
             if (currentIndexData?.disableActivePoint !== true) {
                 if (
                     current.activeIndex !== null &&
-                    current.activeTouch === true
+                    current.activeTouch === true &&
+                    currentIndexData !== undefined
                 ) {
+                    if (externalActivePointSharedValue !== undefined) {
+                        externalActivePointSharedValue.value = currentIndexData;
+                    }
                     try {
                         if (onPointChange) {
                             scheduleOnRN(onPointChange, currentIndexData);
@@ -193,9 +201,50 @@ const ActivePoint = ({
                     lineOpacitySV.value = 0;
                 }
             }
-        },
-        [activeIndex, data, activeTouch],
-    );
+        };
+        const outputs = [
+            activePointSV,
+            activePointPositionX,
+            activePointPositionY,
+            pointOpacity,
+            lineOpacitySV,
+        ];
+        if (externalActivePointSharedValue !== undefined) {
+            outputs.push(externalActivePointSharedValue);
+        }
+        const mapperId = startMapper(
+            () => {
+                'worklet';
+                const current = {
+                    activeIndex: activeIndex.value,
+                    activeTouch: activeTouch.value,
+                };
+                react(current, previousActiveState.value);
+                previousActiveState.value = current;
+            },
+            [activeIndex, activeTouch],
+            // Reanimated tracks these identities for ordering, not for writing values.
+            outputs as Parameters<typeof startMapper>[2],
+        );
+        return () => {
+            stopMapper(mapperId);
+        };
+    }, [
+        activeIndex,
+        activeTouch,
+        data,
+        externalActivePointSharedValue,
+        onPointChange,
+        positions,
+        activePointSV,
+        activePointPositionX,
+        activePointPositionY,
+        pointOpacity,
+        lineOpacitySV,
+        previousActiveState,
+        radius,
+        verticalLineOpacity,
+    ]);
 
     const verticalLineActivePosition = useSharedValue(
         activePointPositionX.value || 0,
@@ -208,33 +257,25 @@ const ActivePoint = ({
         );
 
         return {
-            position: 'absolute' as const,
-            left: !I18nManager.isRTL
+            left: !isRTL
                 ? verticalLineActivePosition.value - verticalLineWidth / 2
                 : undefined,
-            right: !I18nManager.isRTL
+            right: !isRTL
                 ? undefined
                 : verticalLineActivePosition.value - verticalLineWidth / 2,
-            top: 0,
-            width: verticalLineWidth,
-            height,
             opacity: lineOpacitySV.value,
         };
     });
 
     const activePointStyle = useAnimatedStyle(() => {
         return {
-            position: 'absolute' as const,
-            left: I18nManager.isRTL
+            left: isRTL
                 ? undefined
                 : activePointPositionX.value - (radius + borderWidth),
-            right: I18nManager.isRTL
+            right: isRTL
                 ? activePointPositionX.value - (radius + borderWidth)
                 : undefined,
             top: activePointPositionY.value - (radius + borderWidth),
-            width: (radius + borderWidth) * 2,
-            height: (radius + borderWidth) * 2,
-            borderRadius: radius + borderWidth,
             opacity: pointOpacity.value,
         };
     });
@@ -252,6 +293,10 @@ const ActivePoint = ({
                     style={[
                         verticalLineStyle,
                         {
+                            position: 'absolute',
+                            top: 0,
+                            width: verticalLineWidth,
+                            height,
                             backgroundColor: isDashed
                                 ? 'transparent'
                                 : (verticalLineColor as string),
@@ -270,6 +315,10 @@ const ActivePoint = ({
                     style={[
                         activePointStyle,
                         {
+                            position: 'absolute',
+                            width: (radius + borderWidth) * 2,
+                            height: (radius + borderWidth) * 2,
+                            borderRadius: radius + borderWidth,
                             backgroundColor: color as string,
                             borderWidth,
                             borderColor: borderColor as string,

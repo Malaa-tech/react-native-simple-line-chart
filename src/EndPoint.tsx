@@ -23,6 +23,7 @@ function EndPoint({
     animated: boolean;
     endPointAnimation: endPointAnimationFunction;
 }) {
+    const isRTL = I18nManager.isRTL;
     const radiusSV = useSharedValue(radius * 1.7);
     const ySV = useSharedValue(y);
     const animationDuration = 1000;
@@ -47,8 +48,8 @@ function EndPoint({
     const innerCircleStyle = useAnimatedStyle(() => {
         return {
             position: 'absolute' as const,
-            left: !I18nManager.isRTL ? x - radius : undefined,
-            right: !I18nManager.isRTL ? undefined : x - radius,
+            left: !isRTL ? x - radius : undefined,
+            right: !isRTL ? undefined : x - radius,
             top: ySV.value - radius,
             width: radius * 2,
             height: radius * 2,

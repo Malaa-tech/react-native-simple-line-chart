@@ -11,7 +11,7 @@ import {
     PathObject,
     useActiveIndex,
 } from './utils';
-import {DataPoint, ExtraConfig, Line} from './types';
+import {DataPoint, DataPointSharedValue, ExtraConfig, Line} from './types';
 import {ACTIVE_POINT_CONFIG, END_POINT, EXTRA_CONFIG} from './defaults';
 import useChartAnimation from './animations/animations';
 import {useSkiaPath, useGradient, SkiaCanvas} from './line';
@@ -27,6 +27,7 @@ const ChartWrapper = ({
     endSpacing,
     initialActivePoint,
     activeLineIndex,
+    activePointSharedValue,
 }: {
     lines: Line[];
     svgHeight: number;
@@ -36,8 +37,9 @@ const ChartWrapper = ({
     extraConfig: ExtraConfig;
     endSpacing: number;
     initialActivePoint?: number;
-    onPointChange: (point?: DataPoint) => void;
+    onPointChange?: (point: DataPoint) => void;
     activeLineIndex: number;
+    activePointSharedValue?: DataPointSharedValue;
 }) => {
     const allData = lines.reduce((acc, line) => {
         if (line.data !== undefined) {
@@ -100,6 +102,11 @@ const ChartWrapper = ({
                                         ? onPointChange
                                         : undefined
                                 }
+                                activePointSharedValue={
+                                    index === activeLineIndex
+                                        ? activePointSharedValue
+                                        : undefined
+                                }
                                 axisMinMax={axisMinMax}
                             />
                         );
@@ -120,6 +127,7 @@ const LineComponent = ({
     activeIndex,
     extraConfig,
     onPointChange,
+    activePointSharedValue,
     axisMinMax,
 }: {
     line: Line;
@@ -129,7 +137,8 @@ const LineComponent = ({
     activeTouch: SharedValue<boolean>;
     activeIndex: SharedValue<number>;
     extraConfig: ExtraConfig;
-    onPointChange?: (point?: DataPoint) => void;
+    onPointChange?: (point: DataPoint) => void;
+    activePointSharedValue?: DataPointSharedValue;
     axisMinMax: ReturnType<typeof getChartMinMaxValue>;
 }) => {
     const isLineColorGradient = Array.isArray(line.lineColor);
@@ -265,6 +274,7 @@ const LineComponent = ({
                     activeIndex={activeIndex}
                     path={localPath}
                     onPointChange={onPointChange}
+                    externalActivePointSharedValue={activePointSharedValue}
                     color={getActivePointColor()}
                     borderColor={
                         line?.activePointConfig?.borderColor ||
@@ -320,6 +330,8 @@ const LineComponent = ({
 
 const MemoizedLineComponent = React.memo(LineComponent, (prev, next) => {
     return (
+        prev.onPointChange === next.onPointChange &&
+        prev.activePointSharedValue === next.activePointSharedValue &&
         prev.line.data.length === next.line.data.length &&
         prev.line.curve === next.line.curve &&
         prev.line.lineColor === next.line.lineColor &&

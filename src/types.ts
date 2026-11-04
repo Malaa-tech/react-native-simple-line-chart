@@ -38,6 +38,8 @@ export type LineChart = {
     onPointLoseFocus?: onPointLoseFocus;
     /**
      * The shared value that will hold the active point (this is useful if you want to use the active point in other components)
+     * Updated on the UI thread before onPointFocus runs on the JS thread.
+     * Use the callback's point argument for that event; this value may already hold a newer point.
      */
     activePointSharedValue?: DataPointSharedValue;
     /**
